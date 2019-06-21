@@ -5,8 +5,34 @@
 <mapper namespace="com.vision.mapper.pre.SymptomTypeMapper">
 
 	<select id="findAllObjects" resultType="com.vision.vo.pre.SymptomAllMsg">
-	SELECT ch.id,pa.id AS parentId,ch.symptom_name,pa.symptom_name AS symptomParentName,ch.create_time,ch.modified_time
+		SELECT ch.id,pa.id AS parentId,ch.dis_status,ch.symptom_name,
+		   pa.symptom_name AS symptomParentName,
+		   ch.create_time,ch.modified_time
 	  	FROM symptom_type ch,symptom_type pa 
 		WHERE ch.parent_id=pa.id
 	</select>
+	
+	<select id="getRowDataById" resultType="int">
+		SELECT COUNT(*) FROM symptom_type WHERE parent_id=#{id} 
+	</select>
+	
+	<delete id="deleteSymptomObjectById">
+		delete from symptom_type where id=#{id}
+	</delete>
+	
+	<insert id="insertSymptomObject" useGeneratedKeys="true" keyProperty="id">
+		insert into symptom_type values(null,#{parentId},#{disStatus},#{symptomName},#{createTime},#{modifiedTime})
+	</insert>
+	
+	<update id="updateDisStatusById">
+		update symptom_type set dis_status=#{disStatus} where id=#{parentId}
+	</update>
+	
+	<select id="findSymptomObjectById" resultType="com.vision.pojo.pre.SymptomType">
+		select * from symptom_type where id = #{id}
+	</select>
+	
+	<update id="updateSymptomObject">
+		update symptom_type set symptom_name = #{symptomName},modified_time=now() where id=#{id}
+	</update>
 </mapper>
