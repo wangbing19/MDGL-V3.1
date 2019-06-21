@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vision.mapper.pre.SymptomTypeMapper">
+
+	<select id="findAllObjects" resultType="com.vision.vo.pre.SymptomAllMsg">
+	SELECT ch.id,pa.id AS parentId,ch.symptom_name,pa.symptom_name AS symptomParentName,ch.create_time,ch.modified_time
+	  	FROM symptom_type ch,symptom_type pa 
+		WHERE ch.parent_id=pa.id
+	</select>
+</mapper>
