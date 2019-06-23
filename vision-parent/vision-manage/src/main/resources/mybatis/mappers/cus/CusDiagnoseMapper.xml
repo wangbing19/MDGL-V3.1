@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vision.mapper.cus.CusDiagnoseMapper">
+
+	<!-- 基于用户id的查询条件sql引用语句 -->
+	<sql id="queryWhereId">
+		<where>
+			org_id=#{orgId}
+		</where>
+	</sql>
+
+	<!-- 基于用户id名及分页条件查询 -->
+	<select id="findPageObjects" resultMap="cusDiagnoseMap">
+		select *
+		from cus_diagnose
+		<include refid="queryWhereId" />
+		limit #{startIndex},#{pageSize}
+	</select>
+
+	<!-- 关联查询 -->
+	<resultMap id="cusDiagnoseMap"
+		type="com.vision.pojo.cus.CusDiagnose">
+		<id column="id" property="id" />
+		<!-- 关联查询充值记录数 -->
+		<association property="customerName" column="id"
+			select="com.vision.mapper.cus.CusCustomerMapper.findNameByDiagnoseId">
+		</association>
+		<!-- 关联查询充值记录数 -->
+		<association property="customerTel" column="id"
+			select="com.vision.mapper.cus.CusCustomerMapper.findTelByDiagnoseId">
+		</association>
+	</resultMap>
+
+
+	<!-- 基于用户名查询该用户总数,无用户名输入查询所有用户总数 -->
+	<select id="getRowCount" resultType="int">
+		select count(*) from cus_diagnose
+		<include refid="queryWhereId" />
+	</select>
+
+
+</mapper>

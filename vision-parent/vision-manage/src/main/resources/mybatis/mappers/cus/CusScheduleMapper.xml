@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vision.mapper.cus.CusScheduleMapper">
+	
+	<!-- 基于用户名的查询条件sql引用语句 -->
+	<sql id="queryWhereId">
+       <where>
+       		org_id=#{orgId} 
+			<if test="name!=null and name!=''">
+				and name like concat("%",#{name},"%")
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 基于用户名查询该用户总数,无用户名输入查询所有用户总数 -->
+	<select id="getRowCount" resultType="int">
+		select count(*) from cus_schedule
+		<include refid="queryWhereId"/>
+	</select>
+	
+	<!-- 基于用户姓名及分页条件查询,无用户名输入基于分页条件查询 -->
+	<select id="findPageObjects"
+		resultType="com.vision.pojo.cus.CusSchedule">
+		select *
+		from cus_schedule
+		<include refid="queryWhereId" /> 
+		limit #{startIndex},#{pageSize}
+	</select>
+	
+	<!-- 根据客户id(customer_id)查询总数 -->
+	<select id="findByCustomerId" parameterType="int" resultType="int">
+		select count(*) from cus_schedule 
+		where customer_id=#{id}
+	</select>
+	
+
+</mapper>
