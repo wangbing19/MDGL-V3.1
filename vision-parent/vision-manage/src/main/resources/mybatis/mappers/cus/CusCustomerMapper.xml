@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vision.mapper.cus.CusCustomerMapper">
+
+	<!-- 基于用户名的查询条件sql引用语句 -->
+	<sql id="queryWhereId">
+       <where>
+       		org_id=#{orgId}
+			<if test="name!=null and name!=''">
+				and name like concat("%",#{name},"%")
+			</if>
+		</where>
+	</sql>
+	
+	<!-- 基于用户名查询该用户总数,无用户名输入查询所有用户总数 -->
+	<select id="getRowCount" resultType="int">
+		select count(*) from cus_customer
+		<include refid="queryWhereId"/>
+	</select>
+
+	<!-- 基于用户姓名及分页条件查询,无用户名输入基于分页条件查询 -->
+	<select id="findPageObjects" resultMap="cusCustomerMap">
+		select *
+		from cus_customer
+        <include refid="queryWhereId"/>
+		limit #{startIndex},#{pageSize}
+	</select>
+	
+	<!-- 关联查询 -->
+	<resultMap id="cusCustomerMap"
+		type="com.vision.pojo.cus.CusCustomer">
+		<id column="id" property="id"/>
+		<!-- 关联查询充值记录数 -->
+		<!-- <association property="rechargeCount"
+					 column="id"
+					 select="com.md.sys.dao.rec.RecPayRankDao.findByCustomerId">
+		</association> -->
+		<!-- 关联查询课程记录数 -->
+		<association property="scheduleCount"
+					 column="id"
+					 select="com.vision.mapper.cus.CusScheduleMapper.findByCustomerId">
+		</association>
+		<!-- 关联查询上次训练时间 -->
+		<!-- <association property="lastTrain"
+					 column="id"
+					 select="com.vision.mapper.tra.TraInformationrecordMapper.findByCustomerId">
+		</association> -->
+	</resultMap>
+	
+	<!-- 根据诊断表id查找客户姓名 -->
+	<select id="findNameByDiagnoseId" parameterType="int" resultType="String">
+		select name
+		from cus_customer
+        where diagnose_id=#{id}
+	</select>
+	
+	<!-- 根据诊断表id查找客户电话 -->
+	<select id="findTelByDiagnoseId" parameterType="int" resultType="String">
+		select tel
+		from cus_customer
+        where diagnose_id=#{id}
+	</select>
+
+
+</mapper>

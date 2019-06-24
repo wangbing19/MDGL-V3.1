@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vision.mapper.cus.CusConsultationMapper">
+
+	<!-- 基于用户名/电话的查询条件sql引用语句 -->
+	<sql id="queryWhereId">
+		<where>
+		 	org_id=#{orgId}
+			<!-- name条件 -->
+			<if test="name!=null and name!=''">
+				and name like concat("%",#{name},"%")
+			</if>
+			<!-- tel条件 -->
+			<if test="tel!=null and tel!=''">
+				and tel like concat("%",#{tel},"%")
+			</if>
+		</where>
+	</sql>
+
+	<!-- 基于用户姓名及分页条件查询,无用户名输入基于分页条件查询 -->
+	<select id="findPageObjects"
+		resultType="com.vision.pojo.cus.CusConsultation">
+		select *
+		from cus_consultation
+		<include refid="queryWhereId" /> 
+		limit #{startIndex},#{pageSize}
+	</select>
+
+	<!-- 基于用户名查询该用户总数,无用户名输入查询所有用户总数 -->
+	<select id="getRowCount" resultType="int">
+		select count(*) from cus_consultation <!-- where org_id=#{orgId} -->
+		<include refid="queryWhereId" />
+	</select>
+
+	<!-- 基于咨询表id更改用户信息 -->
+	<update id="updateObject">
+		update cus_consultation
+		<set>
+			<if test="name!=null and name!=''">name=#{name},</if>
+			<if test="age!=null and age!=''">age=#{age},</if>
+			<if test="gender!=null and gender!=''">gender=#{gender},</if>
+			<if test="tel!=null and tel!=''">tel=#{tel},</if>
+			<if test="eye!=null and eye!=''">eye=#{eye},</if>
+			<if test="declineTimeYear!=null and declineTimeYear!=''">decline_time_year=#{declineTimeYear},</if>
+			<if test="declineTimeMonth!=null and declineTimeMonth!=''">decline_time_month=#{declineTimeMonth},</if>
+			<if test="diagnose!=null and diagnose!=''">diagnose=#{diagnose},</if>
+			<if test="oculopathy!=null and oculopathy!=''">oculopathy=#{oculopathy},</if>
+			<if test="oculopathyOther!=''">oculopathy_other=#{oculopathyOther},</if>
+			<if test="correctionMethod!=null and correctionMethod!=''">correction_method=#{correctionMethod},</if>
+			<if test="effect!=null and effect!=''">effect=#{effect},</if>
+			<if test="visualAcuity!=null and visualAcuity!=''">visual_acuity=#{visualAcuity},</if>
+			<if test="fVisionCondition!=null and fVisionCondition!=''">f_vision_condition=#{fVisionCondition},</if>
+			<if test="fOther!=''">f_other=#{fOther},</if>
+			<if test="mVisionCondition!=null and mVisionCondition!=''">m_vision_condition=#{mVisionCondition},</if>
+			<if test="mOther!=''">m_other=#{mOther},</if>
+			<if test="sleepingTime!=null and sleepingTime!=''">sleeping_time=#{sleepingTime},</if>
+			<if test="eyeProject!=null and eyeProject!=''">eye_project=#{eyeProject},</if>
+			<if test="eyeProjectOther!=''">eye_project_other=#{eyeProjectOther},</if>
+			<if test="readingTime!=null and readingTime!=''">reading_time=#{readingTime},</if>
+			<if test="readingDistance!=null and readingDistance!=''">reading_distance=#{readingDistance},</if>
+			<if test="watchingTime!=null and watchingTime!=''">watching_time=#{watchingTime},</if>
+			<if test="watchingDistance!=null and watchingDistance!=''">watching_distance=#{watchingDistance},</if>
+			<if test="eyePosition!=null and eyePosition!=''">eye_position=#{eyePosition},</if>
+			<if test="eyePositionOther!=''">eye_position_other=#{eyePositionOther},</if>
+			<if
+				test="homeLightingEnvironment!=null and homeLightingEnvironment!=''">home_lighting_environment=#{homeLightingEnvironment},</if>
+			<if
+				test="classroomLightingEnvironment!=null and classroomLightingEnvironment!=''">classroom_lighting_environment=#{classroomLightingEnvironment},
+			</if>
+			<if test="rD!=null and rD!=''">r_d=#{rD},</if>
+			<if test="lD!=null and lD!=''">l_d=#{lD},</if>
+			<if test="rCva!=null and rCva!=''">r_cva=#{rCva},</if>
+			<if test="lCva!=null and lCva!=''">l_cva=#{lCva},</if>
+			<if test="tutor!=null and tutor!=''">tutor=#{tutor},</if>
+			<if test="modifiedUser!=null and modifiedUser!=''">modified_user=#{modifiedUser},</if>
+			gmt_modified=now()
+		</set>
+		where id=#{id}
+	</update>
+
+
+</mapper>
