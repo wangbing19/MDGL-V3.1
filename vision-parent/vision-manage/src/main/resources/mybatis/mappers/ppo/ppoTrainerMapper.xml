@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vision.mapper.ppo.PpoTrainerMapper">
+	<select id="findPpoTrainerAll" resultType="com.vision.pojo.ppo.PpoTrainer">
+	select * from ppo_trainer where organization_id=#{organization_id}  <include refid="queryWhereId"/>
+	limit #{startIndex},#{pageSize}
+	</select>
+	<sql id="queryWhereId" >
+		<where>
+			<if test="trainerName!=null and trainerName!=''">
+				and trainer_name like concat("%",#{trainerName},"%")
+			</if>
+		</where>
+	</sql>
+</mapper>
