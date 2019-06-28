@@ -13,12 +13,15 @@ import com.vision.mapper.sys.SysOrganizationMapper;
 import com.vision.pojo.ppo.PpoServiceItems;
 import com.vision.pojo.sys.SysOrganization;
 import com.vision.service.ppo.PpoServiceItemsService;
+import com.vision.service.tool.ToolOrganizationIdList;
 @Service
 public class PpoServiceItemsServiceImpl implements PpoServiceItemsService{
 	@Autowired
 	private PpoServiceItemsMapper ppoServiceItemsMapper;
 	@Autowired
 	private SysOrganizationMapper sysOrganizationMapper;
+	@Autowired
+	private ToolOrganizationIdList toolOrganizationIdList;
 	@Override
 	public int saveServiceItems(PpoServiceItems ppoServiceItems) {
 		if(ppoServiceItems.getOrganizationId() == null) {
@@ -36,29 +39,12 @@ public class PpoServiceItemsServiceImpl implements PpoServiceItemsService{
 	@Override
 	public List<PpoServiceItems> findServiceItems(Long organizationId) {
 		boolean state = true;
-		List<Long> organizationIdList = new ArrayList<Long>();
-		organizationIdList.add(organizationId);
 		if(organizationId == null) {
 			throw new ServiceException("门店id不能为空！");
 		}
-		QueryWrapper<SysOrganization> queryWrapper = new QueryWrapper<SysOrganization>();
-		queryWrapper.eq("organization_parent_id", organizationId);
-		List<SysOrganization> selectList = sysOrganizationMapper.selectList(queryWrapper);
 		
-		SysOrganization selectById = sysOrganizationMapper.selectById(organizationId);
-		
-		while (state) {
-
-			if(selectById != null && selectById.getOrganizationParentId() != null) {
-				organizationIdList.add(selectById.getOrganizationParentId());
-				 selectById = sysOrganizationMapper.selectById(selectById.getOrganizationParentId());
-			}else {
-				state = false;
-			}
-		}
-		
-		
-		List<PpoServiceItems> result= ppoServiceItemsMapper.selectByIds(organizationIdList);
+		List<Long> findOrganizationIdList = toolOrganizationIdList.findOrganizationIdList(organizationId);
+		List<PpoServiceItems> result= ppoServiceItemsMapper.selectByIds(findOrganizationIdList);
 		return result;
 	}
 
