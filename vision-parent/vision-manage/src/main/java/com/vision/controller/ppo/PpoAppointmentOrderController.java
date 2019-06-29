@@ -30,10 +30,10 @@ public class PpoAppointmentOrderController {
 	 */
 	@RequestMapping("/doFindPpoOder")
 	@ResponseBody
-	public JsonResult findPpoOderAll(  PpoAppointmentOrder ppoAppointmentOrder) {
+	public JsonResult findPpoOderAll(  PpoAppointmentOrder ppoAppointmentOrder,Integer pageCurrent,Integer pageSize ) {
 		try {
 		
-			PageObject<PpoAppointmentOrder> pageObject = ppoAppointmentOrderService.findPpoOderAll(ppoAppointmentOrder);
+			PageObject<PpoAppointmentOrder> pageObject = ppoAppointmentOrderService.findPpoOderAll(ppoAppointmentOrder,pageCurrent,pageSize);
 			return JsonResult.oK(pageObject);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -59,6 +59,7 @@ public class PpoAppointmentOrderController {
 		}
 			return JsonResult.build(201, "保存失败！");
 	}
+	
 	@RequestMapping("/doDeletePpoOder")
 	@ResponseBody
 	public JsonResult deletePpoOrder(Long orderId) {
@@ -71,6 +72,13 @@ public class PpoAppointmentOrderController {
 		return JsonResult.build(201,"删除失败！");
 	}
 	
+	/**
+	 * 修改预约订单
+	 * @param ppoAppointmentOrder
+	 * @return
+	 */
+	@RequestMapping("/doupdatePpoOrder")
+	@ResponseBody
 	public JsonResult updatePpoOrder(PpoAppointmentOrder ppoAppointmentOrder) {
 		try {
 			int result = ppoAppointmentOrderService.updatePpoOrder(ppoAppointmentOrder);

@@ -23,4 +23,10 @@ public interface PpoTrainerService {
 
 	List<PpoAppointmentTime> dofindappointmentTime(Long tarinerId);
 
+	int dodeleteAppointmentTime(Long id);
+
+	int updateAppointmentTime(PpoAppointmentTime ppoAppointmentTime);
+
+	Integer dodeletePpoTrainer(Integer tarinerId);
+
 }

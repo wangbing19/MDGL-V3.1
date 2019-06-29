@@ -10,7 +10,11 @@ import com.vision.pojo.ppo.PpoAppointmentOrder;
 
 public interface PpoAppointmentOrderMapper extends BaseMapper<PpoAppointmentOrder>{
 
-	List<PpoAppointmentOrder> findPpoOderAll(@Param("organizationId") Long organizationId);
+	List<PpoAppointmentOrder> findPpoOderAll(List<Long> organizationIdList);
+
+	List<PpoAppointmentOrder> findPpoOderAll(@Param("list")List<Long> list, @Param("startIndex")Integer startIndex, @Param("pageSize")Integer pageSize);
+
+	int findPpoOderCount(@Param("list")List<Long> list);
 
 
 

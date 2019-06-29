@@ -12,12 +12,16 @@ import com.vision.vo.PageObject;
 public interface PpoAppointmentOrderService {
 
 	PageObject<PpoAppointmentOrder> findPpoOderAll(PpoAppointmentOrder ppoAppointmentOrder);
+	PageObject<PpoAppointmentOrder> findPpoOderAll(PpoAppointmentOrder ppoAppointmentOrder, Integer pageCurrent,
+			Integer pageSize);
 
 	int savePpoOrder(PpoAppointmentOrder ppoAppointmentOrder);
 
 	int deletePpoOrder(Long orderId);
 
 	int updatePpoOrder(PpoAppointmentOrder ppoAppointmentOrder);
+
+	
 	
 	
 }

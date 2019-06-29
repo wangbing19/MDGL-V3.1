@@ -28,7 +28,7 @@ public class PpoTrainerController {
 	@ResponseBody
 	public JsonResult findPpoTrainerAll(  String trainerName,  Integer pageCurrent,Integer pageSize,Long organizationId) {
 		try {
-			organizationId = 0L;
+			//organizationId = 0L;
 			PageObject<PpoTrainer> pageObject = ppoTrainerService.findPpoTrainerAll(trainerName, pageCurrent,pageSize,organizationId);
 			return JsonResult.oK(pageObject);
 		} catch (Exception e) {
@@ -53,11 +53,8 @@ public class PpoTrainerController {
     	
     	try {
     		
-    		Long  organizationId =0L;
-    		ppoTrainer.setOrganizationId(organizationId);
-    		if(ppoTrainer.getOrganizationId() == null) {
-    			return JsonResult.build(400, "添加失败，组织id不能为空！");
-    		}
+    	
+    		
     		
     		int saveState = ppoTrainerService.savePpoTrainer(ppoTrainer);
     		
@@ -76,8 +73,7 @@ public class PpoTrainerController {
 	@ResponseBody
 	public JsonResult doUpdatePpoTrainer( PpoTrainer ppoTrainer) {
 		try {
-			Long  organizationId =0L;
-    		ppoTrainer.setOrganizationId(organizationId);
+		
     		if(ppoTrainer.getOrganizationId() == null) {
     			return JsonResult.build(400, "修改失败，组织id不能为空！");
     		}
@@ -96,12 +92,12 @@ public class PpoTrainerController {
 	 * @param ppoAppointment
 	 * @return
 	 */
-	 @RequestMapping("/deletePpoTrainer")
+	 @RequestMapping("/dodeletePpoTrainer")
 	    @ResponseBody
-	    public JsonResult dodeletePpoTrainer(Integer ppoAppointmentId) {
+	    public JsonResult dodeletePpoTrainer(Integer tarinerId) {
 	    	try {
 	    		
-	    		Integer result=ppoTrainerService.savePpoTrainer(ppoAppointmentId);
+	    		Integer result=ppoTrainerService.dodeletePpoTrainer(tarinerId);
 	    		return JsonResult.oK(result);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -145,5 +141,41 @@ public class PpoTrainerController {
 				return JsonResult.build(201, "查询失败");
 			}
 			
-		 
+			/**
+			 * 删除训练师的训练时间
+			 * @param id
+			 * @return
+			 */
+			@RequestMapping("/dodeleteAppointmentTime")
+			@ResponseBody
+			public JsonResult dodeleteAppointmentTime( Long id) {
+				try {
+					
+					int result = ppoTrainerService.dodeleteAppointmentTime(id);
+					
+					return JsonResult.oK(result);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				return JsonResult.build(201, "查询失败");
+			} 
+			
+			/**
+			 * 修改训练师的训练时间
+			 * @param ppoAppointmentTime
+			 * @return
+			 */
+			@RequestMapping("/doupdateAppointmentTime")
+			@ResponseBody
+			public JsonResult doupdateAppointmentTime( PpoAppointmentTime ppoAppointmentTime) {
+				try {
+					
+					int result = ppoTrainerService.updateAppointmentTime(ppoAppointmentTime);
+					
+					return JsonResult.oK(result);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				return JsonResult.build(201, "查询失败");
+			} 
 }

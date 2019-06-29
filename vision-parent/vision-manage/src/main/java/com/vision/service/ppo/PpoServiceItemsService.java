@@ -10,4 +10,10 @@ public interface PpoServiceItemsService {
 
 	List<PpoServiceItems> findServiceItems(Long organizationId);
 
+	int deleteServiceItems(Long rederId);
+
+	int updeteServiceItems(PpoServiceItems ppoServiceItems);
+
+
+
 }

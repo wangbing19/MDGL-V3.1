@@ -14,10 +14,10 @@ import lombok.experimental.Accessors;
 @TableName("ppo_appointment_time")
 public class PpoAppointmentTime extends BasePojo{
 	@TableId(type=IdType.AUTO)
-	private Long id;
-	private Long tarinerId; 
-	private Date appointmentTime;
-	private Integer appointmentTimeState;
+	private Long id;//主键
+	private Long tarinerId;//训练师id 
+	private Date appointmentTime;//预约时间
+	private Integer appointmentTimeState;//状态（1生效 0失效）
 	private String createdUser;
 	private String modifiedUser;
 }
