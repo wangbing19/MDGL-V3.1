@@ -18,6 +18,7 @@ import com.vision.vo.pre.SymptomAllMsg;
 public class SymptomTypeController {
 	@Autowired
 	private SymptomTypeService symptomTypeService;
+	
 	@RequestMapping("/findAllObjects")
 	@ResponseBody
 	/**内嵌套查询症状类型数据**/

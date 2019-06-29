@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vision.mapper.rec.RecActivityMapper">
+
+	<delete id="deleteRecActivityById">	
+		delete from rec_activity_push where id=#{id}
+	</delete>
+	
+	<insert id="insertRecActivity">
+		insert into rec_activity_push values(
+		null,
+		#{userId},
+		#{parentId},
+		#{title},
+		#{payAmount},
+		#{presentedAmount},
+		#{activityStartTime},
+		#{activityEndTime},
+		#{activityState},
+		#{createTime},
+		#{modifiedTime})
+		
+	</insert>
+
+</mapper>

@@ -8,8 +8,8 @@
 		SELECT ch.id,pa.id AS parentId,ch.dis_status,ch.symptom_name,
 		   pa.symptom_name AS symptomParentName,
 		   ch.create_time,ch.modified_time
-	  	FROM symptom_type ch,symptom_type pa 
-		WHERE ch.parent_id=pa.id
+	  	FROM symptom_type ch left join symptom_type pa 
+		on ch.parent_id=pa.id
 	</select>
 	
 	<select id="getRowDataById" resultType="int">
