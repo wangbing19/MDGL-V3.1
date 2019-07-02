@@ -9,21 +9,21 @@ import org.springframework.stereotype.Service;
 import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.vision.exception.ServiceException;
-import com.vision.mapper.tra.TraTrainingEquipmentMapper;
+import com.vision.mapper.tra.TraInformationrecordMapper;
 import com.vision.pojo.cus.CusSchedule;
 import com.vision.pojo.cus.vo.CusVo;
-import com.vision.pojo.tra.TraTrainingEquipment;
-import com.vision.service.tra.TraTrainingEquipmentService;
+import com.vision.pojo.tra.TraInformationrecord;
+import com.vision.service.tra.TraInformationrecordService;
 import com.vision.vo.PageObject;
 
 @Service
-public class TraInformationrecordServiceImpl implements TraTrainingEquipmentService {
+public class TraTrainingEquipmentServiceImpl implements TraInformationrecordService {
 	@Autowired
-	private TraTrainingEquipmentMapper traTrainingEquipmentMapper;
+	private TraInformationrecordMapper traInformationrecordMapper;
 
 	/**分页*/
 	@Override
-	public PageObject<TraTrainingEquipment> getTraInfor(CusVo cusVo) {
+	public PageObject<TraInformationrecord> getTraInfor(CusVo cusVo) {
 
 		String name = cusVo.getName();
 		if("".equals(name)) {
@@ -41,16 +41,16 @@ public class TraInformationrecordServiceImpl implements TraTrainingEquipmentServ
 		if(pageSize<0||pageSize==null)
 			throw new ServiceException("pageSize不正确");
 		//2.依据条件获取总记录数并进行验证
-		int rowCount = traTrainingEquipmentMapper.getRowCount(name, orgId);
+		int rowCount = traInformationrecordMapper.getRowCount(name, orgId);
 		//	System.out.println(rowCount);
 		if(rowCount==0)
 			throw new ServiceException("记录不存在");
 		//3.基于条件查询当前页记录
 		int startIndex = (pageCurrent-1)*pageSize;
-		List<TraTrainingEquipment> records =
-				traTrainingEquipmentMapper.findPageObjects(name, startIndex, pageSize,orgId);// userId, userParentId ,
+		List<TraInformationrecord> records =
+				traInformationrecordMapper.findPageObjects(name, startIndex, pageSize,orgId);// userId, userParentId ,
 		//4.对查询结果进行封装并返回
-		PageObject<TraTrainingEquipment> pageObject = new PageObject<>();
+		PageObject<TraInformationrecord> pageObject = new PageObject<>();
 		pageObject.setRowCount(rowCount);
 		pageObject.setRecords(records);
 		pageObject.setPageCurrent(pageCurrent);
@@ -74,7 +74,7 @@ public class TraInformationrecordServiceImpl implements TraTrainingEquipmentServ
 		//		// 2.依据条件获取总记录数
 		//		System.out.println("tra_informationrecord="+userParentId);
 		//		
-		//		int rowCount = traTrainingEquipmentMapper.getRowCount(name,userParentId);
+		//		int rowCount = traInformationrecordMapper.getRowCount(name,userParentId);
 		//		//System.out.println("rowCount" + rowCount);
 		//		// 3.判断记录是否存在
 		//		if (rowCount == 0)
@@ -87,12 +87,12 @@ public class TraInformationrecordServiceImpl implements TraTrainingEquipmentServ
 		//		// System.out.println("5555"+user.getParentId());
 		//
 		//		// 5.依据条件获取当前页数据
-		//		List<TraTrainingEquipment> records = traTrainingEquipmentMapper.findPageObjects(name, startIndex, pageSize//1);
+		//		List<TraInformationrecord> records = traInformationrecordMapper.findPageObjects(name, startIndex, pageSize//1);
 		//		,userParentId);// 获取父级id
 		//		//System.out.println("records=" + records);
 		//
 		//		// 6.封装数据
-		//		PageObject<TraTrainingEquipment> pageObject = new PageObject<>();
+		//		PageObject<TraInformationrecord> pageObject = new PageObject<>();
 		//		pageObject.setPageCurrent(pageCurrent);
 		//		pageObject.setRowCount(rowCount);
 		//		pageObject.setPageSize(pageSize);
@@ -103,19 +103,19 @@ public class TraInformationrecordServiceImpl implements TraTrainingEquipmentServ
 
 	/**添加训练记录到数据库*/
 	@Override
-	public Integer addTraInfor(TraTrainingEquipment entity) {
+	public Integer addTraInfor(TraInformationrecord entity) {
 		//验证数据合法性
 		if(entity==null)
 			throw new ServiceException("对象不能为空");
-//		if(StringUtils.isEmpty(entity.getName()))
-//			throw new ServiceException("用户名不能为空");
+		if(StringUtils.isEmpty(entity.getName()))
+			throw new ServiceException("用户名不能为空");
 		if(entity.getOrgId()<0||entity.getOrgId()==null)
 			throw new ServiceException("用户名不能为空");
 		entity.setGmtCreate(new Date());
 		entity.setGmtModified(entity.getGmtCreate());
-//		entity.setEndTime(entity.getGmtCreate());
+		entity.setEndTime(entity.getGmtCreate());
 
-		int rows = traTrainingEquipmentMapper.insert(entity);
+		int rows = traInformationrecordMapper.insert(entity);
 		return rows;
 	}
 
@@ -126,7 +126,7 @@ public class TraInformationrecordServiceImpl implements TraTrainingEquipmentServ
 		if(id==null||id<=0)
 			throw new ServiceException("请选择一条数据");
 		//执行删除
-		int rows = traTrainingEquipmentMapper.deleteById(id);
+		int rows = traInformationrecordMapper.deleteById(id);
 		//判断数据有无
 		if(rows==0)
 			throw new ServiceException("数据可能已删除");
@@ -135,41 +135,41 @@ public class TraInformationrecordServiceImpl implements TraTrainingEquipmentServ
 
 	/**通过id查询*/
 	@Override
-	public TraTrainingEquipment getTraInforById(Integer id, Integer orgId) {
+	public TraInformationrecord getTraInforById(Integer id, Integer orgId) {
 		if(id==null||id<=0)
 			throw new ServiceException("请选择一条数据");
-		TraTrainingEquipment traTrainingEquipment = traTrainingEquipmentMapper.selectId(id);
-		return traTrainingEquipment;
+		TraInformationrecord traInformationrecord = traInformationrecordMapper.selectId(id);
+		return traInformationrecord;
 	}
 
 
 	/**通过id修改训练表信息*/
 	@Override
-	public Integer updateTraInfor(TraTrainingEquipment entity) {
+	public Integer updateTraInfor(TraInformationrecord entity) {
 		if(entity==null)
 			throw new ServiceException("对象不能为空");
 		if(entity.getId()==0||entity.getId()==null)
 			throw new ServiceException("对象id不能为空");
 		if(entity.getOrgId()==0||entity.getOrgId()==null)
 			throw new ServiceException("对象orgId不能为空");
-//		if(StringUtils.isEmpty(entity.getName()))
-//			throw new ServiceException("用户名不能为空");
-		int rows = traTrainingEquipmentMapper.updateById(entity);
+		if(StringUtils.isEmpty(entity.getName()))
+			throw new ServiceException("用户名不能为空");
+		int rows = traInformationrecordMapper.updateById(entity);
 		return rows;
 	}
 	
 	/**基于客户id查询用户课程表信息*/
 	@Override
-	public List<TraTrainingEquipment> getByCustomerId(CusVo cusVo) {
+	public List<TraInformationrecord> getByCustomerId(CusVo cusVo) {
 		Integer customerId = cusVo.getCustomerId();
 		Integer orgId = cusVo.getOrgId();
 		if(customerId==null||customerId<=0)
 			throw new ServiceException("customerId错误");
 		if(orgId==null||orgId<=0)
 			throw new ServiceException("orgId错误");
-		QueryWrapper<TraTrainingEquipment> queryWrapper = new QueryWrapper<>();
+		QueryWrapper<TraInformationrecord> queryWrapper = new QueryWrapper<>();
 		queryWrapper.eq("customer_id", customerId);
-		List<TraTrainingEquipment> list = traTrainingEquipmentMapper.selectList(queryWrapper);
+		List<TraInformationrecord> list = traInformationrecordMapper.selectList(queryWrapper);
 		return list;
 	}
 }
