@@ -10,7 +10,7 @@ import com.vision.service.pre.SymptomDescService;
 import com.vision.vo.JsonResult;
 
 @Controller
-@RequestMapping("/sympyomDesc")
+@RequestMapping("/symptomDesc")
 public class SymptomDescController {
 	@Autowired
 	private SymptomDescService symptomDescService;

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.vision.mapper.ppo.PpoAppointmentOrderMapper">
+	<resultMap type="PpoOrderCorrlation" id="orderMap">
+		<!-- 查询订单信息 -->
+		<id column="order_id" property="orderId" />
+		<id column="id" property="cusCustomerId" />
+		<result column="service_items" property="serviceItems" />
+		<result column="appointment_Time" property="appointmentTime" />
+		<result column="appointment_remark"
+			property="appointmentRemark" />
+		<result column="appointment_State" property="appointmentState" />
+		<result column="trainer_name" property="trainerName" />
+
+		<!-- 查询顾客信息 -->
+		<result column="name" property="cusCustomerName" />
+		<result column="tel" property="cusCustomerTel" />
+		<!-- 查询门店信息 -->
+		<result column="organization_name" property="organizationName" />
+		<result column="organization_address"
+			property="organizationAddress" />
+	</resultMap>
+
+	<select id="findPpoOderAll" resultMap="orderMap">
+		select
+		ppo_appointment_order.*,cus_customer.id,cus_customer.name,cus_customer.tel,
+		sys_organization.organization_name,sys_organization.organization_address
+		from ppo_appointment_order,cus_customer,sys_organization
+		where
+		ppo_appointment_order.organization_id in
+
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+		and cus_customer.id=ppo_appointment_order.customer_id
+		and
+		sys_organization.organization_id=ppo_appointment_order.organization_id
+		limit #{startIndex},#{pageSize}
+	</select>
+	
+	<!-- 用于统计订单条数 -->
+		
+	<select id="findPpoOderCount" resultType="int">
+			select Count(*) from ppo_appointment_order where organization_id in
+		<foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	
+	</select>
+</mapper>

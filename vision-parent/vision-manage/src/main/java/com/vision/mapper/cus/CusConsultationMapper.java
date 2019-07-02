@@ -19,7 +19,7 @@ public interface CusConsultationMapper extends BaseMapper<CusConsultation> {
 	 * @param userParentId	上级门店id
 	 * @return	当前页记录
 	 */
-	List<CusConsultation> findPageObjects(
+	List<CusConsultation> findPageObjects(  
 			@Param("name")String name,
 			@Param("tel")String tel,
 			@Param("startIndex")Integer startIndex,
