@@ -19,11 +19,9 @@ import java.util.Date;
 @TableName("cus_customer")
 public class CusCustomer {
 
-	
 	/**课程记录数*/
 	@TableField(exist=false)	//mybatis入库操作时,忽略该字段
 	private int scheduleCount;
-	
 	
     @TableId(type = IdType.AUTO)
     private Integer id; /**序号*/

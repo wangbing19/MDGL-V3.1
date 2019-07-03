@@ -2,6 +2,7 @@ package com.vision.service.rec.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,7 +49,7 @@ public class RecActivityServiceImpl implements RecActivityService{
 			Date activityStartTime = recActivityPush.getActivityStartTime();
 			Date activityEndTime = recActivityPush.getActivityEndTime();
 			if(activityStartTime.before(recActivityPush.getCreateTime())&&
-					recActivityPush.getCreateTime().before(activityEndTime)) {
+				recActivityPush.getCreateTime().before(activityEndTime)) {
 				recActivityPush.setActivityState(1);
 			}else {
 				recActivityPush.setActivityState(0);
@@ -60,5 +61,70 @@ public class RecActivityServiceImpl implements RecActivityService{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	/**修改充值活动*/
+	@Override
+	public void updateRecActivityById(RecActivityPush recActivityPush) {
+		try {
+			if(recActivityPush==null) {
+				throw new ServiceException("请选择需要修改的充值活动");
+			}
+			Date nowDate = new Date();
+			//获取充值金额和赠送金额
+			Double payAmount = recActivityPush.getPayAmount();
+			Double presentedAmount = recActivityPush.getPresentedAmount();
+			//更新中值活动标题
+			String title = "充"+payAmount+"元送"+presentedAmount+"元,可叠加";
+			recActivityPush.setTitle(title);
+			//更新活动修改时间
+			recActivityPush.setModifiedTime(nowDate);
+			//更新活动时间和活动状态
+			Date activityStartTime = recActivityPush.getActivityStartTime();
+			Date activityEndTime = recActivityPush.getActivityEndTime();
+			
+			boolean startResult = activityStartTime.before(nowDate);
+			boolean endResult = nowDate.before(activityEndTime);
+			if(startResult&&endResult) {
+				recActivityPush.setActivityState(1);
+			}else {
+				recActivityPush.setActivityState(0);
+			}
+			//System.out.println(recActivityPush.getId());
+			recActivityMapper.updateRecActivityById(recActivityPush);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
+	}
+
+	@Override
+	/**查询充值活动*/
+	public List<RecActivityPush> findAllRecActivityObjects() {
+		try {
+			//先设定门店id为1
+			long user_id = 1;
+			List<RecActivityPush> recActivityPushs = recActivityMapper.findAllRecActivityObjects(user_id);
+			if(recActivityPushs==null||recActivityPushs.size()==0) {
+				return null;
+			}
+			return recActivityPushs;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	/**根据活动id查询充值活动*/
+	public RecActivityPush findRecActivityObject(Long id) {
+		try {
+			if(id==null) {
+				throw new ServiceException("没有查询的活动id");
+			}			
+			RecActivityPush recActivityPush = recActivityMapper.findRecActivityObject(id);
+			return recActivityPush;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

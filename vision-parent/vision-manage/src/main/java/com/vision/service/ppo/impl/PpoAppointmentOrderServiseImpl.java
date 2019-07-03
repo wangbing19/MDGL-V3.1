@@ -85,7 +85,6 @@ public class PpoAppointmentOrderServiseImpl implements PpoAppointmentOrderServic
 	@Override
 	public int deletePpoOrder(Long orderId) {
 		if(orderId == null) {
-			
 			throw new ServiceException("订单ID不能为空");
 		}
 		int deleteById = ppoAppointmentOrderMapper.deleteById(orderId);
@@ -112,7 +111,4 @@ public class PpoAppointmentOrderServiseImpl implements PpoAppointmentOrderServic
 		int result = ppoAppointmentOrderMapper.updateById(ppoAppointmentOrder);
 		return result;
 	}
-
-	
-	
 }

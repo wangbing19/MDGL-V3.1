@@ -1,7 +1,9 @@
 package com.vision.controller.pre;
 
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,7 +12,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.vision.pojo.pre.SymptomType;
 import com.vision.service.pre.SymptomTypeService;
+import com.vision.util.GetTreeData;
 import com.vision.vo.JsonResult;
+
+import com.vision.vo.TreeStructure;
 import com.vision.vo.pre.SymptomAllMsg;
 
 @Controller
@@ -18,7 +23,6 @@ import com.vision.vo.pre.SymptomAllMsg;
 public class SymptomTypeController {
 	@Autowired
 	private SymptomTypeService symptomTypeService;
-	
 	@RequestMapping("/findAllObjects")
 	@ResponseBody
 	/**内嵌套查询症状类型数据**/
@@ -28,7 +32,18 @@ public class SymptomTypeController {
 			if(symptomlist==null||symptomlist.size()==0) {
 				return JsonResult.oK("没有症状类型数据信息");
 			}
-			return JsonResult.oK(symptomlist);
+			
+			List<TreeStructure<SymptomAllMsg>> treeStructures = new ArrayList<>();
+			for(int i=0;i<symptomlist.size();i++) {
+				TreeStructure<SymptomAllMsg> treeStructure = new TreeStructure<>();
+				treeStructure.setId(symptomlist.get(i).getId());
+				treeStructure.setParentId(symptomlist.get(i).getParentId());
+				treeStructure.setData(symptomlist.get(i));
+				treeStructures.add(treeStructure);			
+			}
+			GetTreeData<SymptomAllMsg>	tree = new GetTreeData<>();
+			List<TreeStructure<SymptomAllMsg>>  treeData = tree.getTree(treeStructures);
+			return JsonResult.oK(treeData);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
