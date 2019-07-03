@@ -141,6 +141,8 @@ public class CusCustomerServiceImpl implements CusCustomerService {
 			throw new ServiceException("监护人不能为空");
 		if(entity.getOrgId()==0||entity.getOrgId()==null)
 			throw new ServiceException("门店信息错误");
+		if(entity.getConsultationId()<0||entity.getConsultationId()==null)
+			throw new ServiceException("咨询表信息错误");
 		//保存数据
 		/**设置状态*/
 		entity.setState(1);
