@@ -32,8 +32,7 @@ public class GetTreeData<T> {
 			}else {
 				pIds[0] = 0L;
 			}
-		}
-		
+		}		
 		Map<Long,List<TreeStructure<T>>> map = new HashMap<>();
 		int pIdCon=0;
 		for(int j=0;j<list.size();) {
@@ -65,6 +64,7 @@ public class GetTreeData<T> {
 				}
 			}
 		}
+		
 		return list;
 	}
 }
