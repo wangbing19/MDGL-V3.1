@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.vision.exception.ServiceException;
 import com.vision.pojo.cus.CusDiagnose;
 import com.vision.pojo.cus.vo.CusVo;
 import com.vision.service.cus.CusDiagnoseService;
@@ -24,13 +25,21 @@ public class CusDiagnoseController {
 	@RequestMapping("/getDiagnose")
 	@ResponseBody
 	public JsonResult getDiagnose(CusVo cusVo){
+		//1.数据合法性验证
+		if(cusVo.getPageCurrent()==null||cusVo.getPageCurrent()<=0)
+			return JsonResult.build(201, "页码值不正确");
+		if(cusVo.getOrgId()<0||cusVo.getOrgId()==null)
+			return JsonResult.build(201, "门店id不正确");
+		if(cusVo.getPageSize()<0||cusVo.getPageSize()==null)
+			return JsonResult.build(201, "页码大小不正确");
+		
 		try {
 			PageObject<CusDiagnose> pageObject = cusDiagnoseService.getDiagnose(cusVo);
 			if(pageObject.getRecords().size()!=0) {
 				return JsonResult.oK(pageObject);
 			}
-			
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.out.println("诊断表页面加载,查询=============错误=================");
 		}
 		return JsonResult.build(201, "查询无数据");

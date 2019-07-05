@@ -22,4 +22,6 @@ public interface CusScheduleService {
 	Integer updateSchedule(CusSchedule cusSchedule);
 	/**基于客户id查询用户课程表信息*/
 	List<CusSchedule> getByCustomerId(CusVo cusVo);
+	/**基于用户id删除课程信息*/
+	Integer deleteScheduleByCustomerId(Integer customerId, Integer orgId);
 }

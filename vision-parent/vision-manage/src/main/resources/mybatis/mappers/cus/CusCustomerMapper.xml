@@ -7,9 +7,18 @@
 	<!-- 基于用户名的查询条件sql引用语句 -->
 	<sql id="queryWhereId">
        <where>
-       		org_id=#{orgId}
+       		<!-- org_id=#{orgId} -->
+		 	org_id in 
+		 	<foreach collection="orgIds" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+       		<!-- name条件 -->
 			<if test="name!=null and name!=''">
 				and name like concat("%",#{name},"%")
+			</if>
+			<!-- tel条件 -->
+			<if test="tel!=null and tel!=''">
+				and tel like concat("%",#{tel},"%")
 			</if>
 		</where>
 	</sql>
@@ -32,21 +41,11 @@
 	<resultMap id="cusCustomerMap"
 		type="com.vision.pojo.cus.CusCustomer">
 		<id column="id" property="id"/>
-		<!-- 关联查询充值记录数 -->
-		<!-- <association property="rechargeCount"
-					 column="id"
-					 select="com.md.sys.dao.rec.RecPayRankDao.findByCustomerId">
-		</association> -->
 		<!-- 关联查询课程记录数 -->
 		<association property="scheduleCount"
 					 column="id"
 					 select="com.vision.mapper.cus.CusScheduleMapper.findByCustomerId">
 		</association>
-		<!-- 关联查询上次训练时间 -->
-		<!-- <association property="lastTrain"
-					 column="id"
-					 select="com.vision.mapper.tra.TraInformationrecordMapper.findByCustomerId">
-		</association> -->
 	</resultMap>
 	
 	<!-- 根据诊断表id查找客户姓名 -->

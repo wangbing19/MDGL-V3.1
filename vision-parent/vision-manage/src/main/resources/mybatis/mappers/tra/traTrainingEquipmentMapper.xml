@@ -16,18 +16,18 @@
 	
 	<!-- 基于用户姓名及分页条件查询,无用户名输入基于分页条件查询 -->
 	<select id="findPageObjects" resultType="com.vision.pojo.tra.TraTrainingEquipment">
-		select * from tra_informationrecord
+		select * from tra_training_equipment
 		<include refid="queryWhereId" /> 
 		limit #{startIndex},#{pageSize}
 	</select>
 	
 	<!-- 基于用户名查询该用户总数,无用户名输入查询所有用户总数 -->
 	<select id="getRowCount" resultType="int">
-		select count(*) from tra_informationrecord <!-- where user_id=#{userId} and user_parent_id=#{userParentId} -->
+		select count(*) from tra_training_equipment <!-- where user_id=#{userId} and user_parent_id=#{userParentId} -->
 		<include refid="queryWhereId" />
 	</select>
 	
 	<select id="selectId" resultType="com.vision.pojo.tra.TraTrainingEquipment"> 
-	 select * from tra_informationrecord where id=#{id} 
+	 select * from tra_training_equipment where id=#{id} 
 	</select>
 </mapper>

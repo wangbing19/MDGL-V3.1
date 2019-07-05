@@ -11,20 +11,23 @@ public interface CusDiagnoseMapper extends BaseMapper<CusDiagnose> {
 	
 	/**
 	 * 依据条件获取总记录数并进行验证
-	 * @param orgId	门店id
+	 * @param name 
+	 * @param orgIds	门店id
 	 * @return
 	 */
-	int getRowCount(@Param("orgId")Integer orgId);
+	int getRowCount(@Param("name")String name, @Param("orgIds")List<Long> orgIds);
 	
 	/**
 	 * 诊断表页面加载,查询
+	 * @param name 
 	 * @param startIndex	起始位置
 	 * @param pageSize	页面大小
 	 * @param userId	门店id
 	 * @return	当前页记录
 	 */
 	List<CusDiagnose> findPageObjects(
-			@Param("orgId")Integer orgId, 
+			@Param("name")String name, 
+			@Param("orgIds")List<Long> orgIds, 
 			@Param("startIndex")int startIndex, 
 			@Param("pageSize")int pageSize);
 }

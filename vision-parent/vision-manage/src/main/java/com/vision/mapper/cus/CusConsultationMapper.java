@@ -24,7 +24,7 @@ public interface CusConsultationMapper extends BaseMapper<CusConsultation> {
 			@Param("tel")String tel,
 			@Param("startIndex")Integer startIndex,
 			@Param("pageSize")Integer pageSize,
-			@Param("orgId") Integer orgId
+			@Param("orgId") List<Long> orgIds
 			);
 
 	/**
@@ -38,7 +38,7 @@ public interface CusConsultationMapper extends BaseMapper<CusConsultation> {
 	int getRowCount(
 			@Param("name")String name,
 			@Param("tel")String tel, 
-			@Param("orgId")Integer orgId);
+			@Param("orgId")List<Long> findOrganizationIdList);
 
 	/**
 	 * 基于咨询表id更改用户信息
