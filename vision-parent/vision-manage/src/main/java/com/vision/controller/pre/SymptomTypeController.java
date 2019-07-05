@@ -42,7 +42,7 @@ public class SymptomTypeController {
 				treeStructures.add(treeStructure);			
 			}
 			GetTreeData<SymptomAllMsg>	tree = new GetTreeData<>();
-			List<TreeStructure<SymptomAllMsg>>  treeData = tree.getTree(treeStructures);
+			TreeStructure<SymptomAllMsg>  treeData = tree.getTree(treeStructures);
 			return JsonResult.oK(treeData);
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vision.mapper.sys.SysUserMapper">
+	<!-- 保存用户自身信息 -->
+	<insert id="insertObject"
+		parameterType="com.vision.pojo.sys.SysUser">
+
+		<!-- 通过selectKey获取一个值 order表示在insert语句之后执行, keyProperty表示将selectKey的结果 
+			赋予参数对象的id属性 -->
+		<selectKey order="AFTER" resultType="int" keyProperty="id">
+			select last_insert_id()
+		</selectKey>
+
+		insert into sys_user
+		(login_time,user_name,password,salt,remark,email,mobile,
+		user_status,customer_limit,dept_limit,created_time,organization_id,created_user,
+		modified_time,modified_user)
+		values
+		(#{loginTime},#{userName},#{password},#{salt},#{remark},#{email},#{mobile},
+		#{userStatus},#{customerLimit},#{deptLimit},now(),#{organizationId},#{createdUser},
+		now(),#{modifiedUser})
+	</insert>
+	<update id="updateObject">
+		update sys_users
+		<set>
+			<if test="userName!=null and userName!=''">
+				user_name=#{userName},
+			</if>
+			<if test="salt!=null and salt!=''">
+				salt=#{salt},
+			</if>
+			<if test="remark!=null and remark!=''">
+				remark=#{remark},
+			</if>
+			<if test="email!=null and email!=''">
+				email=#{email},
+			</if>
+			<if test="mobile!=null and mobile!=''">
+				mobile=#{mobile},
+			</if>
+			<if test="organizationId!=null and organizationId!=''">
+				organizationId=#{organizationId},
+			</if>
+			<if test="customerLimit!=null and customerLimit!=''">
+				customerLimit=#{customerLimit},
+			</if>
+			<if test="deptLimit!=null and deptLimit!=''">
+				deptLimit=#{deptLimit},
+			</if>
+			<if test="userStatus!=null and userStatus!=''">
+				userStatus=#{userStatus},
+			</if>
+			<if test="modifiedUser!=null and modifiedUser!=''">
+				modifiedUser=#{modifiedUser},
+			</if>
+			modifiedTime=now()
+		</set>
+		where id=#{userId}
+	</update>
+
+	<select id="findObjectByColumn" resultType="int">
+		select count(*)
+		from sys_user
+		where ${columnName}=#{columnValue}
+	</select>
+
+
+
+	<resultMap id="sysUserMap"
+		type="com.vision.pojo.sys.vo.SysUserOrganization">
+		<!-- 关联查询 -->
+		<association property="sysOrganization"
+			column="organization_id"
+			select="com.vision.mapper.sys.SysOrganizationMapper.findById">
+		</association>
+	</resultMap>
+	<select id="findPageObjects" resultMap="sysUserMap">
+		select * from sys_user
+		<include refid="queryWhereId" />
+		limit #{startIndex},#{pageSize}
+	</select>
+	<select id="getRowCount" resultType="int">
+		select count(*) from sys_user
+		<include refid="queryWhereId" />
+	</select>
+	<sql id="queryWhereId">
+		<where>
+			<if test="username!=null and username!=''">
+				user_name like concat("%",#{userName},"%")
+			</if>
+		</where>
+	</sql>
+
+
+
+	<update id="validById">
+
+		update sys_user
+		set valid=#{valid},
+		modifiedUser=#{modifiedUser},
+		modifiedTime=now()
+		where id=#{id}
+
+	</update>
+
+	<select id="findObjectById" resultMap="sysUserMap">
+		select *
+		from sys_user
+		where user_id=#{userId}
+	</select>
+
+	
+</mapper>

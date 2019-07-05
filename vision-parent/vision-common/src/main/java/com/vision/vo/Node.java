@@ -9,15 +9,16 @@ import java.io.Serializable;
 public class Node implements Serializable{
 	private static final long serialVersionUID = 4351174414771192644L;
 	/**节点id(例如菜单id)*/
-	private Integer id;
+	private Long id;
 	/**节点名(例如菜单名称)*/
 	private String name;
 	/**父节点id(例如菜单的上级菜单id)*/
-	private Integer parentId;
-	public Integer getId() {
+	private Long parentId;
+
+	public Long getId() {
 		return id;
 	}
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -26,12 +27,13 @@ public class Node implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Integer getParentId() {
+	public Long getParentId() {
 		return parentId;
 	}
-	public void setParentId(Integer parentId) {
+	public void setParentId(Long parentId) {
 		this.parentId = parentId;
 	}
+	
 	 
 	 
 }
