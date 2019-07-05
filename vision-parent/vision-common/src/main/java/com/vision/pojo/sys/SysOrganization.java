@@ -19,7 +19,6 @@ public class SysOrganization extends BasePojo {
 	private String organizationName; 
 	private String organizationAddress;
 	private Long organizationParentId;
-	private Integer organizationLevel;
 	private Integer organizationSort;
 	private String organizationNote;
 }

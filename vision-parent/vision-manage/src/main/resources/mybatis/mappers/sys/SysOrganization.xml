@@ -12,4 +12,34 @@
 			#{item}
 		</foreach> 
 	</select>
+	
+	<select id="getChildCount" resultType="int">
+         select count(*)
+         from sys_organization
+         where organization_parent_id=#{organizationId}
+    </select>
+    
+    <select id="findObjects" resultType="map">
+         select c.*,(select organization_name
+                     from sys_organization p 
+                     where c.organization_parent_id=p.organization_id)  parentName
+         from sys_organization c
+    </select>
+    
+     <select id="findZTreeNodes" 
+        resultType="com.vision.vo.Node2">
+        select organization_id,organization_name,organization_parent_id
+        from sys_organization        
+    </select>
+    
+    
+    <select id="findById" resultType="com.vision.pojo.sys.SysOrganization">
+    	select * from sys_organization  where organization_id=#{organizationId}
+    
+    </select>
+    
+    
+    <select id="findObjectsAll" resultType="com.vision.pojo.sys.SysOrganization">
+         select c.* from sys_organization c
+    </select>
 </mapper>

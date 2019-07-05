@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vision.mapper.sys.SysRoleMapper">
+	 <!-- 
+    1)useGeneratedKeys 表示使用自增长主键值
+    2)keyProperty 表示将insert操作后的主键值
+        赋值给参数的id属性
+     -->
+  
+    <insert id="insertObject"
+            parameterType="com.vision.pojo.sys.SysRole"
+            useGeneratedKeys="true"
+            keyProperty="id">
+         insert into sys_role 
+         (id,name,note,created_time,modified_time,
+         created_user,modified_user) 
+         values
+         (null,#{name},#{note},now(),now(),
+         #{createdUser},#{modifiedUser})
+    </insert>
+    
+       <!-- 删除角色自身信息 -->
+    <delete id="deleteObject">
+        delete from sys_role
+        where id=#{id}
+    </delete>
+    
+     <update id="updateObject">
+        update sys_role
+        set
+        name=#{name},
+        note=#{note},
+        modified_user=#{modifiedUser},
+        modified_time=#{modifiedTime}
+        where id=#{id}
+    </update>
+    <select id="findObjects"
+            resultType="com.vision.vo.CheckBox">
+            select id,name
+            from sys_role       
+    </select>
+    
+    
+    <!-- 查询角色以及角色对应的菜单id -->
+    <resultMap type="com.vision.pojo.sys.vo.SysRoleOrganizationResult" 
+               id="sysRoleMenuVo">
+          <!-- 当需要基于此id执行其它查询时，
+                              此id需要单独处理映射 -->
+          <id  property="id" column="id"/>
+          <!-- 基于角色id再去查询菜单id -->
+          <collection property="menuIds"
+               column="id"
+               select="com.vision.mapper.sys.SysRoleMenusMapper.findMenuIdsByRoleId">
+          </collection>   
+    </resultMap>
+   <select id="findObjectById"
+            resultMap="sysRoleMenuVo">
+       select id,name,note
+       from sys_role
+       where id=#{id}
+    </select> 
+</mapper>
