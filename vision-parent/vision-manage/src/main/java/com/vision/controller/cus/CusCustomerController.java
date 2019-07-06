@@ -40,9 +40,7 @@ public class CusCustomerController {
     	
     	try {
 			PageObject<CusCustomer> pageObject = cusCustomerService.getCustomer(cusVo);
-			if(pageObject.getRecords().size()!=0) {
 				return JsonResult.oK(pageObject);
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("用户页面查看所有信息=============错误=================");

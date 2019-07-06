@@ -21,14 +21,6 @@ public class CusDiagnose {
 	@TableField(exist=false)	//mybatis入库操作时,忽略该字段
 	private String customerTel;
 	
-	/**客户姓名*/
-	@TableField(exist=false)	//mybatis入库操作时,忽略该字段
-	private String name;
-	/**客户电话*/
-	@TableField(exist=false)	//mybatis入库操作时,忽略该字段
-	private String tel;
-	
-	
     @TableId(type = IdType.AUTO)
     private int id; /**序号*/
     /**门店id*/

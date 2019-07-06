@@ -41,9 +41,7 @@ public class CusConsultationController {
 		
     	try {
     		PageObject<CusConsultation> pageObject = cusConsultationService.getConsultation(cusVo);
-    		if(pageObject.getRecords()!=null&&!(pageObject.getRecords().size()==0)) {
         		return JsonResult.oK(pageObject);
-        	}
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("基于用户/电话及当前页码值条件查询用户信息=============错误=================");

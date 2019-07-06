@@ -30,107 +30,85 @@ public class CusDiagnoseServiceImpl implements CusDiagnoseService {
 	/**诊断表页面加载,查询*/
 	@Override
 	public PageObject<CusDiagnose> getDiagnose(CusVo cusVo) {
+		PageObject<CusDiagnose> pageObject = new PageObject<>();
 		Integer orgId = cusVo.getOrgId();
 		Integer pageCurrent = cusVo.getPageCurrent();
 		Integer pageSize = cusVo.getPageSize();
 		String name = cusVo.getName();
 		if("".equals(name))
 			name = null;
+		String tel = cusVo.getTel();
 		//查询组织下下级组织
 		List<Long> orgIds = toolOrganizationIdList.findOrganizationIdList(orgId.longValue());
 		//2.依据条件获取总记录数并进行验证
-		int rowCount = cusDiagnoseMapper.getRowCount(name, orgIds);
-		//	System.out.println(rowCount);
-		if(rowCount==0)
-			throw new ServiceException("记录不存在");
+		int rowCount = cusDiagnoseMapper.getRowCount(name, tel, orgIds);
+		if(rowCount==0) {
+			pageObject.setRowCount(rowCount);
+			pageObject.setRecords(null);
+			pageObject.setPageCurrent(pageCurrent);
+			pageObject.setPageSize(pageSize);
+			return pageObject;
+		}
 		//3.基于条件查询当前页记录
 		int startIndex = (pageCurrent-1)*pageSize;
-		List<CusDiagnose> records = cusDiagnoseMapper.findPageObjects(name, orgIds, startIndex, pageSize);
+		List<CusDiagnose> records = cusDiagnoseMapper.findPageObjects(name, tel, orgIds, startIndex, pageSize);
 		//4.对查询结果进行封装并返回
-		PageObject<CusDiagnose> pageObject = new PageObject<>();
 		pageObject.setRowCount(rowCount);
 		pageObject.setRecords(records);
 		pageObject.setPageCurrent(pageCurrent);
 		pageObject.setPageSize(pageSize);
 
-		/**页数设置，在com.md.common.vo.PageObject<T>中的getPageCount更改返回值
-		 *  int pageCount=(rowCount-1)/pageSize+1;
-		 *	pageObject.setPageCount(pageCount);
-		 */
 		return pageObject;
 	}
 
 	/**基于咨询表id,查询相关id所有信息*/
 	@Override
-	public CusDiagnose getDiagnoseById(Integer id) {
-		if(id==null||id<=0)
-			throw new ServiceException("id错误");
-		//执行查找
-		CusDiagnose cusDiagnose = cusDiagnoseMapper.selectById(id);
+	public CusDiagnose getDiagnoseById(Integer id, Integer orgId) {
+		CusDiagnose cusDiagnose = cusDiagnoseMapper.getDiagnoseById(id, orgId);
 		return cusDiagnose;
 	}
 
 	/**基于客户id查询诊断表相关信息*/
 	@Override
-	public CusDiagnose getByCustomerId(CusVo cusVo) {
-		Integer customerId = cusVo.getCustomerId();
-		Integer orgId = cusVo.getOrgId();
-		Integer pageCurrent = cusVo.getPageCurrent();
-		Integer pageSize = cusVo.getPageSize();
-		if(customerId==null||customerId<=0)
-			throw new ServiceException("customerId错误");
-		if(orgId==null||orgId<=0)
-			throw new ServiceException("orgId错误");
-		if(pageCurrent==null||pageCurrent<=0)
-			throw new ServiceException("pageCurrent错误");
-		if(pageSize==null||pageSize<=0)
-			throw new ServiceException("pageSize错误");
+	public CusDiagnose getByCustomerId(Integer customerId ,Integer orgId) {
+		
 		QueryWrapper<CusDiagnose> queryWrapper = new QueryWrapper<>();
 		queryWrapper.eq("customer_id", customerId);
+		queryWrapper.eq("org_id", orgId);
 		CusDiagnose cusDiagnose = cusDiagnoseMapper.selectOne(queryWrapper);
-		List<CusDiagnose> records = cusDiagnoseMapper.selectList(queryWrapper);
-		Integer rowCount = cusDiagnoseMapper.selectCount(queryWrapper);
-		PageObject<CusDiagnose> pageObject = new PageObject<>();
-		pageObject.setRowCount(rowCount);
-		pageObject.setRecords(records);
-		pageObject.setPageCurrent(pageCurrent);
-		pageObject.setPageSize(pageSize);
 		return cusDiagnose;
 	}
 
 	/**基于客户id创建客户诊断表*/
 	@Override
 	public Integer addDiagnose(CusDiagnose cusDiagnose) {
-		if(cusDiagnose==null)
-			throw new ServiceException("对象不能为空");
-		if(cusDiagnose.getOrgId()==null||cusDiagnose.getOrgId()<=0)
-			throw new ServiceException("orgId错误");
+		
 		cusDiagnose.setGmtCreate(new Date());
 		cusDiagnose.setGmtModified(cusDiagnose.getGmtCreate());
 		//保存数据
 		int rows = cusDiagnoseMapper.insert(cusDiagnose);
 		//添加客户表信息
-		CusCustomer cusCustomer = new CusCustomer();
-		cusCustomer.setId(cusDiagnose.getCustomerId());
-		cusCustomer.setDiagnoseId(cusDiagnose.getId());
-		cusCustomer.setGmtCreate(new Date());
-		cusCustomerMapper.updateById(cusCustomer);
+		CusCustomer customer = cusCustomerMapper.selectById(cusDiagnose.getCustomerId());
+		customer.setDiagnoseId(cusDiagnose.getId());
+		customer.setGmtModified(new Date());
+		cusCustomerMapper.updateById(customer);
 		return rows;
 	}
 
 	/**基于诊断表id删除数据*/
 	@Override
 	public Integer deleteDiagnose(Integer id, Integer orgId) {
-		//验证数据
-		if(id==null||id<=0)
-			throw new ServiceException("请选择一条数据");
-		if(orgId==null||orgId<=0)
-			throw new ServiceException("orgId错误");
 		//执行删除
 		Integer rows = cusDiagnoseMapper.deleteById(id);
-		//判断数据有无
-		if(rows==0)
-			throw new ServiceException("数据可能已删除");
+		//修改用户表数据
+		QueryWrapper<CusCustomer> queryWrapper = new QueryWrapper<>();
+		queryWrapper.eq("diagnose_id", id);
+		queryWrapper.eq("org_id", orgId);
+		CusCustomer cusCustomer = cusCustomerMapper.selectOne(queryWrapper);
+		if(cusCustomer==null)
+			return rows;
+		cusCustomer.setDiagnoseId(null);
+		cusCustomerMapper.updateById(cusCustomer);
 		return rows;
 	}
 
