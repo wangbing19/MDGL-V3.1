@@ -13,6 +13,10 @@
 		select * from rec_pay_user where id=#{id}
 	</select>
 	
+	<select id="findLimitRecActivityRecords" resultType="com.vision.pojo.rec.RecPayUser">
+		select * from rec_pay_user where 
+	</select>
+	
 	<!-- <insert id="insertRecActivity">
 		insert into rec_activity_push values(
 		null,

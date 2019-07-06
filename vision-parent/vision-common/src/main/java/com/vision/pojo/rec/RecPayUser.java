@@ -18,8 +18,8 @@ public class RecPayUser extends BasePojo{
 	private Long id;
 	/**门店id*/
 	private Long userId;
-	/**上级门店id*/
-	private Long parentId;
+	/**组织id*/
+	private Long orgId;
 	/**客户姓名*/
 	private String name;
 	/**客户id*/
