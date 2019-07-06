@@ -47,7 +47,7 @@ public class RecActivityRecordServiceImpl implements RecActivityRecordService{
 			throw new ServiceException("参数不合法");
 		}
 		int startIndex=(pageCurrent-1)*pageSize;//计算当前页起始下标
-		
+		//杜健华假设
 		Long userId = 1L;
 		Long parentId = 2L;
 		//查询分页查询的数据的总条数
