@@ -25,15 +25,15 @@ public class CusDiagnoseController {
 	@RequestMapping("/getDiagnose")
 	@ResponseBody
 	public JsonResult getDiagnose(CusVo cusVo){
-		//1.数据合法性验证
-		if(cusVo.getPageCurrent()==null||cusVo.getPageCurrent()<=0)
-			return JsonResult.build(201, "页码值不正确");
-		if(cusVo.getOrgId()<0||cusVo.getOrgId()==null)
-			return JsonResult.build(201, "门店id不正确");
-		if(cusVo.getPageSize()<0||cusVo.getPageSize()==null)
-			return JsonResult.build(201, "页码大小不正确");
-		
 		try {
+			//1.数据合法性验证
+			if(cusVo.getPageCurrent()==null||cusVo.getPageCurrent()<=0)
+				return JsonResult.build(201, "页码值不正确");
+			if(cusVo.getOrgId()==null||cusVo.getOrgId()<0)
+				return JsonResult.build(201, "门店id不正确");
+			if(cusVo.getPageSize()==null||cusVo.getPageSize()<0)
+				return JsonResult.build(201, "页码大小不正确");
+			
 			PageObject<CusDiagnose> pageObject = cusDiagnoseService.getDiagnose(cusVo);
 			return JsonResult.oK(pageObject);
 		} catch (Exception e) {
@@ -47,12 +47,12 @@ public class CusDiagnoseController {
 	@RequestMapping("/getDiagnoseById")
 	@ResponseBody
 	public JsonResult getDiagnoseById(Integer id, Integer orgId) {
-		if(id==null||id<0)
-			return JsonResult.build(201, "id错误");
-		if(orgId==null||orgId<0)
-			return JsonResult.build(201, "orgId错误");
-		
 		try {
+			if(id==null||id<0)
+				return JsonResult.build(201, "id错误");
+			if(orgId==null||orgId<0)
+				return JsonResult.build(201, "orgId错误");
+			
 			CusDiagnose cusDiagnose = cusDiagnoseService.getDiagnoseById(id,orgId);
 			return JsonResult.oK(cusDiagnose);
 		} catch (Exception e) {
@@ -66,12 +66,12 @@ public class CusDiagnoseController {
 	@RequestMapping("/getByCustomerId")
 	@ResponseBody
 	public JsonResult getByCustomerId(Integer customerId ,Integer orgId) {
-		if(customerId==null||customerId<0)
-			return JsonResult.build(201, "customerId错误");
-		if(orgId==null||orgId<0)
-			return JsonResult.build(201, "orgId错误");
-		
 		try {
+			if(customerId==null||customerId<0)
+				return JsonResult.build(201, "customerId错误");
+			if(orgId==null||orgId<0)
+				return JsonResult.build(201, "orgId错误");
+		
 			CusDiagnose cusDiagnose = cusDiagnoseService.getByCustomerId(customerId, orgId);
 			if(cusDiagnose != null) {
 				return JsonResult.oK(cusDiagnose);
@@ -89,15 +89,16 @@ public class CusDiagnoseController {
 	@RequestMapping("/addDiagnose")
 	@ResponseBody
 	public JsonResult addDiagnose(CusDiagnose cusDiagnose) {
-		if(cusDiagnose==null)
-			return JsonResult.build(201, "数据错误");
-		if(cusDiagnose.getOrgId()==null||cusDiagnose.getOrgId()<0)
-			return JsonResult.build(201, "orgId错误");
-		//获取登录用户信息
-//    	Users user = ShiroUtils.getUser();
-		cusDiagnose.setCreatedUser("admin");
-		cusDiagnose.setModifiedUser("admin");
 		try {
+			if(cusDiagnose==null)
+				return JsonResult.build(201, "数据错误");
+			if(cusDiagnose.getOrgId()==null||cusDiagnose.getOrgId()<0)
+				return JsonResult.build(201, "orgId错误");
+			//获取登录用户信息
+	//    	Users user = ShiroUtils.getUser();
+			cusDiagnose.setCreatedUser("admin");
+			cusDiagnose.setModifiedUser("admin");
+
 			Integer row = cusDiagnoseService.addDiagnose(cusDiagnose);
 			if(row != 0 && row != null) {
 				return JsonResult.oK("添加成功");
@@ -113,12 +114,13 @@ public class CusDiagnoseController {
 	@RequestMapping("/deleteDiagnose")
 	@ResponseBody
 	public JsonResult deleteDiagnose(Integer id, Integer orgId) {
-		//验证数据
-		if(id==null||id<0)
-			return JsonResult.build(201, "请选择数据");
-		if(orgId==null||orgId<0)
-			return JsonResult.build(201, "orgId错误");
 		try {
+			//验证数据
+			if(id==null||id<0)
+				return JsonResult.build(201, "请选择数据");
+			if(orgId==null||orgId<0)
+				return JsonResult.build(201, "orgId错误");
+
 			Integer row = cusDiagnoseService.deleteDiagnose(id, orgId);
 			if(row != null) {
 				return JsonResult.oK("数据已删除");

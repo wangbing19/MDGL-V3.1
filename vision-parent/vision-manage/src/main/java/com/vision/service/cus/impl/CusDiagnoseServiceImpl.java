@@ -1,7 +1,6 @@
 package com.vision.service.cus.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.vision.exception.ServiceException;
 import com.vision.mapper.cus.CusCustomerMapper;
 import com.vision.mapper.cus.CusDiagnoseMapper;
 import com.vision.pojo.cus.CusCustomer;
