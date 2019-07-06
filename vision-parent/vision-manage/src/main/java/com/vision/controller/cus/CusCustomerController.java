@@ -30,19 +30,19 @@ public class CusCustomerController {
     	Integer pageCurrent = cusVo.getPageCurrent();
     	Integer orgId = cusVo.getOrgId();
     	Integer pageSize = cusVo.getPageSize();
-    	if(pageCurrent==null||pageCurrent<=0)
+    	if(pageCurrent==null||pageCurrent<=0) {
     		return JsonResult.build(201, "页码值不正确");
-    	if(orgId<0||orgId==null)
+    	}
+    	if(orgId==null||orgId<0) {
     		return JsonResult.build(201, "门店信息不正确");
-    	if(pageSize<0||pageSize==null)
+    	}
+    	if(pageSize==null||pageSize<0)
     		return JsonResult.build(201, "页码大小不正确");
     			
     	
     	try {
 			PageObject<CusCustomer> pageObject = cusCustomerService.getCustomer(cusVo);
-			if(pageObject.getRecords().size()!=0) {
 				return JsonResult.oK(pageObject);
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("用户页面查看所有信息=============错误=================");
@@ -56,9 +56,9 @@ public class CusCustomerController {
     public JsonResult getCustomerById( Integer id, Integer orgId){
     	
     	//验证数据合法性
-    	if(id<=0||id==null)
+    	if(id==null||id<=0)
     		return JsonResult.build(201, "id错误");
-		if(orgId<0||orgId==null)
+		if(orgId==null||orgId<0)
 			return JsonResult.build(201, "orgId错误");
     	
     	try {
@@ -78,21 +78,17 @@ public class CusCustomerController {
 	@ResponseBody
 	public JsonResult updateCustomerState( CusVo cusVo) {
 		//获取登录用户信息
-		
-		Integer id = cusVo.getId();
-		Integer orgId = cusVo.getOrgId();
-		Integer state = cusVo.getState();
 
-		if(id<=0||id==null)
+		if(cusVo.getId()==null||cusVo.getId()<=0)
 			return JsonResult.build(201, "id错误");
-		if(orgId<0||orgId==null)
+		if(cusVo.getOrgId()==null||cusVo.getOrgId()<0)
 			return JsonResult.build(201, "orgId错误");
-		if(state!=0 && state!=1)
+		if(cusVo.getState()!=0 && cusVo.getState()!=1)
 			return JsonResult.build(201, "状态错误");
 		
 		try {
 			Integer row = cusCustomerService.updateCustomerState(cusVo);
-			if(row != 0 && row != null) {
+			if(row != null && row != 0) {
 				return JsonResult.oK();
 			}
 		} catch (Exception e) {
@@ -106,7 +102,7 @@ public class CusCustomerController {
 	@RequestMapping("getCustomerByConsultationId")
 	@ResponseBody
 	public JsonResult getCustomerByConsultationId( Integer consultationId) {
-		if(consultationId<0||consultationId==null)
+		if(consultationId==null||consultationId<0)
 			return JsonResult.build(201, "consultationId错误");
 		try {
 			Integer row = cusCustomerService.getCustomerByConsultationId(consultationId);
@@ -133,9 +129,9 @@ public class CusCustomerController {
 			return JsonResult.build(201, "电话不能为空");
 		if(StringUtils.isEmpty(cusCustomer.getGuardian()))
 			return JsonResult.build(201, "监护人不能为空");
-		if(cusCustomer.getOrgId()==0||cusCustomer.getOrgId()==null)
+		if(cusCustomer.getOrgId()==null||cusCustomer.getOrgId()<0)
 			return JsonResult.build(201, "门店信息错误");
-		if(cusCustomer.getConsultationId()<0||cusCustomer.getConsultationId()==null)
+		if(cusCustomer.getConsultationId()==null||cusCustomer.getConsultationId()<0)
 			return JsonResult.build(201, "咨询表信息错误");
 		
 		try {
@@ -150,7 +146,7 @@ public class CusCustomerController {
 			cusCustomer.setModifiedUser("admin");
 			
 			Integer row = cusCustomerService.addCustomer(cusCustomer);
-			if(row != 0 && row != null) {
+			if(row != null || row != 0) {
 				  //添加登录用户创建客户数量 
 //				Users.setDeptNum(Users.getDeptNum()+1);
 //				  restTemplate.postForObject("http://176.198.114.212.:8029/user/doUpdateObject", Users, JsonResult.class);//176.198.114.212
@@ -174,7 +170,7 @@ public class CusCustomerController {
 			return JsonResult.build(201, "orgId参数无效");
 		try {
 			Integer row = cusCustomerService.deleteCustomer(id, orgId);
-			if(row != 0 && row == null) {
+			if(row == null && row != 0) {
 				return JsonResult.oK();
 			}
 		} catch (Exception e) {

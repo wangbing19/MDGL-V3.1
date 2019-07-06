@@ -33,17 +33,15 @@ public class CusConsultationController {
 		Integer pageSize = cusVo.getPageSize();
 		if(pageCurrent==null||pageCurrent<=0)
 			return JsonResult.build(201, "页码值不正确");
-		if(orgId<0||orgId==null)
+		if(orgId==null||orgId<0)
 			return JsonResult.build(201, "门店信息不正确");
-		if(pageSize<0||pageSize==null)
+		if(pageSize==null||pageSize<0)
 			return JsonResult.build(201, "页码大小不正确");
 		
 		
     	try {
     		PageObject<CusConsultation> pageObject = cusConsultationService.getConsultation(cusVo);
-    		if(pageObject.getRecords()!=null&&!(pageObject.getRecords().size()==0)) {
         		return JsonResult.oK(pageObject);
-        	}
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.out.println("基于用户/电话及当前页码值条件查询用户信息=============错误=================");
@@ -60,7 +58,7 @@ public class CusConsultationController {
     	//验证数据合法性
     	if(cusConsultation==null)
     		return JsonResult.build(201, "对象不能为空");
-    	if(cusConsultation.getOrgId()<0||cusConsultation.getOrgId()==null)
+    	if(cusConsultation.getOrgId()==null||cusConsultation.getOrgId()<0)
     		return JsonResult.build(201, "门店orgId不能为空");
     	if(StringUtils.isEmpty(cusConsultation.getName()))
     		return JsonResult.build(201, "用户名不能为空");
@@ -70,7 +68,7 @@ public class CusConsultationController {
     	//获取登录用户信息
     	try {
 			Integer row = cusConsultationService.addConsultation(cusConsultation);
-			if(row != 0 || row == null) {
+			if(row == null || row != 0) {
 				return JsonResult.oK();
 			}
 		} catch (Exception e) {
@@ -88,12 +86,12 @@ public class CusConsultationController {
 		//验证数据合法性
 		if(orgId==null||orgId<0)
 			return JsonResult.build(201, "请选择一条数据");
-		if(id==null||id<=0)
+		if(id==null||id<0)
 			return JsonResult.build(201, "请选择一条数据");
 		
 		try {
 			Integer row = cusConsultationService.deleteConsultation(id, orgId);
-			if(row != 0 || row == null) {
+			if(row == null || row != 0) {
 				return JsonResult.oK();
 			}
 		} catch (Exception e) {
@@ -135,9 +133,9 @@ public class CusConsultationController {
 		//验证数据合法性
     	if(cusConsultation==null)
     		return JsonResult.build(201, "对象不能为空");
-		if(cusConsultation.getId()<0||cusConsultation.getId()==null)
+		if(cusConsultation.getId()==null||cusConsultation.getId()<0)
 			return JsonResult.build(201, "对象id不能为空");
-    	if(cusConsultation.getOrgId()<0||cusConsultation.getOrgId()==null)
+    	if(cusConsultation.getOrgId()==null||cusConsultation.getOrgId()<0)
     		return JsonResult.build(201, "门店orgId不能为空");
     	if(StringUtils.isEmpty(cusConsultation.getName()))
     		return JsonResult.build(201, "用户名不能为空");
@@ -147,7 +145,7 @@ public class CusConsultationController {
 		//获取登录用户信息
 		try {
 			Integer row = cusConsultationService.updateConsultation(cusConsultation);
-			if(row != 0 || row == null) {
+			if(row == null||row != 0) {
 				return JsonResult.oK();
 			}
 		} catch (Exception e) {

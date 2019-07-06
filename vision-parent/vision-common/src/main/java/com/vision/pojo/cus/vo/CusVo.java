@@ -23,6 +23,8 @@ public class CusVo {
     private Integer pageSize;
     /** 用户id */
     private Integer customerId;
+    /**资源配置名*/
+    private String title;
     
 	
 }

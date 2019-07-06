@@ -1,7 +1,6 @@
 package com.vision.service.cus.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.vision.exception.ServiceException;
 import com.vision.mapper.cus.CusConsultationMapper;
 import com.vision.mapper.cus.CusCustomerMapper;
 import com.vision.mapper.cus.CusScheduleMapper;
@@ -45,7 +44,7 @@ public class CusCustomerServiceImpl implements CusCustomerService {
 	/**用户页面查看所有信息*/
 	@Override
 	public PageObject<CusCustomer> getCustomer(CusVo cusVo) {
-
+		PageObject<CusCustomer> pageObject =  new PageObject<>();
 		String name = cusVo.getName();
 		if("".equals(name)) {
 			name = null;
@@ -58,17 +57,20 @@ public class CusCustomerServiceImpl implements CusCustomerService {
 		List<Long> orgIds = toolOrganizationIdList.findOrganizationIdList(orgId.longValue());			
 		//2.依据条件获取总记录数并进行验证
 		int rowCount = cusCustomerMapper.getRowCount(name,tel,orgIds);
-		if(rowCount==0)
-			throw new ServiceException("记录不存在");
-		//3.基于条件查询当前页记录
+		if(rowCount==0) {
+//			throw new ServiceException("记录不存在");
+			pageObject.setRowCount(rowCount);
+			pageObject.setRecords(null);
+			pageObject.setPageCurrent(pageCurrent);
+			pageObject.setPageSize(pageSize);
+			return pageObject;
+		}
 		
+		//3.基于条件查询当前页记录
 		int startIndex = (pageCurrent-1)*pageSize;
 		List<CusCustomer> records =
-				cusCustomerMapper.findPageObjects(
-						name, tel, startIndex, pageSize,orgIds);
+				cusCustomerMapper.findPageObjects( name, tel, startIndex, pageSize,orgIds);
 		//4.对查询结果进行封装并返回
-		PageObject<CusCustomer> pageObject = 
-				new PageObject<>();
 		pageObject.setRowCount(rowCount);
 		pageObject.setRecords(records);
 		pageObject.setPageCurrent(pageCurrent);

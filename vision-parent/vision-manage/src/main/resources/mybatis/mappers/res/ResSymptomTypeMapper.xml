@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 命名空间：映射文件所在目录.名称 -->
+<mapper namespace="com.vision.mapper.res.ResSymptomTypeMapper">
+
+	<!-- 基于用户名/电话的查询条件sql引用语句 -->
+	<sql id="queryWhereId">
+		<where>
+		 	org_id=#{orgId} and is_delete=0
+			<!-- title条件 -->
+			<if test="title!=null and title!=''">
+				and title like concat("%",#{title},"%")
+			</if>
+		</where>
+	</sql>
+
+	<!-- 基于用户姓名及分页条件查询,无用户名输入基于分页条件查询 -->
+	<select id="findPageObjects"
+		resultType="com.vision.pojo.res.ResSymptomType">
+		select * from res_symptom_type
+		<include refid="queryWhereId" /> 
+		limit #{startIndex},#{pageSize}
+	</select>
+
+	<!-- 基于用户名查询该用户总数,无用户名输入查询所有用户总数 -->
+	<select id="getRowCount" resultType="int">
+		select count(*) from res_symptom_type 
+		<include refid="queryWhereId" />
+	</select>
+
+	
+	
+</mapper>

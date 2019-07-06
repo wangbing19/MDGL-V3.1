@@ -16,39 +16,33 @@
 			<if test="name!=null and name!=''">
 				and cus_customer.name like concat("%",#{name},"%")
 			</if>
+			<!-- tel条件 -->
+			<if test="tel!=null and tel!=''">
+				and cus_customer.tel like concat("%",#{tel},"%")
+			</if>
 		</where>
 	</sql>
 
 	<!-- 基于用户id名及分页条件查询 -->
-<!-- 	<select id="findPageObjects" resultMap="cusDiagnoseMap"> -->
 	<select id="findPageObjects" resultType="com.vision.pojo.cus.CusDiagnose">
-	<!-- 	select * from cus_diagnose -->
-		
-		SELECT * FROM cus_diagnose LEFT JOIN cus_customer ON cus_diagnose.customer_id=cus_customer.id
-	
+		SELECT cus_diagnose.*,cus_customer.name customerName,cus_customer.tel customerTel
+		FROM cus_diagnose LEFT JOIN cus_customer ON cus_diagnose.customer_id=cus_customer.id
 		<include refid="queryWhereId" />
 		limit #{startIndex},#{pageSize}
 	</select>
 
-	<!-- 关联查询 -->
-	<resultMap id="cusDiagnoseMap"
-		type="com.vision.pojo.cus.CusDiagnose">
-		<id column="id" property="id" />
-		<!-- 关联查询充值记录数 -->
-		<association property="customerName" column="id"
-			select="com.vision.mapper.cus.CusCustomerMapper.findNameByDiagnoseId">
-		</association>
-		<!-- 关联查询充值记录数 -->
-		<association property="customerTel" column="id"
-			select="com.vision.mapper.cus.CusCustomerMapper.findTelByDiagnoseId">
-		</association>
-	</resultMap>
-
-
 	<!-- 基于用户名查询该用户总数,无用户名输入查询所有用户总数 -->
 	<select id="getRowCount" resultType="int">
-		select count(*) from cus_diagnose
+		SELECT count(*) FROM cus_diagnose LEFT JOIN cus_customer ON cus_diagnose.customer_id=cus_customer.id
+		<!-- select count(*) from cus_diagnose -->
 		<include refid="queryWhereId" />
+	</select>
+	
+	<!-- 基于id,orgId查询 -->
+	<select id="getDiagnoseById" resultType="com.vision.pojo.cus.CusDiagnose">
+		SELECT cus_diagnose.*,cus_customer.name customerName,cus_customer.tel customerTel
+		FROM cus_diagnose LEFT JOIN cus_customer ON cus_diagnose.customer_id=cus_customer.id
+		where cus_diagnose.id=#{id} and cus_diagnose.org_id=#{orgId}
 	</select>
 
 
