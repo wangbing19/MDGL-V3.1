@@ -10,6 +10,7 @@ import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.vision.exception.ServiceException;
 import com.vision.mapper.tra.TraInformationrecordMapper;
+import com.vision.pojo.cus.CusDiagnose;
 import com.vision.pojo.cus.CusSchedule;
 import com.vision.pojo.cus.vo.CusVo;
 import com.vision.pojo.tra.TraInformationrecord;
@@ -171,5 +172,15 @@ public class TraTrainingEquipmentServiceImpl implements TraInformationrecordServ
 		queryWrapper.eq("customer_id", customerId);
 		List<TraInformationrecord> list = traInformationrecordMapper.selectList(queryWrapper);
 		return list;
+	}
+
+	/**基于客户id删除用户课程表信息*/
+	@Override
+	public Integer deleteTraInforByCustomerId(Integer customerId, Integer orgId) {
+		QueryWrapper<TraInformationrecord> queryWrapper = new QueryWrapper<>();
+		queryWrapper.eq("customer_id", customerId);
+		queryWrapper.eq("org_id", orgId);
+		int row = traInformationrecordMapper.delete(queryWrapper);
+		return row;
 	}
 }

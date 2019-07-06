@@ -1,7 +1,5 @@
 package com.vision.service.tra;
 
-import java.util.List;
-
 import com.vision.pojo.cus.vo.CusVo;
 import com.vision.pojo.tra.TraTrainingEquipment;
 import com.vision.vo.PageObject;
@@ -17,7 +15,5 @@ public interface TraTrainingEquipmentService {
 	TraTrainingEquipment getTraInforById(Integer id, Integer orgId);
 	/**通过id修改训练表信息*/
 	Integer updateTraInfor(TraTrainingEquipment entity);
-	/**基于客户id查询用户课程表信息*/
-	List<TraTrainingEquipment> getByCustomerId(CusVo cusVo);
 
 }

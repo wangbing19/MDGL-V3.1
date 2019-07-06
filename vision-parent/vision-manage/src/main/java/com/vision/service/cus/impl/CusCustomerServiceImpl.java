@@ -1,6 +1,5 @@
 package com.vision.service.cus.impl;
 
-import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.vision.exception.ServiceException;
 import com.vision.mapper.cus.CusConsultationMapper;
@@ -13,6 +12,10 @@ import com.vision.pojo.cus.vo.CusVo;
 import com.vision.pojo.rec.RecPayUser;
 import com.vision.pojo.tra.TraInformationrecord;
 import com.vision.service.cus.CusCustomerService;
+import com.vision.service.cus.CusDiagnoseService;
+import com.vision.service.cus.CusScheduleService;
+import com.vision.service.tool.ToolOrganizationIdList;
+import com.vision.service.tra.TraInformationrecordService;
 import com.vision.vo.PageObject;
 
 import java.util.Date;
@@ -30,6 +33,14 @@ public class CusCustomerServiceImpl implements CusCustomerService {
 	private CusConsultationMapper cusConsultationMapper;
 	@Autowired
 	private CusScheduleMapper cusScheduleMapper;
+	@Autowired
+	private CusDiagnoseService cusDiagnoseService;
+	@Autowired
+	private TraInformationrecordService traInformationrecordService;
+	@Autowired
+	private CusScheduleService cusScheduleService;
+	@Autowired
+	private ToolOrganizationIdList toolOrganizationIdList;
 
 	/**用户页面查看所有信息*/
 	@Override
@@ -39,19 +50,14 @@ public class CusCustomerServiceImpl implements CusCustomerService {
 		if("".equals(name)) {
 			name = null;
 		}
+		String tel = cusVo.getTel();
 		Integer pageCurrent = cusVo.getPageCurrent();
 		Integer orgId = cusVo.getOrgId();
 		Integer pageSize = cusVo.getPageSize();
-
-		//1.数据合法性验证
-		if(pageCurrent==null||pageCurrent<=0)
-			throw new ServiceException("页码值不正确");
-		if(orgId<0||orgId==null)
-			throw new ServiceException("门店id信息不正确");
-		if(pageSize<0||pageSize==null)
-			throw new ServiceException("页码大小信息不正确");
+		//查询组织下下级组织
+		List<Long> orgIds = toolOrganizationIdList.findOrganizationIdList(orgId.longValue());			
 		//2.依据条件获取总记录数并进行验证
-		int rowCount = cusCustomerMapper.getRowCount(name,orgId);
+		int rowCount = cusCustomerMapper.getRowCount(name,tel,orgIds);
 		if(rowCount==0)
 			throw new ServiceException("记录不存在");
 		//3.基于条件查询当前页记录
@@ -59,7 +65,7 @@ public class CusCustomerServiceImpl implements CusCustomerService {
 		int startIndex = (pageCurrent-1)*pageSize;
 		List<CusCustomer> records =
 				cusCustomerMapper.findPageObjects(
-						name, startIndex, pageSize,orgId);
+						name, tel, startIndex, pageSize,orgIds);
 		//4.对查询结果进行封装并返回
 		PageObject<CusCustomer> pageObject = 
 				new PageObject<>();
@@ -74,18 +80,12 @@ public class CusCustomerServiceImpl implements CusCustomerService {
 	/**基于客户id查询客户所有信息*/
 	@Override
 	public CusCustomer getCustomerById(Integer id, Integer orgId) {
-		if(id<=0||id==null)
-			throw new ServiceException("id错误");
-		if(orgId<0||orgId==null)
-			throw new ServiceException("orgId错误");
-		try {
-			CusCustomer cusCustomer = cusCustomerMapper.selectById(id);
-			return cusCustomer;
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("wqe");
-		}
-		return null;
+		QueryWrapper<CusCustomer> queryWrapper = new QueryWrapper<>();
+		queryWrapper.eq("id", id);
+		queryWrapper.eq("org_id", orgId);
+		CusCustomer cusCustomer = cusCustomerMapper.selectOne(queryWrapper);
+//		CusCustomer cusCustomer = cusCustomerMapper.selectById(id);
+		return cusCustomer;
 		
 	}
 
@@ -97,13 +97,6 @@ public class CusCustomerServiceImpl implements CusCustomerService {
 		Integer orgId = cusVo.getOrgId();
 		Integer state = cusVo.getState();
 
-		if(id<=0||id==null)
-			throw new ServiceException("id错误");
-		if(orgId<0||orgId==null)
-			throw new ServiceException("orgId错误");
-		if(state!=0 && state!=1)
-			throw new ServiceException("状态错误");
-
 		cusCustomer.setId(id);
 		cusCustomer.setState(state);
 		cusCustomer.setOrgId(orgId);
@@ -111,15 +104,13 @@ public class CusCustomerServiceImpl implements CusCustomerService {
 		cusCustomer.setModifiedUser(cusVo.getUser());
 		cusCustomer.setGmtModified(new Date());
 
-		int rows = cusCustomerMapper.updateById(cusCustomer);
-		return rows;
+		int row = cusCustomerMapper.updateById(cusCustomer);
+		return row;
 	}
 
 	/**根据咨询表id查询客户表信息有无*/
 	@Override
 	public Integer getCustomerByConsultationId(Integer consultationId) {
-		if(consultationId<=0||consultationId==null)
-			throw new ServiceException("consultationId错误");
 		QueryWrapper<CusCustomer> queryWrapper = new QueryWrapper<>();
 		queryWrapper.eq("consultation_id", consultationId);
 		Integer rows = cusCustomerMapper.selectCount(queryWrapper);
@@ -130,19 +121,7 @@ public class CusCustomerServiceImpl implements CusCustomerService {
 	/**将CusCustomer类型数据添加到数据库*/
 	@Override
 	public Integer addCustomer(CusCustomer entity) {
-		//验证数据合法性
-		if(entity==null)
-			throw new ServiceException("对象不能为空");
-		if(StringUtils.isEmpty(entity.getName()))
-			throw new ServiceException("用户名不能为空");
-		if(StringUtils.isEmpty(entity.getTel()))
-			throw new ServiceException("电话不能为空");
-		if(StringUtils.isEmpty(entity.getGuardian()))
-			throw new ServiceException("监护人不能为空");
-		if(entity.getOrgId()==0||entity.getOrgId()==null)
-			throw new ServiceException("门店信息错误");
-		if(entity.getConsultationId()<0||entity.getConsultationId()==null)
-			throw new ServiceException("咨询表信息错误");
+
 		//保存数据
 		/**设置状态*/
 		entity.setState(1);
@@ -171,34 +150,26 @@ public class CusCustomerServiceImpl implements CusCustomerService {
 	/**基于id删除客户信息*/
 	@Override
 	public Integer deleteCustomer(Integer id, Integer orgId) {
-		//1.验证参数有效性
-		if(id==null||id<1)
-			throw new ServiceException("参数id无效");
-		//2.删除当前菜单信息
-		int rows = cusCustomerMapper.deleteById(id);
-		if(rows==0)
-			throw new ServiceException("此客户可能已经不存在");
+		QueryWrapper<CusCustomer> queryWrapper = new QueryWrapper<>();
+		queryWrapper.eq("id", id);
+		queryWrapper.eq("org_id", orgId);
+		//2.删除当前用户信息
+		int row = cusCustomerMapper.delete(queryWrapper);
 		//4.删除菜单角色的关系数据
-		//关联其他表项未做删除
-		return rows;
+		//删除诊断表
+		cusDiagnoseService.deleteDiagnoseByCustomerId(id, orgId);
+		//删除课程表
+		cusScheduleService.deleteScheduleByCustomerId(id, orgId);
+		//删除训练表
+		traInformationrecordService.deleteTraInforByCustomerId(id, orgId);
+		//删除充值记录
+		
+		return row;
 	}
 
 	/**基于客户id修改客户信息*/
 	@Override
 	public Integer updateCustomer(CusCustomer entity) {
-		//验证数据合法性
-		if(entity==null)
-			throw new ServiceException("对象不能为空");
-		if(entity.getId()<=0||entity.getId()==null)
-			throw new ServiceException("id错误");
-		if(entity.getOrgId()<=0||entity.getOrgId()==null)
-			throw new ServiceException("orgId错误");
-		if(StringUtils.isEmpty(entity.getName()))
-			throw new ServiceException("客户名不能为空");
-		if(StringUtils.isEmpty(entity.getTel()))
-			throw new ServiceException("电话不能为空");
-		if(StringUtils.isEmpty(entity.getGuardian()))
-			throw new ServiceException("监护人不能为空");
 		//保存数据
 		int rows = cusCustomerMapper.updateById(entity);
 		//返回结果
@@ -209,22 +180,24 @@ public class CusCustomerServiceImpl implements CusCustomerService {
 	@Override
 	public Integer updateObjectByMoney(RecPayUser recPayUser) {
 		
-		CusCustomer cusCustomer = new CusCustomer();
-		CusCustomer customer = cusCustomerMapper.selectById(recPayUser.getCustomerId());
+		CusCustomer cusCustomer = cusCustomerMapper.selectById(recPayUser.getCustomerId());
 		//修改充值次数
-		cusCustomer.setRechargeCount(customer.getRechargeCount()+1);
+		cusCustomer.setRechargeCount(cusCustomer.getRechargeCount()+1);
 		//计算总金额
-		double money = customer.getMoney();
+		double money = cusCustomer.getMoney();
 		double rechargeAmount = recPayUser.getRechargeAmount();
 		double presentedAmount = recPayUser.getPresentedAmount();
 		money = money + rechargeAmount + presentedAmount;
 		cusCustomer.setMoney(money);
 		//计算余额
-		double balance = customer.getBalance();
+		double balance = cusCustomer.getBalance();
 		balance = balance + rechargeAmount + presentedAmount;
 		cusCustomer.setBalance(balance);
+		if(balance>0) {
+			cusCustomer.setState(1);
+		}
 		//修改总训练次数
-		Integer totalTrainingTime = customer.getTotalTrainingTime();
+		Integer totalTrainingTime = cusCustomer.getTotalTrainingTime();
 		totalTrainingTime = totalTrainingTime + recPayUser.getPracticeTimes();
 		cusCustomer.setTotalTrainingTime(totalTrainingTime);
 		//修改时间
@@ -240,19 +213,18 @@ public class CusCustomerServiceImpl implements CusCustomerService {
 	/**基于训练记录表返回信息更改训练次数及余额*/
 	@Override
 	public Integer updateObjectByTimesOfTraining(TraInformationrecord entity) {
-		CusCustomer cusCustomer = new CusCustomer();
-		CusCustomer customer = cusCustomerMapper.selectById(entity.getCustomerId());
+		CusCustomer cusCustomer = cusCustomerMapper.selectById(entity.getCustomerId());
 		//获取训练课程的单价
 		CusSchedule cusSchedule = cusScheduleMapper.selectById(entity.getScheduleId());
 		Double priceOfCourse = cusSchedule.getPriceOfCourse();
 		//修改余额
-		Double balance = customer.getBalance();
+		Double balance = cusCustomer.getBalance();
 		balance = balance - priceOfCourse;
-		if(balance<0) {
+		if(balance<=0) {
 			cusCustomer.setState(0);
 		}
 		//获取训练次数并修改赋值
-		cusCustomer.setTimesOfTraining(customer.getTimesOfTraining()+1);
+		cusCustomer.setTimesOfTraining(cusCustomer.getTimesOfTraining()+1);
 		//设置余额
 		cusCustomer.setBalance(balance);
 		cusCustomer.setId(entity.getCustomerId());

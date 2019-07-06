@@ -157,19 +157,7 @@ public class TraInformationrecordServiceImpl implements TraTrainingEquipmentServ
 		int rows = traTrainingEquipmentMapper.updateById(entity);
 		return rows;
 	}
-	
-	/**基于客户id查询用户课程表信息*/
-	@Override
-	public List<TraTrainingEquipment> getByCustomerId(CusVo cusVo) {
-		Integer customerId = cusVo.getCustomerId();
-		Integer orgId = cusVo.getOrgId();
-		if(customerId==null||customerId<=0)
-			throw new ServiceException("customerId错误");
-		if(orgId==null||orgId<=0)
-			throw new ServiceException("orgId错误");
-		QueryWrapper<TraTrainingEquipment> queryWrapper = new QueryWrapper<>();
-		queryWrapper.eq("customer_id", customerId);
-		List<TraTrainingEquipment> list = traTrainingEquipmentMapper.selectList(queryWrapper);
-		return list;
-	}
+
 }
+	
+

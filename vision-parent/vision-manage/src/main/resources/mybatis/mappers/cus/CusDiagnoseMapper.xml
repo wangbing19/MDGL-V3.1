@@ -7,14 +7,25 @@
 	<!-- 基于用户id的查询条件sql引用语句 -->
 	<sql id="queryWhereId">
 		<where>
-			org_id=#{orgId}
+			<!-- org_id=#{orgId} -->
+		 	cus_diagnose.org_id in 
+		 	<foreach collection="orgIds" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+			<!-- name条件 -->
+			<if test="name!=null and name!=''">
+				and cus_customer.name like concat("%",#{name},"%")
+			</if>
 		</where>
 	</sql>
 
 	<!-- 基于用户id名及分页条件查询 -->
-	<select id="findPageObjects" resultMap="cusDiagnoseMap">
-		select *
-		from cus_diagnose
+<!-- 	<select id="findPageObjects" resultMap="cusDiagnoseMap"> -->
+	<select id="findPageObjects" resultType="com.vision.pojo.cus.CusDiagnose">
+	<!-- 	select * from cus_diagnose -->
+		
+		SELECT * FROM cus_diagnose LEFT JOIN cus_customer ON cus_diagnose.customer_id=cus_customer.id
+	
 		<include refid="queryWhereId" />
 		limit #{startIndex},#{pageSize}
 	</select>

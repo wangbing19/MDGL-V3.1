@@ -8,6 +8,7 @@ import com.vision.pojo.cus.CusCustomer;
 import com.vision.pojo.cus.CusDiagnose;
 import com.vision.pojo.cus.vo.CusVo;
 import com.vision.service.cus.CusDiagnoseService;
+import com.vision.service.tool.ToolOrganizationIdList;
 import com.vision.vo.PageObject;
 
 import java.util.Date;
@@ -23,6 +24,8 @@ public class CusDiagnoseServiceImpl implements CusDiagnoseService {
 	private CusDiagnoseMapper cusDiagnoseMapper;
 	@Autowired
 	private CusCustomerMapper cusCustomerMapper;
+	@Autowired
+	private ToolOrganizationIdList toolOrganizationIdList;
 
 	/**诊断表页面加载,查询*/
 	@Override
@@ -30,21 +33,19 @@ public class CusDiagnoseServiceImpl implements CusDiagnoseService {
 		Integer orgId = cusVo.getOrgId();
 		Integer pageCurrent = cusVo.getPageCurrent();
 		Integer pageSize = cusVo.getPageSize();
-		//1.数据合法性验证
-		if(pageCurrent==null||pageCurrent<=0)
-			throw new ServiceException("页码值不正确");
-		if(orgId<0||orgId==null)
-			throw new ServiceException("门店id不正确");
-		if(pageSize<0||pageSize==null)
-			throw new ServiceException("页码大小不正确");
+		String name = cusVo.getName();
+		if("".equals(name))
+			name = null;
+		//查询组织下下级组织
+		List<Long> orgIds = toolOrganizationIdList.findOrganizationIdList(orgId.longValue());
 		//2.依据条件获取总记录数并进行验证
-		int rowCount = cusDiagnoseMapper.getRowCount(orgId);
+		int rowCount = cusDiagnoseMapper.getRowCount(name, orgIds);
 		//	System.out.println(rowCount);
 		if(rowCount==0)
 			throw new ServiceException("记录不存在");
 		//3.基于条件查询当前页记录
 		int startIndex = (pageCurrent-1)*pageSize;
-		List<CusDiagnose> records = cusDiagnoseMapper.findPageObjects(orgId, startIndex, pageSize);
+		List<CusDiagnose> records = cusDiagnoseMapper.findPageObjects(name, orgIds, startIndex, pageSize);
 		//4.对查询结果进行封装并返回
 		PageObject<CusDiagnose> pageObject = new PageObject<>();
 		pageObject.setRowCount(rowCount);
@@ -131,5 +132,16 @@ public class CusDiagnoseServiceImpl implements CusDiagnoseService {
 		if(rows==0)
 			throw new ServiceException("数据可能已删除");
 		return rows;
+	}
+
+	/** 基于客户id删除诊断表信息 */
+	@Override
+	public Integer deleteDiagnoseByCustomerId(Integer customerId, Integer orgId) {
+		
+		QueryWrapper<CusDiagnose> queryWrapper = new QueryWrapper<>();
+		queryWrapper.eq("customer_id", customerId);
+		queryWrapper.eq("org_id", orgId);
+		int row = cusDiagnoseMapper.delete(queryWrapper);
+		return row;
 	}
 }

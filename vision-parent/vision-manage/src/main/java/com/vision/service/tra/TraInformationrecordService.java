@@ -20,5 +20,6 @@ public interface TraInformationrecordService {
 	Integer updateTraInfor(TraInformationrecord entity);
 	/**基于客户id查询用户课程表信息*/
 	List<TraInformationrecord> getByCustomerId(CusVo cusVo);
-
+	/**基于客户id删除用户课程表信息*/
+	Integer deleteTraInforByCustomerId(Integer customerId, Integer orgId);
 }

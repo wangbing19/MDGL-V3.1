@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.vision.exception.ServiceException;
 import com.vision.mapper.cus.CusResScheduleMapper;
 import com.vision.mapper.cus.CusScheduleMapper;
+import com.vision.pojo.cus.CusDiagnose;
 import com.vision.pojo.cus.CusResSchedule;
 import com.vision.pojo.cus.CusSchedule;
 import com.vision.pojo.cus.vo.CusVo;
@@ -195,6 +196,20 @@ public class CusScheduleServiceImpl implements CusScheduleService {
 		return list;
 	}
 
-
+	/**基于用户id删除课程信息*/
+	@Override
+	public Integer deleteScheduleByCustomerId(Integer customerId, Integer orgId) {
+		CusVo cusVo = new CusVo();
+		Integer row = null;
+		cusVo.setCustomerId(customerId);
+		cusVo.setOrgId(orgId);
+		List<CusSchedule> byCustomerId = getByCustomerId(cusVo);
+		for (CusSchedule cusSchedule : byCustomerId) {
+			row = deleteSchedule(cusSchedule.getId(), orgId);
+		}
+		return row;
+	}
+	
+	
 
 }
