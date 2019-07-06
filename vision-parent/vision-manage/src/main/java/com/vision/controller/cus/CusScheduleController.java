@@ -75,9 +75,9 @@ public class CusScheduleController {
 	public JsonResult getScheduleById( Integer id, Integer orgId) {
 		try {
 			//验证数据
-			if(id==null||id<=0)
+			if(id==null||id<0)
 				return JsonResult.build(201, "id错误");
-			if(orgId==null||orgId<=0)
+			if(orgId==null||orgId<0)
 				return JsonResult.build(201, "orgId错误");
 			
 			CusSchedule cusSchedule = cusScheduleService.getScheduleById(id, orgId);

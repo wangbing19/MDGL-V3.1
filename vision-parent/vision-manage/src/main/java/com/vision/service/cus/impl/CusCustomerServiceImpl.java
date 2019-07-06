@@ -13,6 +13,7 @@ import com.vision.pojo.tra.TraInformationrecord;
 import com.vision.service.cus.CusCustomerService;
 import com.vision.service.cus.CusDiagnoseService;
 import com.vision.service.cus.CusScheduleService;
+import com.vision.service.rec.RecActivityRecordService;
 import com.vision.service.tool.ToolOrganizationIdList;
 import com.vision.service.tra.TraInformationrecordService;
 import com.vision.vo.PageObject;
@@ -40,6 +41,8 @@ public class CusCustomerServiceImpl implements CusCustomerService {
 	private CusScheduleService cusScheduleService;
 	@Autowired
 	private ToolOrganizationIdList toolOrganizationIdList;
+	@Autowired
+	private RecActivityRecordService recActivityRecordService;
 
 	/**用户页面查看所有信息*/
 	@Override
@@ -165,6 +168,7 @@ public class CusCustomerServiceImpl implements CusCustomerService {
 		//删除训练表
 		traInformationrecordService.deleteTraInforByCustomerId(id, orgId);
 		//删除充值记录
+//		recActivityRecordService.deleteRecPayUserByCustomerId(id);
 		
 		return row;
 	}

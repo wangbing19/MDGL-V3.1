@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.druid.util.StringUtils;
-import com.vision.exception.ServiceException;
 import com.vision.pojo.cus.CusCustomer;
 import com.vision.pojo.cus.vo.CusVo;
 import com.vision.service.cus.CusCustomerService;
@@ -146,7 +145,7 @@ public class CusCustomerController {
 			cusCustomer.setModifiedUser("admin");
 			
 			Integer row = cusCustomerService.addCustomer(cusCustomer);
-			if(row != null || row != 0) {
+			if(row != null && row != 0) {
 				  //添加登录用户创建客户数量 
 //				Users.setDeptNum(Users.getDeptNum()+1);
 //				  restTemplate.postForObject("http://176.198.114.212.:8029/user/doUpdateObject", Users, JsonResult.class);//176.198.114.212
@@ -170,7 +169,7 @@ public class CusCustomerController {
 			return JsonResult.build(201, "orgId参数无效");
 		try {
 			Integer row = cusCustomerService.deleteCustomer(id, orgId);
-			if(row == null && row != 0) {
+			if(row != null && row != 0) {
 				return JsonResult.oK();
 			}
 		} catch (Exception e) {

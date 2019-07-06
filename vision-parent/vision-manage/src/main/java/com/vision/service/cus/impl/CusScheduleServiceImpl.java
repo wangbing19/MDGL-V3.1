@@ -1,11 +1,8 @@
 package com.vision.service.cus.impl;
 
-import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.vision.exception.ServiceException;
 import com.vision.mapper.cus.CusResScheduleMapper;
 import com.vision.mapper.cus.CusScheduleMapper;
-import com.vision.pojo.cus.CusDiagnose;
 import com.vision.pojo.cus.CusResSchedule;
 import com.vision.pojo.cus.CusSchedule;
 import com.vision.pojo.cus.vo.CusVo;

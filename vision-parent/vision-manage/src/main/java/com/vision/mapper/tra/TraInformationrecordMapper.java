@@ -21,24 +21,30 @@ public interface TraInformationrecordMapper extends BaseMapper<TraInformationrec
 	 * @param name	查询条件
 	 * @param startIndex	起始位置
 	 * @param pageSize	页面大小
-	 * @param orgId	门店id
+	 * @param orgIds 
+	 * @param customerId
 	 * @return	当前页记录
 	 */
 	List<TraInformationrecord> findPageObjects(
 			@Param("name")String name, 
 			@Param("startIndex")Integer startIndex, 
 			@Param("pageSize")Integer pageSize, 
-			@Param("orgId")Integer orgId);
+			@Param("orgIds")List<Long> orgIds,
+			@Param("customerId")Integer customerId);
 	
 	
 	
 	/**
 	 * 基于用户名查询记录总数
 	 * @param name	查询条件
-	 * @param orgId	门店id
+	 * @param orgIds 
+	 * @param customerId
 	 * @return
 	 */
-	int getRowCount(@Param("name")String name, @Param("orgId")Integer orgId);
+	int getRowCount(
+			@Param("name")String name, 
+			@Param("orgIds")List<Long> orgIds, 
+			@Param("customerId")Integer customerId);
 
 
 	TraInformationrecord selectId(Integer id);

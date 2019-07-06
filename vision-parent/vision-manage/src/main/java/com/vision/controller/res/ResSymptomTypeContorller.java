@@ -1,6 +1,5 @@
 package com.vision.controller.res;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -86,8 +85,8 @@ public class ResSymptomTypeContorller {
 			if(StringUtils.isEmpty(resSymptomType.getTitle()))
 				return JsonResult.build(201, "服务名称不能为空");
 			
-			Integer result=resSymptomTypeSvervise.updateSymptomType(resSymptomType);
-			if(result !=null || result !=0) {
+			Integer result = resSymptomTypeSvervise.updateSymptomType(resSymptomType);
+			if(result !=null && result !=0) {
 				return JsonResult.oK();
 			}
 		} catch (Exception e) {
