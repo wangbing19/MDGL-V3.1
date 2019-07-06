@@ -10,7 +10,7 @@
 	</delete>
 	
 	<insert id="insertSymptomDescObject" useGeneratedKeys="true" keyProperty="id">
-		insert into symptom_desc values(null,#{symptomId},#{desc},#{createTime},#{modefiedTime})
+		insert into symptom_desc values(null,#{symptomId},#{symptomDesc},#{createTime},#{modifiedTime})
 	</insert>
 	
 	<update id="updateSymptomDescObject">

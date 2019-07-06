@@ -34,7 +34,7 @@ public class RecActivityServiceImpl implements RecActivityService{
 	/**新增充值活动表对象*/
 	public void insertRecActivity(RecActivityPush recActivityPush) {
 		try {
-			//暂时自定义门店id和父级门店id
+			//杜健华假设//暂时自定义门店id和父级门店id
 			long userId= 1;
 			long parentId = 2;
 			//设置活动的门店id（标志是哪一个门店做的活动）
@@ -100,6 +100,7 @@ public class RecActivityServiceImpl implements RecActivityService{
 	/**查询充值活动*/
 	public List<RecActivityPush> findAllRecActivityObjects() {
 		try {
+			//杜健华假设
 			//先设定门店id为1
 			long user_id = 1;
 			List<RecActivityPush> recActivityPushs = recActivityMapper.findAllRecActivityObjects(user_id);

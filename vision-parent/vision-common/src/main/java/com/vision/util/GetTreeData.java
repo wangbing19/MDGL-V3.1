@@ -91,7 +91,6 @@ public class GetTreeData<T> {
 				}
 			}
 		}
-		
 		return list1.get(0);
 	}
 }
