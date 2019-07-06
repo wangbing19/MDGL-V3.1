@@ -15,6 +15,7 @@ public interface CusConsultationMapper extends BaseMapper<CusConsultation> {
 	 * @param tel	查询条件
 	 * @param startIndex	起始位置
 	 * @param pageSize	页面大小
+	 * @param customerId 
 	 * @param userId	门店id
 	 * @param userParentId	上级门店id
 	 * @return	当前页记录
@@ -24,13 +25,14 @@ public interface CusConsultationMapper extends BaseMapper<CusConsultation> {
 			@Param("tel")String tel,
 			@Param("startIndex")Integer startIndex,
 			@Param("pageSize")Integer pageSize,
-			@Param("orgId") List<Long> orgIds
-			);
+			@Param("orgId")List<Long> orgIds, 
+			@Param("id")Integer id);
 
 	/**
 	 * 基于用户名查询记录总数
 	 * @param name	查询条件
 	 * @param tel	查询条件
+	 * @param customerId 
 	 * @param userId	门店id
 	 * @param userParentId	上级门店id
 	 * @return
@@ -38,7 +40,8 @@ public interface CusConsultationMapper extends BaseMapper<CusConsultation> {
 	int getRowCount(
 			@Param("name")String name,
 			@Param("tel")String tel, 
-			@Param("orgId")List<Long> findOrganizationIdList);
+			@Param("orgId")List<Long> findOrganizationIdList, 
+			@Param("id")Integer id);
 
 	/**
 	 * 基于咨询表id更改用户信息

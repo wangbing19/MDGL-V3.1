@@ -38,11 +38,11 @@ public class CusConsultationServiceImpl implements CusConsultationService {
 		Integer pageCurrent = cusVo.getPageCurrent();
 		Integer orgId = cusVo.getOrgId();
 		Integer pageSize = cusVo.getPageSize();
-		
+		Integer consultationId = cusVo.getConsultationId();
 		//查询组织下下级组织
 		List<Long> orgIds = toolOrganizationIdList.findOrganizationIdList(orgId.longValue());
 		//2.依据条件获取总记录数并进行验证
-		int rowCount = cusConsultationMapper.getRowCount(name, tel, orgIds);
+		int rowCount = cusConsultationMapper.getRowCount(name, tel, orgIds,consultationId);
 		if(rowCount==0) {
 //			throw new ServiceException("记录不存在");
 			pageObject.setRowCount(rowCount);
@@ -54,7 +54,7 @@ public class CusConsultationServiceImpl implements CusConsultationService {
 			
 		int startIndex = (pageCurrent-1)*pageSize;
 		List<CusConsultation> records =
-				cusConsultationMapper.findPageObjects(name, tel,startIndex, pageSize,orgIds);// userId, userParentId ,
+				cusConsultationMapper.findPageObjects(name, tel,startIndex, pageSize,orgIds,consultationId);// userId, userParentId ,
 		//4.对查询结果进行封装并返回
 		pageObject.setRowCount(rowCount);
 		pageObject.setRecords(records);

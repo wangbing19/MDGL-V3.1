@@ -47,8 +47,12 @@ public class CusDiagnoseController {
 	@ResponseBody
 	public JsonResult getDiagnoseById(Integer id, Integer orgId) {
 		try {
-			if(id==null||id<0)
+			if(id==null) {
+				return JsonResult.oK(null);
+			}
+			if(id<0) {
 				return JsonResult.build(201, "id错误");
+			}
 			if(orgId==null||orgId<0)
 				return JsonResult.build(201, "orgId错误");
 			

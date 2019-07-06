@@ -100,4 +100,14 @@ public class ResSymptomTypeSverviseImpl implements ResSymptomTypeSvervise{
 		return update;
 	}
 
+	@Override
+	public List<ResSymptomType> getSymptomTypeListByOrgId(Integer orgId) {
+		QueryWrapper<ResSymptomType> queryWrapper = new QueryWrapper<>();
+		queryWrapper.eq("org_id", orgId);
+		queryWrapper.eq("is_delete", 0);
+		queryWrapper.eq("state", 1);
+		List<ResSymptomType> list = resSymptomTypeMapper.selectList(queryWrapper);
+		return list;
+	}
+
 }

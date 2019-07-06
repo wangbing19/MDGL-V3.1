@@ -25,6 +25,8 @@ public class CusVo {
     private Integer customerId;
     /**资源配置名*/
     private String title;
+    /**咨询表id*/
+    private Integer consultationId;
     
 	
 }
