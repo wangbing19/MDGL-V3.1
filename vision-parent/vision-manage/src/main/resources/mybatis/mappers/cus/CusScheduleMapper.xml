@@ -7,9 +7,16 @@
 	<!-- 基于用户名的查询条件sql引用语句 -->
 	<sql id="queryWhereId">
        <where>
-       		org_id=#{orgId} 
+       		<!-- org_id=#{orgId} -->
+		 	org_id in 
+		 	<foreach collection="orgIds" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
 			<if test="name!=null and name!=''">
 				and name like concat("%",#{name},"%")
+			</if>
+			<if test="customerId!=null and customerId!=''">
+				and customer_id=#{customerId}
 			</if>
 		</where>
 	</sql>
@@ -23,8 +30,7 @@
 	<!-- 基于用户姓名及分页条件查询,无用户名输入基于分页条件查询 -->
 	<select id="findPageObjects"
 		resultType="com.vision.pojo.cus.CusSchedule">
-		select *
-		from cus_schedule
+		select * from cus_schedule
 		<include refid="queryWhereId" /> 
 		limit #{startIndex},#{pageSize}
 	</select>
