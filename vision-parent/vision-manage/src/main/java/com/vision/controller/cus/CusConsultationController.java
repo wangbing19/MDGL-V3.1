@@ -1,7 +1,6 @@
 package com.vision.controller.cus;
 
 import com.alibaba.druid.util.StringUtils;
-import com.vision.exception.ServiceException;
 import com.vision.pojo.cus.CusConsultation;
 import com.vision.pojo.cus.vo.CusVo;
 import com.vision.service.cus.CusConsultationService;

@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.vision.exception.ServiceException;
 import com.vision.pojo.cus.CusDiagnose;
 import com.vision.pojo.cus.vo.CusVo;
 import com.vision.service.cus.CusDiagnoseService;

@@ -6,10 +6,17 @@
 	<!-- 基于用户名/电话的查询条件sql引用语句 -->
 	<sql id="queryWhereId">
 		<where>
-		 	org_id=#{orgId}
+		 	<!-- org_id=#{orgId} -->
+		 	org_id in 
+		 	<foreach collection="orgIds" index="index" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
 			<!-- name条件 -->
 			<if test="name!=null and name!=''">
 				and name like concat("%",#{name},"%")
+			</if>
+			<if test="customerId!=null and customerId!=''">
+				and customer_id=#{customerId}
 			</if>
 		</where>
 	</sql>
@@ -23,7 +30,7 @@
 	
 	<!-- 基于用户名查询该用户总数,无用户名输入查询所有用户总数 -->
 	<select id="getRowCount" resultType="int">
-		select count(*) from tra_informationrecord <!-- where user_id=#{userId} and user_parent_id=#{userParentId} -->
+		select count(*) from tra_informationrecord
 		<include refid="queryWhereId" />
 	</select>
 	
