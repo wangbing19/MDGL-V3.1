@@ -25,7 +25,7 @@ public class RecPayUser extends BasePojo{
 	/**客户id*/
 	private Integer customerId;
 	/**活动类型表id*/
-	private Integer rechargeType;
+	private Long rechargeType;
 	/**客户账户金额*/
 	private Double money;
 	/**客户充值金额*/
@@ -34,8 +34,6 @@ public class RecPayUser extends BasePojo{
 	private Double presentedAmount;
 	/**充值的次数*/
 	private Integer practiceTimes;
-	/**课程名称*/
-	private String courseName;
 	/**上次充值时间*/
 	private Date lastPayTime;
 	/*

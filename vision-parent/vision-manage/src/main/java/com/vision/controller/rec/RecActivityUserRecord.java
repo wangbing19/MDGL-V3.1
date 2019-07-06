@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 /**充值记录表*/
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.vision.pojo.cus.CusCustomer;
 import com.vision.pojo.rec.RecPayUser;
 import com.vision.service.rec.RecActivityRecordService;
 import com.vision.vo.JsonResult;
@@ -47,6 +48,24 @@ public class RecActivityUserRecord {
 			e.printStackTrace();
 		}
 		return JsonResult.build(201,"查询充值记录失败");
+	}
+	
+	/**客户充值时新增新的充值记录*/
+	@RequestMapping("/insertActivityRecord")
+	@ResponseBody
+	public JsonResult insertActivityRecord(CusCustomer cusCustomer,RecPayUser recPayUser) {
+		try {
+			Integer result = recActivityRecordService.insertActivityRecord(cusCustomer,recPayUser);
+			if(result==1) {
+				return JsonResult.oK("充值成功");
+			}else {
+				return JsonResult.build(201,"充值失败");
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return JsonResult.build(201,"充值失败");
 	}
 }
 

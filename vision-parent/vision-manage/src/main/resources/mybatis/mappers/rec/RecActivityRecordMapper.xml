@@ -13,44 +13,43 @@
 		select * from rec_pay_user where id=#{id}
 	</select>
 	
-	<select id="findLimitRecActivityRecords" resultType="com.vision.pojo.rec.RecPayUser">
-		select * from rec_pay_user where 
+	
+	<select id="getPageCount" resultType="int" parameterType="java.util.List" >
+		select count(*) from rec_pay_user where org_id in
+		<foreach collection="orgId" index="index" item="item" open="(" separator="," close=")">
+		    #{item}
+		</foreach>
 	</select>
 	
-	<!-- <insert id="insertRecActivity">
-		insert into rec_activity_push values(
-		null,
-		#{userId},
-		#{parentId},
-		#{title},
-		#{payAmount},
-		#{presentedAmount},
-		#{activityStartTime},
-		#{activityEndTime},
-		#{activityState},
-		#{createTime},
-		#{modifiedTime})
-		
-	</insert>
-	
-	<update id="updateRecActivityById">
-		update rec_activity_push set 
-		pay_amount=#{payAmount},
-		presented_amount=#{presentedAmount},
-		title=#{title},
-		activity_start_time=#{activityStartTime},
-		activity_end_time=#{activityEndTime},
-		modified_time=#{modifiedTime},
-		activity_state=#{activityState}
-	    where id=#{id}	
-	</update>
-	
-	<select id="findAllRecActivityObjects" resultType="com.vision.pojo.rec.RecActivityPush">	
-		select * from rec_activity_push where user_id=#{userId}
+	<select id="findLimitRecActivityRecords" resultType="com.vision.pojo.rec.RecPayUser" parameterType="java.util.List">
+		select * from rec_pay_user where org_id in
+		<foreach collection="orgIds" index="index" item="item" open="(" separator="," close=")">
+		    #{item}
+		</foreach>
+		limit #{startIndex},#{pageSize}
 	</select>
 	
-	<select id="findRecActivityObject" resultType="com.vision.pojo.rec.RecActivityPush">
-		select * from rec_activity_push where id=#{id}
+	<select id="getLastRechargeTime" resultType="com.vision.pojo.rec.RecPayUser">
+		select create_time from rec_pay_user where customer_id=#{customerId} order by create_time desc limit 0,1
 	</select>
-	 -->
+	
+	<select id="insertActivityRecord" resultType="int">
+		insert into rec_pay_user values(
+			null,
+			#{userId},
+			#{orgId},
+			#{name},
+			#{customerId},
+			#{rechargeType},
+			#{money},
+			#{rechargeAmount},
+			#{presentedAmount},
+			#{practiceTimes},
+			#{lastPayTime},
+			#{createTime},
+			#{modifiedTime}
+			
+		)
+	</select>
+	
 </mapper>
