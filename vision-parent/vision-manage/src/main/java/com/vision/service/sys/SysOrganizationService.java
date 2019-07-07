@@ -18,7 +18,12 @@ public interface SysOrganizationService {
 	List<SysOrganization> findOrganization();
 
 	List<Node2> findZTreeNodes();
-
+	/**
+	 * 基于id获取组织信息
+	 * @param id
+	 * @return
+	 */
+	SysOrganization getSysOrganizationById(Long id);
 	
 
 }

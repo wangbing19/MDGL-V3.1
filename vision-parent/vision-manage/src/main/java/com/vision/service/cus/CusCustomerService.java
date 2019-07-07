@@ -15,7 +15,7 @@ public interface CusCustomerService {
 	/**基于用户id修改用户状态*/
 	Integer updateCustomerState(CusVo cusVo);
 	/**根据咨询表id查询客户表信息有无*/
-	Integer getCustomerByConsultationId(Integer consultationId);
+	CusCustomer getCustomerByConsultationId(Integer consultationId);
 	/**将CusCustomer类型数据添加到数据库*/
 	Integer addCustomer(CusCustomer cusCustomer);
 	/**基于id删除客户信息*/

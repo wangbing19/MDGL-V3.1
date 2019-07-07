@@ -19,4 +19,6 @@ public interface CusDiagnoseService {
 	Integer deleteDiagnose(Integer id, Integer orgId);
 	/** 基于客户id删除诊断表信息 */
 	Integer deleteDiagnoseByCustomerId(Integer customerId, Integer orgId);
+	/**基于诊断表id修改数据*/
+	Integer updateDiagnose(CusDiagnose cusDiagnose);
 }

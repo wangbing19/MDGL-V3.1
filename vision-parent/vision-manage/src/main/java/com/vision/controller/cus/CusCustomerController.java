@@ -8,7 +8,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.druid.util.StringUtils;
 import com.vision.pojo.cus.CusCustomer;
 import com.vision.pojo.cus.vo.CusVo;
+import com.vision.pojo.sys.SysOrganization;
+import com.vision.pojo.sys.SysUser;
 import com.vision.service.cus.CusCustomerService;
+import com.vision.service.sys.SysOrganizationService;
 import com.vision.vo.JsonResult;
 import com.vision.vo.PageObject;
 
@@ -18,7 +21,8 @@ public class CusCustomerController {
 	
 	@Autowired
     private CusCustomerService cusCustomerService;
-	
+	@Autowired
+	private SysOrganizationService sysOrganizationService;
 	
 	/**用户页面查看所有信息*/
     @RequestMapping("/getCustomer")
@@ -49,7 +53,7 @@ public class CusCustomerController {
     	return JsonResult.build(201, "查询无数据");
     }
     
-    /**基于客户id查询客户所有信息*/
+    /**基于客户id查询客户信息*/
     @RequestMapping("/getCustomerById")
     @ResponseBody
     public JsonResult getCustomerById( Integer id, Integer orgId){
@@ -85,6 +89,11 @@ public class CusCustomerController {
 		if(cusVo.getState()!=0 && cusVo.getState()!=1)
 			return JsonResult.build(201, "状态错误");
 		
+//		//获取账号信息
+//		SysUser user = null;
+//		if(user.getOrganizationId()!=cusVo.getOrgId().longValue())
+//			return JsonResult.build(201, "该账号不能修改该客户状态，请联系客户所属门店修改");
+		
 		try {
 			Integer row = cusCustomerService.updateCustomerState(cusVo);
 			if(row != null && row != 0) {
@@ -104,9 +113,11 @@ public class CusCustomerController {
 		if(consultationId==null||consultationId<0)
 			return JsonResult.build(201, "consultationId错误");
 		try {
-			Integer row = cusCustomerService.getCustomerByConsultationId(consultationId);
-			if(row == 0 || row == 1) {
-				return JsonResult.oK(row);
+			CusCustomer cusCustomer = cusCustomerService.getCustomerByConsultationId(consultationId);
+			if(cusCustomer!=null) {
+				return JsonResult.oK(1);
+			} else if(cusCustomer==null) {
+				return JsonResult.oK(0);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -135,20 +146,19 @@ public class CusCustomerController {
 		
 		try {
 			//获取登录用户信息
-//        	Users Users = ShiroUtils.getUser();
-        	//获取登录用户创建客户数量
-			
-//			 if(Users.getDeptNum()>=Users.getDeptLimit()) {
-//				 return JsonResult.build(201,"创建客户数量已达上限,无法再次创建客户,请联系总店208-62825475");
-//			 }
-			cusCustomer.setCreatedUser("admin");
-			cusCustomer.setModifiedUser("admin");
-			
+//        	SysUser user = null;
+//        	cusCustomer.setCreatedUser(user.getUserName());
+//        	cusCustomer.setModifiedUser(user.getUserName());
+//        	//获取登录用户创建客户数量
+//        	SysOrganization organization = sysOrganizationService.getSysOrganizationById(user.getOrganizationId());
+//        	if(organization.getSurplus()<=0) {
+//        		return JsonResult.build(201,"创建客户数量已达上限,无法再次创建客户,请联系总店208-62825475");
+//        	}
 			Integer row = cusCustomerService.addCustomer(cusCustomer);
 			if(row != null && row != 0) {
 				  //添加登录用户创建客户数量 
-//				Users.setDeptNum(Users.getDeptNum()+1);
-//				  restTemplate.postForObject("http://176.198.114.212.:8029/user/doUpdateObject", Users, JsonResult.class);//176.198.114.212
+//				organization.setSurplus(organization.getSurplus()-row);
+//				sysOrganizationService.updateOrganization(organization);
 				return JsonResult.oK();
 			}
 		} catch (Exception e) {
@@ -167,6 +177,10 @@ public class CusCustomerController {
 			return JsonResult.build(201, "id参数无效");
 		if(orgId==null||orgId<0)
 			return JsonResult.build(201, "orgId参数无效");
+		//获取登录账号信息
+//		SysUser user = null;
+//		if(user.getOrganizationId()!=orgId.longValue())
+//			return JsonResult.build(201, "该账户无法删除该客户信息，请联系客户所属门店修改");
 		try {
 			Integer row = cusCustomerService.deleteCustomer(id, orgId);
 			if(row != null && row != 0) {
@@ -183,23 +197,26 @@ public class CusCustomerController {
 	@RequestMapping("/updateCustomer")
 	@ResponseBody
 	public JsonResult updateCustomer( CusCustomer cusCustomer) {
-		//验证数据合法性
-		if(cusCustomer==null)
-			return JsonResult.build(201, "对象不能为空");
-		if(cusCustomer.getId()<=0||cusCustomer.getId()==null)
-			return JsonResult.build(201, "id错误");
-		if(cusCustomer.getOrgId()<=0||cusCustomer.getOrgId()==null)
-			return JsonResult.build(201, "orgId错误");
-		if(StringUtils.isEmpty(cusCustomer.getName()))
-			return JsonResult.build(201, "客户名不能为空");
-		if(StringUtils.isEmpty(cusCustomer.getTel()))
-			return JsonResult.build(201, "电话不能为空");
-		if(StringUtils.isEmpty(cusCustomer.getGuardian()))
-			return JsonResult.build(201, "监护人不能为空");
-		//获取登录用户信息
-//    	Users user = ShiroUtils.getUser();
-		cusCustomer.setModifiedUser("admin");
 		try {
+			//验证数据合法性
+			if(cusCustomer==null)
+				return JsonResult.build(201, "对象不能为空");
+			if(cusCustomer.getId()<=0||cusCustomer.getId()==null)
+				return JsonResult.build(201, "id错误");
+			if(cusCustomer.getOrgId()<=0||cusCustomer.getOrgId()==null)
+				return JsonResult.build(201, "orgId错误");
+			if(StringUtils.isEmpty(cusCustomer.getName()))
+				return JsonResult.build(201, "客户名不能为空");
+			if(StringUtils.isEmpty(cusCustomer.getTel()))
+				return JsonResult.build(201, "电话不能为空");
+			if(StringUtils.isEmpty(cusCustomer.getGuardian()))
+				return JsonResult.build(201, "监护人不能为空");
+			//获取登录用户信息
+//			SysUser user = null;
+//			if(user.getOrganizationId()!=cusCustomer.getOrgId().longValue())
+//				return JsonResult.build(201, "该账户无法修改该客户信息，请联系客户所属门店修改");
+//			cusCustomer.setModifiedUser(user.getUserName());
+			
 			Integer row = cusCustomerService.updateCustomer(cusCustomer);
 			if(row != 0 && row == null) {
 				return JsonResult.oK();

@@ -97,6 +97,16 @@ public class SysOrganizationServiceImpl implements SysOrganizationService{
 		
 		return result;
 	}
+	/**
+	 * 基于id获取组织信息
+	 * @param id
+	 * @return
+	 */
+	@Override
+	public SysOrganization getSysOrganizationById(Long id) {
+		SysOrganization organization = sysOrganizationMapper.selectById(id);
+		return organization;
+	}
 	
 	
 }

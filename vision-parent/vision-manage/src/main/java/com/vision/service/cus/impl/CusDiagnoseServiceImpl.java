@@ -121,4 +121,11 @@ public class CusDiagnoseServiceImpl implements CusDiagnoseService {
 		int row = cusDiagnoseMapper.delete(queryWrapper);
 		return row;
 	}
+
+	/**基于诊断表id修改数据*/
+	@Override
+	public Integer updateDiagnose(CusDiagnose cusDiagnose) {
+		Integer row = cusDiagnoseMapper.updateById(cusDiagnose);
+		return row;
+	}
 }

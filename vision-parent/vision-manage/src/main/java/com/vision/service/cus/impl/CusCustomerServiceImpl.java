@@ -116,11 +116,11 @@ public class CusCustomerServiceImpl implements CusCustomerService {
 
 	/**根据咨询表id查询客户表信息有无*/
 	@Override
-	public Integer getCustomerByConsultationId(Integer consultationId) {
+	public CusCustomer getCustomerByConsultationId(Integer consultationId) {
 		QueryWrapper<CusCustomer> queryWrapper = new QueryWrapper<>();
 		queryWrapper.eq("consultation_id", consultationId);
-		Integer rows = cusCustomerMapper.selectCount(queryWrapper);
-		return rows;
+		CusCustomer cusCustomer = cusCustomerMapper.selectOne(queryWrapper);
+		return cusCustomer;
 
 	}
 

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.druid.util.StringUtils;
 import com.vision.pojo.cus.vo.CusVo;
 import com.vision.pojo.res.ResSymptomType;
+import com.vision.pojo.sys.SysUser;
 import com.vision.service.res.ResSymptomTypeSvervise;
 import com.vision.vo.JsonResult;
 import com.vision.vo.PageObject;
@@ -87,6 +88,12 @@ public class ResSymptomTypeContorller {
 			if(StringUtils.isEmpty(resSymptomType.getTitle()))
 				return JsonResult.build(201, "服务名称不能为空");
 			
+//			SysUser user = null;
+//			if(user.getOrganizationId()!=resSymptomType.getOrgId().longValue()) {
+//				return JsonResult.build(201, "该账号无法修改该诊断表，请联系相关门店更改");
+//			}
+//			resSymptomType.setModifiedUser(user.getUserName());
+			
 			Integer result = resSymptomTypeSvervise.updateSymptomType(resSymptomType);
 			if(result !=null && result !=0) {
 				return JsonResult.oK();
@@ -110,6 +117,10 @@ public class ResSymptomTypeContorller {
 				return JsonResult.build(201, "门店信息不能为空");
 			if(StringUtils.isEmpty(resSymptomType.getTitle()))
 				return JsonResult.build(201, "服务名称不能为空");
+			
+//			SysUser user = null;
+//			resSymptomType.setCreatedUser(user.getUserName());
+//			resSymptomType.setModifiedUser(user.getUserName());
 			
 			Integer result=resSymptomTypeSvervise.addSymptomType(resSymptomType);
 			if(result!=null && result!=0) {
@@ -135,6 +146,12 @@ public class ResSymptomTypeContorller {
 				return JsonResult.build(201, "id不能为空");
 			if(orgId==null||orgId<0)
 				return JsonResult.build(201, "门店信息不能为空");
+			
+//			SysUser user = null;
+//			if(user.getOrganizationId()!=orgId.longValue()) {
+//				return JsonResult.build(201, "该账号无法删除该诊断表，请联系相关门店更改");
+//			}
+			
 			Integer row=resSymptomTypeSvervise.deleteSymptomType(id, orgId);
 			if(row !=null) {
 				return JsonResult.oK();

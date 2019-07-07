@@ -11,6 +11,7 @@ import com.alibaba.druid.util.StringUtils;
 import com.vision.exception.ServiceException;
 import com.vision.pojo.cus.CusSchedule;
 import com.vision.pojo.cus.vo.CusVo;
+import com.vision.pojo.sys.SysUser;
 import com.vision.service.cus.CusScheduleService;
 import com.vision.vo.JsonResult;
 import com.vision.vo.PageObject;
@@ -52,11 +53,17 @@ public class CusScheduleController {
 	@ResponseBody
 	public JsonResult deleteSchedule( Integer id, Integer orgId) {
 		try {
+			
 			//验证数据
 			if(id==null||id<=0)
 				return JsonResult.build(201, "id错误");
 			if(orgId==null||orgId<0)
 				return JsonResult.build(201, "orgId错误");
+			
+//			SysUser user = null;
+//			if(user.getOrganizationId()!=orgId.longValue()) {
+//				return JsonResult.build(201, "该账号无法删除该诊断表，请联系相关门店更改");
+//			}
 			
 			Integer rows = cusScheduleService.deleteSchedule(id,orgId);
 			if(rows !=null) {
@@ -95,10 +102,9 @@ public class CusScheduleController {
 	@ResponseBody
 	public JsonResult addSchedule( CusSchedule cusSchedule) {
 		//获取登录用户信息
-////    	Users user = ShiroUtils.getUser();
-//		cusSchedule.setOrgId(1);
-		cusSchedule.setCreatedUser("admin");
-		cusSchedule.setModifiedUser("admin");
+//		SysUser user = null;
+//		cusSchedule.setCreatedUser(user.getUserName());
+//		cusSchedule.setModifiedUser(user.getUserName());
 		try {
 			//验证数据合法性
 			if(StringUtils.isEmpty(cusSchedule.getName()))
@@ -124,7 +130,7 @@ public class CusScheduleController {
 	@ResponseBody
 	public JsonResult updateSchedule( CusSchedule cusSchedule) {
 		try {
-			cusSchedule.setModifiedUser("admin");
+			
 			
 			//验证数据合法性
 			if(StringUtils.isEmpty(cusSchedule.getName()))
@@ -135,6 +141,13 @@ public class CusScheduleController {
 				return JsonResult.build(201, "orgId不能为空");
 			if(cusSchedule.getSymptomTypes()==null||cusSchedule.getSymptomTypes().length==0)
 				return JsonResult.build(201, "课程表训练项目不能为空");
+			
+			
+//			SysUser user = null;
+//			if(user.getOrganizationId()!=cusSchedule.getOrgId().longValue()) {
+//				return JsonResult.build(201, "该账号无法修改该诊断表，请联系相关门店更改");
+//			}
+//			cusSchedule.setModifiedUser(user.getUserName());
 			
 			Integer rows = cusScheduleService.updateSchedule(cusSchedule);
 			if(rows != 0 && rows != null) {

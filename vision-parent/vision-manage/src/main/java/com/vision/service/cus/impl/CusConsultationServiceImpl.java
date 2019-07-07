@@ -8,6 +8,7 @@ import com.vision.pojo.cus.CusConsultation;
 import com.vision.pojo.cus.CusCustomer;
 import com.vision.pojo.cus.vo.CusVo;
 import com.vision.service.cus.CusConsultationService;
+import com.vision.service.cus.CusCustomerService;
 import com.vision.service.tool.ToolOrganizationIdList;
 import com.vision.vo.PageObject;
 
@@ -25,6 +26,8 @@ public class CusConsultationServiceImpl implements CusConsultationService {
 	private CusCustomerMapper CusCustomerMapper;
 	@Autowired
 	private ToolOrganizationIdList toolOrganizationIdList;
+	@Autowired
+	private CusCustomerService cusCustomerService;
 
 	/**基于用户/电话及当前页码值条件查询用户信息*/
 	@Override
@@ -87,7 +90,12 @@ public class CusConsultationServiceImpl implements CusConsultationService {
 		queryWrapper.eq("org_id", orgId);
 		//执行删除
 		int rows = cusConsultationMapper.delete(queryWrapper);
-		
+		//查询客户信息
+		CusCustomer cusCustomer = cusCustomerService.getCustomerByConsultationId(id);
+		//如果有信息则删除客户所有相关信息
+		if(cusCustomer!=null) {
+			cusCustomerService.deleteCustomer(cusCustomer.getId(), orgId);
+		}
 		return rows;
 	}
 

@@ -3,6 +3,7 @@ package com.vision.controller.cus;
 import com.alibaba.druid.util.StringUtils;
 import com.vision.pojo.cus.CusConsultation;
 import com.vision.pojo.cus.vo.CusVo;
+import com.vision.pojo.sys.SysUser;
 import com.vision.service.cus.CusConsultationService;
 import com.vision.vo.PageObject;
 import com.vision.vo.JsonResult;
@@ -53,19 +54,21 @@ public class CusConsultationController {
     @RequestMapping("/addConsultation")
     @ResponseBody
     public JsonResult addConsultation( CusConsultation cusConsultation) {
-    	
-    	//验证数据合法性
-    	if(cusConsultation==null)
-    		return JsonResult.build(201, "对象不能为空");
-    	if(cusConsultation.getOrgId()==null||cusConsultation.getOrgId()<0)
-    		return JsonResult.build(201, "门店orgId不能为空");
-    	if(StringUtils.isEmpty(cusConsultation.getName()))
-    		return JsonResult.build(201, "用户名不能为空");
-    	if(StringUtils.isEmpty(cusConsultation.getTel()))
-    		return JsonResult.build(201, "电话不能为空");
-    	
-    	//获取登录用户信息
     	try {
+	    	//验证数据合法性
+	    	if(cusConsultation==null)
+	    		return JsonResult.build(201, "对象不能为空");
+	    	if(cusConsultation.getOrgId()==null||cusConsultation.getOrgId()<0)
+	    		return JsonResult.build(201, "门店orgId不能为空");
+	    	if(StringUtils.isEmpty(cusConsultation.getName()))
+	    		return JsonResult.build(201, "用户名不能为空");
+	    	if(StringUtils.isEmpty(cusConsultation.getTel()))
+	    		return JsonResult.build(201, "电话不能为空");
+	    	//获取登录用户信息
+	//    	SysUser user = null;
+	//    	cusConsultation.setCreatedUser(user.getUserName());
+	//    	cusConsultation.setModifiedUser(cusConsultation.getCreatedUser());
+    	
 			Integer row = cusConsultationService.addConsultation(cusConsultation);
 			if(row == null || row != 0) {
 				return JsonResult.oK();
@@ -82,13 +85,20 @@ public class CusConsultationController {
 	@RequestMapping("deleteConsultation")
 	@ResponseBody
 	public JsonResult deleteConsultation(Integer id, Integer  orgId) {
-		//验证数据合法性
-		if(orgId==null||orgId<0)
-			return JsonResult.build(201, "请选择一条数据");
-		if(id==null||id<0)
-			return JsonResult.build(201, "请选择一条数据");
-		
 		try {
+			//验证数据合法性
+			if(orgId==null||orgId<0)
+				return JsonResult.build(201, "请选择一条数据");
+			if(id==null||id<0)
+				return JsonResult.build(201, "请选择一条数据");
+			
+//	    	//获取登录用户信息
+//	    	SysUser user = null;
+//	    	Long organizationId = user.getOrganizationId();
+//	    	if(organizationId!=orgId.longValue()) {
+//	    		return JsonResult.build(201, "该账号不能删除该用户");
+//	    	}
+		
 			Integer row = cusConsultationService.deleteConsultation(id, orgId);
 			if(row == null || row != 0) {
 				return JsonResult.oK();
@@ -140,6 +150,13 @@ public class CusConsultationController {
     		return JsonResult.build(201, "用户名不能为空");
     	if(StringUtils.isEmpty(cusConsultation.getTel()))
     		return JsonResult.build(201, "电话不能为空");
+		
+    	//获取登录用户信息
+//    	SysUser user = null;
+//    	if(cusConsultation.getOrgId().longValue()!=user.getOrganizationId()) {
+//    		return JsonResult.build(201, "该账号不能修改该用户");
+//    	}
+//    	cusConsultation.setModifiedUser(user.getUserName());
 		
 		//获取登录用户信息
 		try {

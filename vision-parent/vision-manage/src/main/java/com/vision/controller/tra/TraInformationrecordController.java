@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.vision.exception.ServiceException;
 import com.vision.pojo.cus.vo.CusVo;
+import com.vision.pojo.sys.SysUser;
 import com.vision.pojo.tra.TraInformationrecord;
 import com.vision.service.cus.CusCustomerService;
 import com.vision.service.tra.TraInformationrecordService;
@@ -66,6 +67,10 @@ public class TraInformationrecordController {
 				return JsonResult.build(201, "课程表信息错误");
 			}
 			
+//			SysUser user = null;
+//			entity.setModifiedUser(user.getUserName());
+//			entity.setCreatedUser(user.getUserName());
+			
 			Integer rows = traInformationrecordService.addTraInfor(entity);
 			if(rows != null && rows != 0) {
 				cusCustomerService.updateObjectByTimesOfTraining(entity);
@@ -89,6 +94,11 @@ public class TraInformationrecordController {
 				return JsonResult.build(201, "请选择一条数据");
 			if(orgId==null||orgId<=0)
 				return JsonResult.build(201, "orgId错误");
+			
+//			SysUser user = null;
+//			if(user.getOrganizationId()!=orgId.longValue()) {
+//				return JsonResult.build(201, "该账号无法删除该诊断表，请联系相关门店更改");
+//			}
 			
 			Integer rows = traInformationrecordService.deleteTraInfor(id, orgId);
 			if(rows != null) {
@@ -128,9 +138,6 @@ public class TraInformationrecordController {
 	@RequestMapping("updateTraInfor")
 	@ResponseBody
 	public JsonResult updateTraInfor( TraInformationrecord entity) {
-//		Users user = ShiroUtils.getUser();
-		entity.setCreatedUser("admin");
-		entity.setModifiedUser("admin");
 		try {
 			if(entity.getId()==0||entity.getId()==null)
 				return JsonResult.build(201, "对象id不能为空");
@@ -147,6 +154,11 @@ public class TraInformationrecordController {
 				return JsonResult.build(201, "课程表信息错误");
 			}
 			
+//			SysUser user = null;
+//			if(user.getOrganizationId()!=entity.getOrgId().longValue()) {
+//				return JsonResult.build(201, "该账号无法修改该诊断表，请联系相关门店更改");
+//			}
+//			entity.setModifiedUser(user.getUserName());
 			Integer rows = traInformationrecordService.updateTraInfor(entity);
 			if(rows != null && rows != 0) {
 				return JsonResult.oK("保存成功");

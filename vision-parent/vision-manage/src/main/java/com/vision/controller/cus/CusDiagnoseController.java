@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.vision.pojo.cus.CusDiagnose;
 import com.vision.pojo.cus.vo.CusVo;
+import com.vision.pojo.sys.SysUser;
 import com.vision.service.cus.CusDiagnoseService;
 import com.vision.vo.JsonResult;
 import com.vision.vo.PageObject;
@@ -98,7 +99,9 @@ public class CusDiagnoseController {
 			if(cusDiagnose.getOrgId()==null||cusDiagnose.getOrgId()<0)
 				return JsonResult.build(201, "orgId错误");
 			//获取登录用户信息
-	//    	Users user = ShiroUtils.getUser();
+//			SysUser user = null;
+//			cusDiagnose.setCreatedUser(user.getUserName());
+//			cusDiagnose.setModifiedUser(user.getUserName());
 			cusDiagnose.setCreatedUser("admin");
 			cusDiagnose.setModifiedUser("admin");
 
@@ -118,6 +121,10 @@ public class CusDiagnoseController {
 	@ResponseBody
 	public JsonResult deleteDiagnose(Integer id, Integer orgId) {
 		try {
+//			SysUser user = null;
+//			if(user.getOrganizationId()!=orgId.longValue()) {
+//				return JsonResult.build(201, "该账号无法删除该诊断表，请联系相关门店更改");
+//			}
 			//验证数据
 			if(id==null||id<0)
 				return JsonResult.build(201, "请选择数据");
@@ -127,6 +134,32 @@ public class CusDiagnoseController {
 			Integer row = cusDiagnoseService.deleteDiagnose(id, orgId);
 			if(row != null) {
 				return JsonResult.oK("数据已删除");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("基于诊断表id删除数据=============错误=================");
+		}
+		return JsonResult.build(201, "数据可能已删除,请刷新");
+	}
+	
+	/**基于诊断表id修改数据*/
+	@RequestMapping("/updateDiagnose")
+	@ResponseBody
+	public JsonResult updateDiagnose(CusDiagnose cusDiagnose) {
+		try {
+			//验证数据
+			if(cusDiagnose==null)
+				return JsonResult.build(201, "数据错误");
+			if(cusDiagnose.getOrgId()==null||cusDiagnose.getOrgId()<0)
+				return JsonResult.build(201, "orgId错误");
+//			SysUser user = null;
+//			if(user.getOrganizationId()!=cusDiagnose.getOrgId().longValue()) {
+//				return JsonResult.build(201, "该账号无法修改该诊断表，请联系相关门店更改");
+//			}
+//			cusDiagnose.setModifiedUser(user.getUserName());
+			Integer row = cusDiagnoseService.updateDiagnose(cusDiagnose);
+			if(row != null) {
+				return JsonResult.oK("修改成功");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

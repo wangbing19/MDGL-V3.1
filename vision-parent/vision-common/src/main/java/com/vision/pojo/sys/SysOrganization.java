@@ -21,4 +21,8 @@ public class SysOrganization extends BasePojo {
 	private Long organizationParentId;
 	private Integer organizationSort;
 	private String organizationNote;
+	/**用户上限*/
+	private Integer toplimit;
+	/**剩余*/
+	private Integer surplus;
 }
