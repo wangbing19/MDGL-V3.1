@@ -14,7 +14,6 @@ import lombok.experimental.Accessors;
 @TableName("sys_user")
 public class SysUser {
 	@TableId(type=IdType.AUTO)
-	//id
 	private Long userId;
 	//登陆时间
 	private Date loginTime;

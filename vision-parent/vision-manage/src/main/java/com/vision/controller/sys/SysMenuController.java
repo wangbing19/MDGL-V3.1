@@ -51,8 +51,6 @@ public class SysMenuController {
 	public JsonResult findMenu() {
 		try {
 			List<SysMenu> list = sysMenuService.findAllMenus();
-			
-			
 			List<TreeStructure<SysMenu>> result = new ArrayList<>();
 			for(int i = 0; i < list.size(); i++) {
 				TreeStructure<SysMenu> treeStructure = new TreeStructure<>();

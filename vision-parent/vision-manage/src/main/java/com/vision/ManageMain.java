@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class ManageMain {
 
 	public static void main(String[] args) {
+		
 		SpringApplication.run(ManageMain.class, args);
 	}
 

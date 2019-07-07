@@ -9,7 +9,7 @@
 
 		<!-- 通过selectKey获取一个值 order表示在insert语句之后执行, keyProperty表示将selectKey的结果 
 			赋予参数对象的id属性 -->
-		<selectKey order="AFTER" resultType="int" keyProperty="id">
+		<selectKey order="AFTER" resultType="Long" keyProperty="userId">
 			select last_insert_id()
 		</selectKey>
 
