@@ -1,5 +1,6 @@
 package com.vision.service.rec.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -152,6 +153,35 @@ public class RecActivityRecordServiceImpl implements RecActivityRecordService{
 			//int insertResult = recActivityRecordMapper.insertActivityRecord(recPayUser);
 			if(insert>0) return 1;
 		}		
+		return 0;
+	}
+
+	@Override
+	/**基于用户id删除所有相关的充值记录*/
+	public Integer deleteRecPayUserByCustomerId(Integer customerId) {
+		try {
+			//根据客户id查询所有充值记录
+			List<RecPayUser> list = recActivityRecordMapper.findRecActivityRecordByCustomerId(customerId);
+			if(list==null) {
+				return 0;
+			}
+			List<Long> idList = new ArrayList<Long>();
+			//杜健华假设
+			Long userIdLong = 1L;
+			for(int i=0;i<list.size();i++) {
+				if(list.get(i).getUserId()==userIdLong) {
+					idList.add(list.get(i).getId());
+				}
+			}
+			//根据id批量删除充值记录
+			Integer result = recActivityRecordMapper.deleteAllRecPayUserByIds(idList);
+			if(result==0) {
+				return 0;
+			}
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return 0;
 	}	
 }

@@ -55,8 +55,11 @@ public class SymptomTypeController {
 	@ResponseBody
 	public JsonResult deleteSymptomObjectById(Long id) {
 		try {
-			symptomTypeService.deleteSymptomObjectById(id);
-			return JsonResult.oK("删除成功");
+			int s = symptomTypeService.deleteSymptomObjectById(id);
+			if(s>0) JsonResult.oK("删除成功");
+			else {
+				return JsonResult.build(201,"请先删除子症状");
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

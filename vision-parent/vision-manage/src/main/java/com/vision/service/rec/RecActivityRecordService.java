@@ -11,5 +11,6 @@ public interface RecActivityRecordService {
 	PageObject<RecPayUser> findAllActivityRecords(Integer pageCurrent, Integer pageSize);	
 	/**客户充值时新增新的充值记录*/
 	int insertActivityRecord(CusCustomer cusCustomer, RecPayUser recPayUser);
-
+	/**基于用户id删除所有相关的充值记录*/
+	Integer deleteRecPayUserByCustomerId(Integer customerId);
 }

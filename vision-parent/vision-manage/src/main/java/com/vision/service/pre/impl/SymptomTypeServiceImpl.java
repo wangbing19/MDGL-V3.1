@@ -37,7 +37,7 @@ public class SymptomTypeServiceImpl implements SymptomTypeService{
 
 	@Override
 	/**根据症状id删除症状*/
-	public void deleteSymptomObjectById(Long id) {
+	public int deleteSymptomObjectById(Long id) {
 		try {
 			if(id==null) throw new ServiceException("请先选择要删除的对象");
 			//1、根据症状id查询该症状信息
@@ -48,7 +48,7 @@ public class SymptomTypeServiceImpl implements SymptomTypeService{
 			//3、判断该症状有没有子症状
 			int row = symptomTypeMapper.getRowDataById(id);
 			//3.1)如果有，则不能删除
-			if(row!=0) throw new ServiceException("请先删除子症状");
+			if(row!=0) return 0;
 			//3.2)如果没有，则直接删除
 			symptomTypeMapper.deleteSymptomObjectById(id);
 			//4、根据parent_id查询是否还存在子症状
@@ -62,6 +62,7 @@ public class SymptomTypeServiceImpl implements SymptomTypeService{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return 1;
 	}
 
 	@Override

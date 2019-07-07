@@ -52,4 +52,15 @@
 		)
 	</select>
 	
+	<select id="findRecActivityRecordByCustomerId" resultType="com.vision.pojo.rec.RecPayUser">
+		select * from rec_pay_user where customer_id = #{customerId}
+	</select>
+	
+	<delete id="deleteAllRecPayUserByIds"  parameterType="long" >	
+		delete from rec_pay_user where id in
+		<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+		    #{item}
+		</foreach>		
+	</delete>
+	
 </mapper>

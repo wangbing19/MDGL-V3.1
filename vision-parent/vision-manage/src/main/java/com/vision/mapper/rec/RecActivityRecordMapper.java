@@ -23,5 +23,9 @@ public interface RecActivityRecordMapper extends BaseMapper<RecPayUser> {
 	RecPayUser getLastRechargeTime(@Param("customerId")Integer customerId);
 	/**客户充值时新增新的充值记录*/
 	int insertActivityRecord(RecPayUser recPayUser);
+	/**根据客户id查询所有该门店的充值记录*/
+	List<RecPayUser> findRecActivityRecordByCustomerId(@Param("customerId")Integer customerId);
+	/**根据id批量删除充值记录*/
+	Integer deleteAllRecPayUserByIds(List<Long> ids);
 
 }
