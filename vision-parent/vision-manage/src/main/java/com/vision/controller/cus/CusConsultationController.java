@@ -118,7 +118,7 @@ public class CusConsultationController {
 		//验证数据合法性
 		if(orgId==null||orgId<0)
 			return JsonResult.build(201, "orgId错误");
-		if(id==null||id<=0)
+		if(id==null||id<0)
 			return JsonResult.build(201, "id错误");
 		
 		try {

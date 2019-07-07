@@ -163,7 +163,7 @@ public class CusCustomerController {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("根据咨询表id查询客户表信息有无=============错误=================");
+			System.out.println("添加客户表信息=============错误=================");
 		}
 		return JsonResult.build(201, "此客户可能已存在");
 	}
@@ -201,9 +201,9 @@ public class CusCustomerController {
 			//验证数据合法性
 			if(cusCustomer==null)
 				return JsonResult.build(201, "对象不能为空");
-			if(cusCustomer.getId()<=0||cusCustomer.getId()==null)
+			if(cusCustomer.getId()==null||cusCustomer.getId()<0)
 				return JsonResult.build(201, "id错误");
-			if(cusCustomer.getOrgId()<=0||cusCustomer.getOrgId()==null)
+			if(cusCustomer.getOrgId()==null||cusCustomer.getOrgId()<0)
 				return JsonResult.build(201, "orgId错误");
 			if(StringUtils.isEmpty(cusCustomer.getName()))
 				return JsonResult.build(201, "客户名不能为空");
@@ -223,7 +223,7 @@ public class CusCustomerController {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("根据咨询表id查询客户表信息有无=============错误=================");
+			System.out.println("修改客户表信息=============错误=================");
 		}
 		return JsonResult.build(201, "此客户信息修改失败");
 	}
