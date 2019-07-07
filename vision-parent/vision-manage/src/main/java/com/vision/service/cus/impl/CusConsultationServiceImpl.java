@@ -112,7 +112,8 @@ public class CusConsultationServiceImpl implements CusConsultationService {
 	/**基于咨询表id更改用户信息*/
 	@Override
 	public Integer updateConsultation(CusConsultation entity) {
-
+		
+		entity.setGmtModified(new Date());
 	//	entity.setFOther(null);
 		int rows = cusConsultationMapper.updateObject(entity);
 		//修改客户数据信息

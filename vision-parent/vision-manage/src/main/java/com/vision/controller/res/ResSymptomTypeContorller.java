@@ -164,7 +164,7 @@ public class ResSymptomTypeContorller {
 	
 	/**
 	 * 查询门店下所有资源配置
-	 * @param resSymptomType
+	 * @param orgId
 	 * @return
 	 */
 	@RequestMapping("/getSymptomTypeListByOrgId")

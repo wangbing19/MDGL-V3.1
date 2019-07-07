@@ -93,7 +93,7 @@ public class CusCustomerController {
 //		SysUser user = null;
 //		if(user.getOrganizationId()!=cusVo.getOrgId().longValue())
 //			return JsonResult.build(201, "该账号不能修改该客户状态，请联系客户所属门店修改");
-		
+//		cusVo.setUser(user.getUserName());
 		try {
 			Integer row = cusCustomerService.updateCustomerState(cusVo);
 			if(row != null && row != 0) {

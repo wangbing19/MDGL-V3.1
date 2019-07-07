@@ -70,8 +70,6 @@ public class TraInformationrecordServiceImpl implements TraInformationrecordServ
 		entity.setEndTime(entity.getGmtCreate());
 
 		int rows = traInformationrecordMapper.insert(entity);
-		//修改客户表信息
-		cusCustomerService.updateObjectByTimesOfTraining(entity);
 		return rows;
 	}
 
@@ -95,6 +93,7 @@ public class TraInformationrecordServiceImpl implements TraInformationrecordServ
 	/**通过id修改训练表信息*/
 	@Override
 	public Integer updateTraInfor(TraInformationrecord entity) {
+		entity.setGmtModified(new Date());
 		int rows = traInformationrecordMapper.updateById(entity);
 		return rows;
 	}

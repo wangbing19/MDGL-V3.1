@@ -69,6 +69,7 @@ public class ResSymptomTypeSverviseImpl implements ResSymptomTypeSvervise{
 	/**修改资源配置信息*/
 	@Override
 	public Integer updateSymptomType(ResSymptomType resSymptomType) {
+		resSymptomType.setGmtCreate(new Date());
 		int row = resSymptomTypeMapper.updateById(resSymptomType);
 		return row;
 	}
@@ -100,6 +101,11 @@ public class ResSymptomTypeSverviseImpl implements ResSymptomTypeSvervise{
 		return update;
 	}
 
+	/**
+	 * 查询门店下所有资源配置
+	 * @param orgId
+	 * @return	List<ResSymptomType>
+	 */
 	@Override
 	public List<ResSymptomType> getSymptomTypeListByOrgId(Integer orgId) {
 		QueryWrapper<ResSymptomType> queryWrapper = new QueryWrapper<>();

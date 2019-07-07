@@ -125,6 +125,7 @@ public class CusDiagnoseServiceImpl implements CusDiagnoseService {
 	/**基于诊断表id修改数据*/
 	@Override
 	public Integer updateDiagnose(CusDiagnose cusDiagnose) {
+		cusDiagnose.setGmtModified(new Date());
 		Integer row = cusDiagnoseMapper.updateById(cusDiagnose);
 		return row;
 	}

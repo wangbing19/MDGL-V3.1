@@ -102,8 +102,6 @@ public class CusDiagnoseController {
 //			SysUser user = null;
 //			cusDiagnose.setCreatedUser(user.getUserName());
 //			cusDiagnose.setModifiedUser(user.getUserName());
-			cusDiagnose.setCreatedUser("admin");
-			cusDiagnose.setModifiedUser("admin");
 
 			Integer row = cusDiagnoseService.addDiagnose(cusDiagnose);
 			if(row != 0 && row != null) {

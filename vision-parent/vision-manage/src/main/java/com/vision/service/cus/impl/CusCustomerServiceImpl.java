@@ -145,6 +145,7 @@ public class CusCustomerServiceImpl implements CusCustomerService {
 		consultation.setAge(entity.getAge());
 		consultation.setGender(entity.getGender());
 		consultation.setTel(entity.getTel());
+		consultation.setGmtModified(new Date());
 		/**修改咨询表部分信息*/
 		cusConsultationMapper.updateById(consultation);
 		/**客户表新增*/
@@ -177,6 +178,7 @@ public class CusCustomerServiceImpl implements CusCustomerService {
 	/**基于客户id修改客户信息*/
 	@Override
 	public Integer updateCustomer(CusCustomer entity) {
+		entity.setGmtModified(new Date());
 		//保存数据
 		int rows = cusCustomerMapper.updateById(entity);
 		//返回结果
@@ -235,7 +237,7 @@ public class CusCustomerServiceImpl implements CusCustomerService {
 		//设置余额
 		cusCustomer.setBalance(balance);
 		cusCustomer.setId(entity.getCustomerId());
-		cusCustomer.setGmtCreate(new Date());
+		cusCustomer.setGmtModified(new Date());
 		int rows = cusCustomerMapper.updateById(cusCustomer);
 		return rows;
 	}
