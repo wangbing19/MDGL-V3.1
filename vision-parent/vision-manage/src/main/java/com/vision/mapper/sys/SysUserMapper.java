@@ -2,6 +2,8 @@ package com.vision.mapper.sys;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.vision.pojo.sys.SysUser;
 import com.vision.pojo.sys.vo.SysUserOrganization;
@@ -18,7 +20,7 @@ public interface SysUserMapper extends BaseMapper<SysUser>{
 
 	List<SysUserOrganization> findPageObjects(String username, int startIndex, int pageSize);
 
-	int validById(Integer id, Integer valid, String modifiedUser);
+	int validById(@Param("id")Integer id,@Param("valid") Integer valid, @Param("modifiedUser")String modifiedUser);
 
 	SysUserOrganization findObjectById(Integer userId);
 

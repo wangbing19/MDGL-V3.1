@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.vision.exception.ServiceException;
 import com.vision.mapper.sys.SysUserMapper;
 import com.vision.mapper.sys.SysUserRoleMapper;
@@ -85,7 +86,7 @@ public class SysUserServiceImpl implements SysUserService{
 		
 	}
 	@Override
-	public PageObject<SysUserOrganization> findPageObjects(Long organizationId,String username, Integer pageCurrent) {
+	public PageObject<SysUserOrganization> findPageObjects(Long organizationId,String username, Integer pageCurrent,Integer pageSize) {
 		
 		//1.验证参数有效性
 				if(pageCurrent==null||pageCurrent<1)
@@ -95,7 +96,7 @@ public class SysUserServiceImpl implements SysUserService{
 				if(rowCount==0)
 				throw new ServiceException("没有找到对应记录");
 				//3.基于条件查询当前页记录
-				int pageSize=3;
+				//int pageSize=3;
 				int startIndex=(pageCurrent-1)*pageSize;
 				List<SysUserOrganization> records=sysUserMapper.findPageObjects(username,
 						startIndex, pageSize);
@@ -122,6 +123,7 @@ public class SysUserServiceImpl implements SysUserService{
 				//2.执行禁用或启用操作
 				int rows=0;
 				try{
+					
 			    rows=sysUserMapper.validById(id, valid, modifiedUser);
 				}catch(Throwable e){
 				e.printStackTrace();
@@ -156,4 +158,24 @@ public class SysUserServiceImpl implements SysUserService{
 
 
 }
+	@Override
+	public SysUser findUserById(Integer userId) {
+		if(userId==null||userId<=0)
+			throw new ServiceException(
+			"参数数据不合法,userId="+userId);
+		SysUser selectById = sysUserMapper.selectById(userId);
+		return selectById;
+	}
+	
+	
+	@Override
+	public SysUser findUserByName(String userName) {
+		if(userName==null||userName=="")
+			throw new ServiceException(
+			"参数数据不合法,userId="+userName);
+		QueryWrapper<SysUser> queryWrapper = new QueryWrapper<SysUser>();
+		queryWrapper.eq("user_name", userName);
+		SysUser selectOne = sysUserMapper.selectOne(queryWrapper);
+		return selectOne;
+	}
 }

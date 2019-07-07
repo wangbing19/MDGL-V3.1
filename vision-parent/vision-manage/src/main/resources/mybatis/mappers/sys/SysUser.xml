@@ -98,10 +98,10 @@
 	<update id="validById">
 
 		update sys_user
-		set valid=#{valid},
-		modifiedUser=#{modifiedUser},
-		modifiedTime=now()
-		where id=#{id}
+		set user_status=#{valid},
+		modified_user=#{modifiedUser},
+		modified_time=now()
+		where user_id=#{id}
 
 	</update>
 

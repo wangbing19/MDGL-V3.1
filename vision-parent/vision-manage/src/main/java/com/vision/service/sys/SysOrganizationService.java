@@ -24,6 +24,7 @@ public interface SysOrganizationService {
 	 * @return
 	 */
 	SysOrganization getSysOrganizationById(Long id);
+
 	
 
 }

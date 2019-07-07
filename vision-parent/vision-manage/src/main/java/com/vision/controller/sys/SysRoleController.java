@@ -16,15 +16,16 @@ import com.vision.vo.CheckBox;
 import com.vision.vo.JsonResult;
 
 @Controller
-@RequestMapping("/sysRole")
+@RequestMapping("/sysRole/")
 public class SysRoleController {
 	@Autowired
 	private SysRoleService sysRoleService;
 	
 	@RequestMapping("doInsertRole")
 	@ResponseBody
-	public JsonResult insertRole(SysRole sysRole,Integer[] menuIds) {
+	public JsonResult insertRole(SysRole sysRole) {
 		try {
+			Integer[] menuIds = sysRole.getMenuIds();
 			int result = sysRoleService.doInsertRole(sysRole,menuIds);
 			return JsonResult.oK(result);
 		} catch (Exception e) {
@@ -46,7 +47,7 @@ public class SysRoleController {
 			e.printStackTrace();
 		}
 		
-		return JsonResult.build(201, "角色添加失败!");
+		return JsonResult.build(201, "角色删除失败!");
 		
 	}
 	
@@ -96,5 +97,37 @@ public class SysRoleController {
 	    return JsonResult.build(201, "查询失败！");
 	 } 
 	 
-	
+	 /**
+		 * 基于角色id查询自身信息
+		 * @param id
+		 * @return
+		 */
+	 @RequestMapping("doFindObjectByIds")
+	 @ResponseBody
+	 public JsonResult doFindObjectByIds(Integer... ids){
+	    try {
+	    	List<SysRole> result = sysRoleService.findObjectByIds(ids);
+	    	return JsonResult.oK(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	    return JsonResult.build(201, "查询失败！");
+	 } 
+	 
+	 /**
+	  * 查询所有角色消息信息
+	  * @return
+	  */
+	 @RequestMapping("doFindRoleAll")
+	 @ResponseBody
+	 public JsonResult doFindRoleAll(){
+	    try {
+	    	List<SysRole> result = sysRoleService.doFindRoleAll();
+	    	return JsonResult.oK(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	    return JsonResult.build(201, "查询失败！");
+	 } 
+	 
 }

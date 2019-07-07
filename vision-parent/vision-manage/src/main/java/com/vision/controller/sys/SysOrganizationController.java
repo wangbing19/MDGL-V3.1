@@ -19,7 +19,7 @@ import com.vision.vo.Node2;
 import com.vision.vo.TreeStructure;
 
 @Controller
-@RequestMapping("SysOrganization")
+@RequestMapping("/SysOrganization/")
 public class SysOrganizationController {
 	@Autowired
 	private SysOrganizationService sysOrganizationService;
@@ -43,7 +43,9 @@ public class SysOrganizationController {
 		try {
 			int result = sysOrganizationService.deleteOrganization(organizationId);
 			if(result == -1) {
-				 return JsonResult.build(201, "该元素下有子元素，无法删除！");
+				 return JsonResult.build(400, "该门店下有子门店，无法删除！");
+			}else if(result == -2) {
+				 return JsonResult.build(400, "该该门店下有用户，无法删除！");
 			}
 			return JsonResult.oK(result);
 		} catch (Exception e) {

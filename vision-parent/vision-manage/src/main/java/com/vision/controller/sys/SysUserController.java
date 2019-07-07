@@ -20,7 +20,7 @@ import com.vision.vo.PageObject;
 
 
 @Controller
-@RequestMapping("/sysUser")
+@RequestMapping("/sysUser/")
 public class SysUserController {
 	@Autowired
 	private SysUserService sysUserService;
@@ -79,9 +79,9 @@ public class SysUserController {
 	 */
 	@RequestMapping("doFindPageObjects")
 	@ResponseBody
-	public JsonResult doFindPageObjects(Long organizationId,String username,Integer pageCurrent){
+	public JsonResult doFindPageObjects(Long organizationId,String username,Integer pageCurrent,Integer pageSize){
 		
-		PageObject<SysUserOrganization> pageObject=sysUserService.findPageObjects(organizationId,username,pageCurrent);
+		PageObject<SysUserOrganization> pageObject=sysUserService.findPageObjects(organizationId,username,pageCurrent,pageSize);
 		return new JsonResult(pageObject);
 	}
 
@@ -114,6 +114,7 @@ public class SysUserController {
 	@ResponseBody
 	public JsonResult doValidById(Integer id,Integer valid){
 		try {
+			
 			int result = sysUserService.validById(id,valid, "admin");//"admin"用户将来是登陆用户
 			return JsonResult.oK("设置成功");
 		} catch (Exception e) {
@@ -131,6 +132,7 @@ public class SysUserController {
 		 
 		 try {
 			 List<CheckBox> result = sysRoleService.findObjects();
+			 return JsonResult.oK(result);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -149,6 +151,39 @@ public class SysUserController {
 			
 			return JsonResult.build(201, "查询失败！");
 		}
-
 	 
+	 /**
+	  * 用于权限用户认证时，根据id查询该用户信息
+	  * @param userId
+	  * @return
+	  */
+	 @RequestMapping("doFindUserById")
+	 @ResponseBody
+		public JsonResult findUserById(Integer userId){
+		 try {
+			 SysUser result=sysUserService.findUserById(userId);
+			 return JsonResult.oK(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+			
+			return JsonResult.build(201, "查询失败！");
+		}
+	 
+	 /**
+	  * 用于权限用户认证时，根据name查询该用户信息
+	  * @param userId
+	  * @return
+	  */
+	 @RequestMapping("doFindUserByName")
+	 @ResponseBody
+		public JsonResult findUserByName(String userName){
+		 try {
+			 SysUser result=sysUserService.findUserByName(userName);
+			 return JsonResult.oK(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+			return JsonResult.build(201, "查询失败！");
+		}
 }

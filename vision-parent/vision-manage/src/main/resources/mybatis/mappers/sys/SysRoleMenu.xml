@@ -32,4 +32,13 @@
               from sys_role_menus
               where role_id=#{id}        
       </select>
+      
+      <select id="selectListAll" resultType="SysRoleMenus">
+      
+      select * from sys_role_menus where in
+      <foreach collection="list" index="index" item="item" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+      </select>
 </mapper>

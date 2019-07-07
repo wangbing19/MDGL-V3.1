@@ -1,5 +1,6 @@
 package com.vision.service.sys.imp;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -7,11 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.vision.exception.ServiceException;
 import com.vision.mapper.sys.SysRoleMapper;
 import com.vision.mapper.sys.SysRoleMenusMapper;
+import com.vision.mapper.sys.SysUserMapper;
+import com.vision.mapper.sys.SysUserRoleMapper;
 import com.vision.pojo.sys.SysRole;
+import com.vision.pojo.sys.SysRoleUser;
+import com.vision.pojo.sys.vo.SysRoleMenus;
 import com.vision.pojo.sys.vo.SysRoleOrganizationResult;
 import com.vision.service.sys.SysRoleService;
 import com.vision.vo.CheckBox;
@@ -23,6 +28,10 @@ public class SysRoleServiceImpl implements SysRoleService{
 	private SysRoleMapper sysRoleMapper;
 	@Autowired
 	private SysRoleMenusMapper sysRoleMenusMapper;
+	@Autowired
+	private SysUserMapper sysUserMapper;
+	@Autowired
+	SysUserRoleMapper 	sysUserRoleMapper;
 	@Override
 	public int doInsertRole(SysRole sysRole,Integer[] menuIds) {
 		//1.参数验证
@@ -50,8 +59,12 @@ public class SysRoleServiceImpl implements SysRoleService{
 		throw new ServiceException("记录可能已经不存在");
 		//3.删除角色菜单关系数据
 		sysRoleMenusMapper.deleteObjectsByRoleId(id);
+		QueryWrapper queryWrapper = new QueryWrapper<SysRoleUser>();
+		queryWrapper.eq("role_id", id);
+		//4.删除角色用户关系数据 
+		sysUserRoleMapper.delete(queryWrapper);
+		//int result = sysRoleMenusMapper.deleteRoleById(id);
 		
-		//4.删除角色用户关系数据 暂时不管
 		return rows;
 	}
 	@Override
@@ -81,6 +94,7 @@ public class SysRoleServiceImpl implements SysRoleService{
 	}
 	@Override
 	public List<CheckBox> findObjects() {
+		
 		List<CheckBox> result = sysRoleMapper.findObjects();
 		return result;
 	}
@@ -93,6 +107,24 @@ public class SysRoleServiceImpl implements SysRoleService{
 			if(result==null)
 			throw new ServiceException("记录可能已经不存在");
 			return result;
+	}
+	@Override
+	public List<SysRole> findObjectByIds(Integer[] ids) {
+				ArrayList<Integer> arrayList = new ArrayList<>();
+		for (int i = 0; i < ids.length; i++) {
+			Integer integer = ids[i];
+			arrayList.add(integer);
+		}
+		List<SysRole> selectBatchIds = sysRoleMapper.selectBatchIds(arrayList);
+		return selectBatchIds;
+	}
+	@Override
+	public List<SysRole> doFindRoleAll() {
+		
+		
+		List<SysRole> selectList = sysRoleMapper.selectList(null);
+		
+		return selectList;
 	}
 	
 	

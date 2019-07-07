@@ -17,6 +17,10 @@ public interface SysRoleService {
 	List<CheckBox> findObjects();
 
 	SysRoleOrganizationResult findObjectById(Integer id);
+
+	List<SysRole> findObjectByIds(Integer[] ids);
+
+	List<SysRole> doFindRoleAll();
 	
 	
 }
