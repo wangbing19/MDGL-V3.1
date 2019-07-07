@@ -218,7 +218,7 @@ public class CusCustomerController {
 //			cusCustomer.setModifiedUser(user.getUserName());
 			
 			Integer row = cusCustomerService.updateCustomer(cusCustomer);
-			if(row != 0 && row == null) {
+			if(row != 0 && row != null) {
 				return JsonResult.oK();
 			}
 		} catch (Exception e) {
