@@ -1,6 +1,8 @@
 package com.vision.service.res;
 
 
+import java.util.List;
+
 import com.vision.pojo.cus.vo.CusVo;
 import com.vision.pojo.res.ResSymptomType;
 import com.vision.vo.PageObject;
@@ -18,6 +20,8 @@ public interface ResSymptomTypeSvervise {
 	Integer addSymptomType(ResSymptomType resSymptomType);
 	/**根据id删除资源配置信息*/
 	Integer deleteSymptomType(Integer id, Integer orgId);
+	/**查询门店下所有资源配置*/
+	List<ResSymptomType> getSymptomTypeListByOrgId(Integer orgId);
 	
 
 }

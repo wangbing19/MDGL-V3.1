@@ -56,10 +56,11 @@ public class CusCustomerServiceImpl implements CusCustomerService {
 		Integer pageCurrent = cusVo.getPageCurrent();
 		Integer orgId = cusVo.getOrgId();
 		Integer pageSize = cusVo.getPageSize();
+		Integer consultationId = cusVo.getConsultationId();
 		//查询组织下下级组织
 		List<Long> orgIds = toolOrganizationIdList.findOrganizationIdList(orgId.longValue());			
 		//2.依据条件获取总记录数并进行验证
-		int rowCount = cusCustomerMapper.getRowCount(name,tel,orgIds);
+		int rowCount = cusCustomerMapper.getRowCount(name,tel,orgIds,consultationId);
 		if(rowCount==0) {
 //			throw new ServiceException("记录不存在");
 			pageObject.setRowCount(rowCount);
@@ -72,7 +73,7 @@ public class CusCustomerServiceImpl implements CusCustomerService {
 		//3.基于条件查询当前页记录
 		int startIndex = (pageCurrent-1)*pageSize;
 		List<CusCustomer> records =
-				cusCustomerMapper.findPageObjects( name, tel, startIndex, pageSize,orgIds);
+				cusCustomerMapper.findPageObjects( name, tel, startIndex, pageSize,orgIds,consultationId);
 		//4.对查询结果进行封装并返回
 		pageObject.setRowCount(rowCount);
 		pageObject.setRecords(records);

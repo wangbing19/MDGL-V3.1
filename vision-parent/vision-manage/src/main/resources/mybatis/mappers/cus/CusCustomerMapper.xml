@@ -20,6 +20,11 @@
 			<if test="tel!=null and tel!=''">
 				and tel like concat("%",#{tel},"%")
 			</if>
+			<!-- tel条件 -->
+			<if test="consultationId!=null and consultationId!=''">
+				and consultation_id=#{consultationId}
+			</if>
+			
 		</where>
 	</sql>
 	

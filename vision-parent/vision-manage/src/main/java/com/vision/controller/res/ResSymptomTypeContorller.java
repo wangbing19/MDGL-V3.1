@@ -1,6 +1,8 @@
 package com.vision.controller.res;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -142,6 +144,29 @@ public class ResSymptomTypeContorller {
 		}
 		return JsonResult.build(201, "数据或已删除");
 	}
+	
+	/**
+	 * 查询门店下所有资源配置
+	 * @param resSymptomType
+	 * @return
+	 */
+	@RequestMapping("/getSymptomTypeListByOrgId")
+	@ResponseBody
+	public JsonResult getSymptomTypeListByOrgId( Integer orgId) {
+		try {
+			if(orgId==null||orgId<0)
+				return JsonResult.build(201, "门店信息不能为空");
+			List<ResSymptomType> symptomTypeList = resSymptomTypeSvervise.getSymptomTypeListByOrgId(orgId);
+			if(symptomTypeList.size()==0) {
+				return JsonResult.build(202, "该门店无训练配置，需添加资源配置");
+			}
+			return JsonResult.oK(symptomTypeList);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return JsonResult.build(201, "数据或已删除");
+	}
+	
 }
 
 
