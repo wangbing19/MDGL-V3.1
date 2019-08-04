@@ -4,3 +4,6 @@
 .project
 .factorypath
 /bin/
+.temp
+node_modules
+.umi
