@@ -25,6 +25,19 @@ export default [
     routes: [
       // dashboard
       { path: '/', redirect: '/dashboard/analysis', authority: ['admin', 'user'] },
+      // forms
+      {
+        path: '/cus',
+        icon: 'form',
+        name: 'cus',
+        routes: [
+          {
+            path: '/cus/consultation/consultation',
+            name: 'consultation',
+            component: './Cus/Consultation/Consultation',
+          }
+        ],
+      },
       {
         path: '/dashboard',
         name: 'dashboard',
