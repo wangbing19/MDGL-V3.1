@@ -110,7 +110,8 @@ export function formDataSubmit(dispatch,objName,formData){
   */
  export function deleteData(id,type,dispatch){
     var formData = new FormData();
-        formData.append("ids", id);
+    formData.append("id", id);
+    formData.append("orgId", 1);
     dispatch({
         type:type+'/remove',
         payload:formData,

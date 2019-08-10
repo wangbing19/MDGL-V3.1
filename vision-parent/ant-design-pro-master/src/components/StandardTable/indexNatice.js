@@ -56,6 +56,7 @@ class StandardTable extends PureComponent {
 
   //选择框使用方法
   handleRowSelectChange = (selectedRowKeys, selectedRows) => {
+    
     let needTotalList = [...this.state.needTotalList];
     needTotalList = needTotalList.map(item => {
       return {
@@ -83,35 +84,17 @@ class StandardTable extends PureComponent {
     const { type , dispatch , queryFormData ,parentId} = this.props;
     //查询条件中时间格式化
     let newQueryFormData = FormdateFormat(queryFormData,dateFormat.day_hour);
-    let sort ={};
     //从cookie取出分页查询页面大小与分页对象中传来的值比较
     if(cookie.load('limit')!=pagination.pageSize){
       cookie.save('limit',pagination.pageSize);
     }
-    //排序条件存在就封装排序条件,并设置排序状态
-    if(sorter.order){
-      newQueryFormData={
-        ...newQueryFormData,
-        page:1,
-      }
-      sort ={
-        field:sorter.field,//排序字段名
-        order:sorter.order,//升序 || 降序
-      }
-     
-    }
-     //设置排序状态
-     dispatch({
-      type: type+'/setSort',
-      payload: sorter,
-    });
+
     //组装分页查询参数
     const params = {
-            page: pagination.current,
+            pageCurrent: pagination.current,
             start: ((pagination.current-1)*pagination.pageSize),
-            parentId:parentId?parentId:"",//根据tree节点Id查询，没有就为''
+            orgId: 1,//根据tree节点Id查询，没有就为''
             ...newQueryFormData,//分页条件
-            ...sort,//排序
     };
     //发起分页查询
     let dispatchType = type+'/fetch';
@@ -125,10 +108,6 @@ class StandardTable extends PureComponent {
         });
     
   };
-
-   
-
-
 
   //设置左侧页码显示
   showTotal=(total,range)=>{
@@ -145,7 +124,7 @@ class StandardTable extends PureComponent {
     const paginationProps = {
       showSizeChanger: true,
       showQuickJumper: true,
-      pageSizeOptions:['5','10','20','50','100','200'],
+      pageSizeOptions:['1','5','10','20','50','100','200'],
       showTotal: (total,range) => this.showTotal(total,range),
       ...data.pagination
     };

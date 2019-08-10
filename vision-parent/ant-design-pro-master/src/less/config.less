@@ -1,0 +1,85 @@
+//左右分栏
+.content{
+    display:flex;
+  }
+//左右分栏左侧
+.left{
+    text-align: left;
+  
+  }
+//左右分栏右侧
+.right{
+    flex: 1;
+}
+.rightButton{
+  flex: 1;
+  margin-right: 5px;
+  margin-top: 5px;
+  text-align: right;
+}
+
+//高级搜索框样式
+.tableListForm {
+  
+    width: 84%;
+    text-align: left;
+    line-height: 32px;
+    margin-top: 5px;
+    margin-left: 8px;
+    :global {
+      .ant-form-item {
+        display: flex;
+        // margin-right: 0;
+        margin-bottom: 5px;
+        margin-left: 5px;
+        > .ant-form-item-label {
+          width: auto;
+          padding-right: 8px;
+          line-height: 32px;
+        }
+        .ant-form-item-control {
+          line-height: 32px;
+        }
+      }
+      .ant-form-item-control-wrapper {
+        flex: 1;
+      }
+    }
+    .submitButtons {
+      display: block;
+      white-space: nowrap;
+    }
+}
+//表格内部字体过多展示样式
+.hideText{
+    overflow:hidden;
+    text-overflow:ellipsis; 
+    white-space: nowrap;/*加宽度width属来兼容部分浏览*/
+    text-decoration:none;
+    text-align: left;
+}
+//蓝色字体带下划线
+.onClickTitle{
+  text-decoration: underline;
+  color: blue;
+}
+//使用layout左右分栏，左侧树结构样式
+.layoutSider{
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: #ffffff;
+}
+.buttons{
+  text-align: right;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 10px 16px;
+  left: 0;
+  background: #ffffff;
+  border-radius: 0 0 4px 4px;
+}
+
+.cancel{
+  margin-right: 8px;
+}

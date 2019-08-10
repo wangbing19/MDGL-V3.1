@@ -1,13 +1,21 @@
 import React, { Fragment, Component } from 'react';
 import { connect } from 'dva';
 import { Input, Button, Drawer, Form, InputNumber, Select, Radio, Row, Col, Table, Tooltip } from 'antd';
+import StandardTable from '@/components/StandardTable/indexNatice';
+import configStyles from '@/less/config.less';
+import {deleteData} from '@/utils/dataUtils';
+import ConsultationDrawer from './ConsultationDrawer.js';
 
-
+const FormItem = Form.Item;
+const Option = Select.Option;
 
 @connect(({consultation, loading }) => ({
     consultation,
     loading: loading.models.consultation,
 }))
+
+//创建表单
+@Form.create()
 
 class Consultation extends Component {
     constructor(props) {
@@ -25,11 +33,31 @@ class Consultation extends Component {
             type:"consultation/fetch",
             payload:{
                 pageCurrent:1,
-                orgId:0,
+                orgId:1,
                 pageSize:20,
                 ...value,
             }
         });
+    }
+
+    //表单验证，提交查询
+    handleSearch = e => {
+        e.preventDefault();
+        this.props.form.validateFields((err, fieldsValue) => {
+            if (err) return;
+            const { dispatch } = this.props
+            dispatch({
+                type:'consultation/clearQueryCriteria'
+            })
+            //调用查询方法
+            this.getConsultation(fieldsValue);
+        });
+    };
+
+    //删除
+    delete=()=>{
+        const { dispatch ,consultation:{selectedRowKeys} } = this.props;
+        deleteData(selectedRowKeys,'consultation',dispatch);//通过id删除数据
     }
 
     columns=[
@@ -84,26 +112,77 @@ class Consultation extends Component {
             width: "5%",
             render: (text,row) => (
                 <div>
-                   
+                   <Button  type="primary" icon={'edit'} onClick={this.showDrawer.bind(this,row)}/>
                 </div>
             ),
         },
     ]
     
-    ghdsjf=(row)=>{
-        debugger;
+    //添加修改跳转页面
+    showDrawer=(row)=>{
+        const {  consultation:{ drawerVisible },dispatch } =this.props;
+        dispatch({
+            type:"consultation/setDrawerVisible",
+            payload:!drawerVisible,
+        })
+        if(row.id){
+            dispatch({
+                type:'consultation/getDictMapById',
+                payload:{
+                    id:row.id
+                },
+            })
+        }
     }
 
     render() {
-        const { consultation: { data }, loading, dispatch} = this.props;
-        const records = data.list;
+        const { consultation: { data, selectedRows, deleteDisabled, msg, selectedRowKeys, }, 
+                form: { getFieldDecorator,getFieldsValue }, loading, dispatch} = this.props;
+        
         return (
+                
             <div>
-               <Table
-                    columns={this.columns}
-                    loading={loading}
-                    dataSource={records}
-               />
+                <div className={configStyles.content}>
+                        <div className={configStyles.tableListForm}>
+                            <Form onSubmit={this.handleSearch} layout="inline">
+                                <Row >
+                                    <Col md={8} sm={24}>
+                                        <FormItem label="名称">
+                                            {getFieldDecorator('name')(<Input placeholder="请输入"/>)}
+                                        </FormItem>
+                                    </Col>
+                                    <Col md={8} sm={24} >
+                                        <FormItem label="电话">
+                                            {getFieldDecorator('tel')(<Input placeholder="请输入"/>)}
+                                        </FormItem>
+                                    </Col>
+                                    <Col md={8} sm={24} >
+                                        <Button type="primary" htmlType="submit">查询</Button>
+                                    </Col>
+                                </Row>
+                            </Form>       
+                        </div>
+                        <div className={configStyles.rightButton} >
+                            <Button type="primary" icon={'plus'} onClick={this.showDrawer} title="添加下级系统" />&nbsp;
+                            <Button type="primary" icon={'delete'} onClick={this.delete} disabled={deleteDisabled} title="删除" />
+                        </div>
+                    </div>
+                <div >
+                    {/* 分页表格 */}
+                    <StandardTable
+                            selectedRows={selectedRows}
+                            loading={loading}
+                            data={data}
+                            columns={this.columns}
+                            type='consultation'
+                            queryFormData={getFieldsValue()}
+                            dispatch={dispatch}
+                            deleteDisabled={deleteDisabled}
+                            selectedRowKeys={selectedRowKeys}
+                    />
+                    {/* 修改，添加 */}
+                    <ConsultationDrawer/>
+                </div>
             </div>
         );
     }

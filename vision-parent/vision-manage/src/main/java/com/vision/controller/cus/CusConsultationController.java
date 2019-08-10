@@ -101,7 +101,7 @@ public class CusConsultationController {
 		
 			Integer row = cusConsultationService.deleteConsultation(id, orgId);
 			if(row == null || row != 0) {
-				return JsonResult.oK();
+				return JsonResult.oK("删除成功");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
