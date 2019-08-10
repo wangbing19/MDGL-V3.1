@@ -12,18 +12,19 @@ import com.vision.vo.JsonResult;
 @Controller
 @RequestMapping("/symptomDesc")
 public class SymptomDescController {
-	@Autowired
-	private SymptomDescService symptomDescService;
-	@RequestMapping("/findSymptomDescObjectByid")
-	@ResponseBody
-	/**根据症状id查询症状描述信息*/
-	public JsonResult findSymptomDescObjectByid(Long id) {
-		try {
-			SymptomDesc symptomDesc = symptomDescService.findSymptomDescObjectByid(id);
-			return JsonResult.oK(symptomDesc);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return JsonResult.build(201,"查询症状描述信息失败");
-	}
+    @Autowired
+    private SymptomDescService symptomDescService;
+
+    @RequestMapping("/findSymptomDescObjectByid")
+    @ResponseBody
+    /**根据症状id查询症状描述信息*/
+    public JsonResult findSymptomDescObjectByid(Long id) {
+        try {
+            SymptomDesc symptomDesc = symptomDescService.findSymptomDescObjectByid(id);
+            return JsonResult.oK(symptomDesc);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return JsonResult.build(201, "查询症状描述信息失败");
+    }
 }

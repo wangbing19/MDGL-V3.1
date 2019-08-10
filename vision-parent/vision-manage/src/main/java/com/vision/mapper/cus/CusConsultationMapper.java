@@ -5,8 +5,10 @@ import java.util.List;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.vision.pojo.cus.CusConsultation;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+@Mapper
 public interface CusConsultationMapper extends BaseMapper<CusConsultation> {
 
 	/**

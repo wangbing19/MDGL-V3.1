@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vision.mapper.exp.ExpertMapper">
+    <resultMap id="BaseMap" type="com.vision.pojo.exp.ExpExpert">
+        <id column="id" property="id"/>
+        <result column="expert_name" property="expertName"/>
+        <result column="expert_tel" property="expertTel"/>
+        <result column="expert_message" property="expertMessage"/>
+        <result column="appointment_time" property="appointmentTime"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="del_tag" property="delTag"/>
+    </resultMap>
+
+    <!-- 与远程诊断表并用,通过专家表id查找专家姓名 -->
+    <select id="findId" resultType="string">
+		select expert_name from
+		exp_expert where id=#{expertId}
+	</select>
+
+    <!-- 基于条件进行分页查询 -->
+    <select id="limitExp" resultType="com.vision.pojo.exp.ExpExpert">
+        select * from exp_expert
+        <include refid="queryWhereId"/>
+        order by id asc
+        limit #{startIndex},#{pageSize}
+        <!-- limit 子句为分页查询子句,第一个参数代表下标位置 -->
+    </select>
+
+    <!-- 通过sql元素定义sql语句中的共性 -->
+    <sql id="queryWhereId">
+        <where>
+            <if test="expertName!=null and expertName!=''">
+                expert_name like concat("%",#{expertName},"%")
+            </if>
+            and del_tag=0
+        </where>
+    </sql>
+
+    <!-- 对应远程诊断修改页面中的点击选择专家弹出的专家姓名 -->
+    <select id="selectExpName" resultType="com.vision.vo.Node">
+		select id,expert_name as name
+		from exp_expert
+	</select>
+</mapper>

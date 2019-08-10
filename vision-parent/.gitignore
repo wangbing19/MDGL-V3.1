@@ -3,3 +3,16 @@
 .classpath
 .project
 .factorypath
+### Example user template template
+### Example user template
+
+# IntelliJ project files
+.idea
+*.iml
+out
+gen
+.gitignore
+vision-parent.iml
+.settings
+vision-common/vision-common.iml
+vision-manage/vision-manage.iml

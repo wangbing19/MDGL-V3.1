@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vision.mapper.exp.ExpertReplyMapper">
+    <resultMap id="BaseMap" type="com.vision.pojo.exp.ExpExpertReply">
+        <id column="id" property="id"/>
+        <result column="remote_diagnose_id" property="remoteDiagnoseId"/>
+        <result column="expert_reply" property="expertReply"/>
+        <result column="expert_remark" property="expertRemark"/>
+        <result column="gmt_create" property="gmtCreate"/>
+        <result column="gmt_modified" property="gmtModified"/>
+        <result column="del_tag" property="delTag"/>
+    </resultMap>
+</mapper>
