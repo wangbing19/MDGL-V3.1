@@ -127,9 +127,10 @@ class Consultation extends Component {
         })
         if(row.id){
             dispatch({
-                type:'consultation/getDictMapById',
+                type:'consultation/getConsultationById',
                 payload:{
-                    id:row.id
+                    id:row.id,
+                    orgId:row.orgId,
                 },
             })
         }

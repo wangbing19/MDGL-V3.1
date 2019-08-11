@@ -1,4 +1,4 @@
-import { getConsultation, deleteConsultation } from '@/services/consultation';
+import { getConsultation, deleteConsultation, addConsultation, updateConsultation, getConsultationById } from '@/services/consultation';
 import {formatData, FormdateFormat} from '@/utils/dataUtils';
 import cookie from 'react-cookies';
 
@@ -27,6 +27,7 @@ export default {
         selectedRowKeys:[],
         //查询行信息
         cusRow:{
+            status:201,
             ok: false,
             msg: "",
             data:{},
@@ -75,12 +76,52 @@ export default {
             //刷新页面
             let queryCriteria = yield select(state => state.consultation.queryCriteria);
             yield put({
-                    type: 'fetch',
-                    payload: {
-                        ...queryCriteria,
-                        pageCurrent: 1,
-                        orgId: 1,
-                    },
+                type: 'fetch',
+                payload: {
+                    ...queryCriteria,
+                    pageCurrent: 1,
+                    orgId: 1,
+                },
+            });
+        },
+        //添加
+        *add( {payload,callback}, { select, call, put }) {
+            const response = yield call(addConsultation,payload);
+            if(callback) callback(response);
+            //刷新页面
+            let queryCriteria = yield select(state => state.consultation.queryCriteria);
+            yield put({
+                type: 'fetch',
+                payload: {
+                    ...queryCriteria,
+                    pageCurrent: 1,
+                    orgId: 1,
+                },
+            });
+        },
+        //修改
+        *update( {payload,callback}, { select,call, put }) {
+            const response = yield call(updateConsultation,payload);
+            if(callback) callback(response);
+            //刷新页面
+            let queryCriteria = yield select(state => state.consultation.queryCriteria);
+            const current = yield select(state => state.consultation.data.pagination.current);
+            yield put({
+                type: 'fetch',
+                payload: {
+                    ...queryCriteria,
+                    pageCurrent: current,
+                    orgId: 1,
+                },
+            });
+        },
+        //修改时根据id查询数据
+        *getConsultationById( {payload}, { call, put }) {
+            const formData = formatData(payload);
+            const response = yield call(getConsultationById,formData);
+            yield put({
+                type: 'saveCusRow',
+                payload: response,
             });
         },
     },
@@ -128,6 +169,27 @@ export default {
             return {
                 ...state,
                 drawerVisible:action.payload,
+            };
+        },
+        //修改时根据id查询数据
+        saveCusRow(state,action){
+            return {
+                ...state,
+                cusRow:{
+                    ...action.payload,
+                }
+            };
+        },
+        //设置按id查询数据清空
+        clearFeomData(state){
+            return {
+                ...state,
+                cusRow:{
+                    status:201,
+                    ok: false,
+                    msg: "",
+                    data:{},
+                },
             };
         },
     },
