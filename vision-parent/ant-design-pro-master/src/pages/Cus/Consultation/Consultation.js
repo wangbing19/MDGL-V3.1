@@ -120,6 +120,7 @@ class Consultation extends Component {
     
     //添加修改跳转页面
     showDrawer=(row)=>{
+        debugger
         const {  consultation:{ drawerVisible },dispatch } =this.props;
         dispatch({
             type:"consultation/setDrawerVisible",
@@ -164,7 +165,7 @@ class Consultation extends Component {
                             </Form>       
                         </div>
                         <div className={configStyles.rightButton} >
-                            <Button type="primary" icon={'plus'} onClick={this.showDrawer} title="添加下级系统" />&nbsp;
+                            <Button type="primary" icon={'plus'} onClick={this.showDrawer} title="添加" />&nbsp;
                             <Button type="primary" icon={'delete'} onClick={this.delete} disabled={deleteDisabled} title="删除" />
                         </div>
                     </div>
