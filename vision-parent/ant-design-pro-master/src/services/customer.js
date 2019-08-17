@@ -1,36 +1,54 @@
 import request from '@/utils/request';
 //查询
-export async function getConsultation(params) {
-    return request("/vision/consultation/getConsultation",{
+export async function getCustomer(params) {
+    return request("/vision/customer/getCustomer",{
         method: "POST",
         body: params,
     });
 }
 //删除
-export async function deleteConsultation(params) {
-    return request("/vision/consultation/deleteConsultation",{
+export async function deleteCustomer(params) {
+    return request("/vision/customer/deleteCustomer",{
         method: "POST",
         body: params,
     });
 }
 //添加
-export async function addConsultation(params) {
-    return request("/vision/consultation/addConsultation",{
+export async function addCustomer(params) {
+    return request("/vision/customer/addCustomer",{
         method: "POST",
         body: params,
     });
 }
 //修改
-export async function updateConsultation(params) {
-    return request("/vision/consultation/updateConsultation",{
+export async function updateCustomer(params) {
+    return request("/vision/customer/updateCustomer",{
         method: "POST",
         body: params,
     });
 }
 //基于id查询
-export async function getConsultationById(params) {
-    return request("/vision/consultation/getConsultationById",{
+export async function getCustomerById(params) {
+    return request("/vision/customer/getCustomerById",{
         method: "POST",
         body: params,
     });
 }
+//修改用户状态
+export async function updateCustomerState(params) {
+    return request("/vision/customer/updateCustomerState",{
+        method: "POST",
+        body: params,
+    });
+}
+//根据咨询表id查询用户信息
+export async function getCustomerByConsultationId(params) {
+    return request("/vision/customer/getCustomerByConsultationId",{
+        method: "POST",
+        body: params,
+    });
+}
+
+//暂定功能（未）
+// 基于充值记录表返回信息用户id修改金额,余额及充值次数
+// 基于训练记录表返回信息更改训练次数

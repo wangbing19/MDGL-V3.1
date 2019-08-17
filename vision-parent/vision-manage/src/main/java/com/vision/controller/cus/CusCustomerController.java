@@ -97,7 +97,7 @@ public class CusCustomerController {
 		try {
 			Integer row = cusCustomerService.updateCustomerState(cusVo);
 			if(row != null && row != 0) {
-				return JsonResult.oK();
+				return JsonResult.oK("修改成功");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -159,7 +159,7 @@ public class CusCustomerController {
 				  //添加登录用户创建客户数量 
 //				organization.setSurplus(organization.getSurplus()-row);
 //				sysOrganizationService.updateOrganization(organization);
-				return JsonResult.oK();
+				return JsonResult.oK("添加成功");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -184,7 +184,7 @@ public class CusCustomerController {
 		try {
 			Integer row = cusCustomerService.deleteCustomer(id, orgId);
 			if(row != null && row != 0) {
-				return JsonResult.oK();
+				return JsonResult.oK("删除成功");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -219,7 +219,7 @@ public class CusCustomerController {
 			
 			Integer row = cusCustomerService.updateCustomer(cusCustomer);
 			if(row != 0 && row != null) {
-				return JsonResult.oK();
+				return JsonResult.oK("修改成功");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

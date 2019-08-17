@@ -22,13 +22,7 @@ const { MonthPicker, RangePicker } = DatePicker;
 class CustomerDrawer extends Component {
     constructor(props) {
         super(props);
-        this.state = { 
-            oculopathyOtherIsCan:false,
-            fVisionConditionIsCan:false,
-            mVisionConditionIsCan:false,
-            eyeProjectOtherIsCan:false,
-            eyePositionOtherIsCan:false,
-         };
+        this.state = {  };
     }
 
     showDrawer=()=>{
@@ -49,16 +43,14 @@ class CustomerDrawer extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, fieldsValue) => {
-            debugger
             if (!err) {
                 const {customer: {  cusRow, selectedRows }, dispatch } = this.props;
                 const { data, ok} = cusRow;
-                fieldsValue = {
-                    ...fieldsValue,
-                    // "declineTimeYear":fieldsValue['declineTimeYear'].format('YYYY-MM'),
-                }
-                debugger
                 const formData = formatData(fieldsValue,"",data["id"]);
+                fieldsValue={
+                    ...fieldsValue,
+                    "birthday":fieldsValue['birthday'].format('YYYY/MM/DD'),
+                }
                 //封装表单数据对象
                 // const formData = formatData(fieldsValue);
                 formData.append("orgId",1)
@@ -70,102 +62,10 @@ class CustomerDrawer extends Component {
         });
     }
 
-    //确认为何种病症
-    oculopathyOtherIsCan=(e)=>{
-        if(e.target.value=="4"){
-            this.setState({
-                oculopathyOtherIsCan:true,
-            })
-        } else if(e.target.value!="4"){
-            this.setState({
-                oculopathyOtherIsCan:false,
-            })
-            this.props.form.setFieldsValue({
-                oculopathyOther: "",
-            })
-        }
-        
-    }
-    //父亲:
-    fVisionConditionIsCan=(e)=>{
-        if(e.target.value=="11"){
-            this.setState({
-                fVisionConditionIsCan:true,
-            })
-        } else if(e.target.value!="11"){
-            this.setState({
-                fVisionConditionIsCan:false,
-            })
-        }
-        
-    }
-    
-    //母亲:
-    mVisionConditionIsCan=(e)=>{
-        if(e.target.value=="11"){
-            this.setState({
-                mVisionConditionIsCan:true,
-            })
-        } else if(e.target.value!="11"){
-            this.setState({
-                mVisionConditionIsCan:false,
-            })
-        }
-    }
-
-    setDisable=(data)=>{
-        if(data["oculopathy"]=="4"){
-            this.setState({
-                oculopathyOtherIsCan:true,
-            })
-        }
-        if(data["fvisionCondition"]=="11"){
-            this.setState({
-                fVisionConditionIsCan:true,
-            })
-        }
-        if(data["mvisionCondition"]=="11"){
-            this.setState({
-                mVisionConditionIsCan:true,
-            })
-        }
-    }
-
-    //用眼项目
-    eyeProjectOtherIsCan = value => {
-        this.setState({
-            eyeProjectOtherIsCan:false,
-        })
-        value.map((item) => {
-            if(item=="3"){
-                this.setState({
-                    eyeProjectOtherIsCan:true,
-                })
-            }
-        })
-    }
-    //用眼姿势
-    eyePositionOtherIsCan = value => {
-        this.setState({
-            eyePositionOtherIsCan:false,
-        })
-        value.map((item) => {
-            if(item=="6"){
-                this.setState({
-                    eyePositionOtherIsCan:true,
-                })
-            }
-        })
-    }
-
 
     render() {
-        const { oculopathyOtherIsCan, fVisionConditionIsCan, mVisionConditionIsCan, eyeProjectOtherIsCan, eyePositionOtherIsCan  } = this.state;
         const {form: {getFieldDecorator} ,customer: { drawerVisible, cusRow}, dispatch } = this.props;
         const { data, ok} = cusRow;
-        // if(ok){
-        //     this.setDisable(data);
-        // }
         return (
             <Drawer
             title={ok?"修改":"添加"}
@@ -173,53 +73,83 @@ class CustomerDrawer extends Component {
             closable={false}
             onClose={this.showDrawer}
             visible={drawerVisible}
-            width={'70%'}
+            width={'40%'}
             >
-            <Form  labelCol={{ span: 8 }} wrapperCol={{ span: 15 }} onSubmit={this.handleSubmit} >
-                <div className={styles.titleSeting}>基础信息</div>
-                <br/><br/>
-                <Row >
-                    <Col md={6} sm={24}>
-                        <Form.Item label='姓名' >
-                            {getFieldDecorator('name', { rules: [{ ...rules.required  }],initialValue:ok?data["name"]:''
-                            })(
-                                <Input   />
-                            )}
-                        </Form.Item>
-                    </Col>
-                    <Col md={6} sm={24} >
-                        <Form.Item label='年龄' >
-                            {getFieldDecorator('age', { rules: [{ ...rules.required  }],initialValue:ok?data["age"]:''
-                            })(
-                                <Input   />
-                            )}
-                        </Form.Item>
-                    </Col>
-                    <Col md={6} sm={24} >
-                        <Form.Item label='性别' >
-                            {getFieldDecorator('gender', { rules: [{ ...rules.required  }],initialValue:ok?data["gender"]:''
-                            })(
-                                <Input   />
-                            )}
-                        </Form.Item>
-                    </Col>
-                    <Col md={6} sm={24} >
-                        <Form.Item label='联系方式' >
-                            {getFieldDecorator('tel', { rules: [{ ...rules.required  }],initialValue:ok?data["tel"]:''
-                            })(
-                                <Input   />
-                            )}
-                        </Form.Item>
-                    </Col>
-                </Row>
-                <div className={styles.buttons} >
-                    <Button onClick={this.showDrawer} className={styles.cancel} >
-                        返回
-                    </Button>
-                    <Button  type="primary" htmlType="submit">
-                        提交
-                    </Button>
-                </div>
+                <Form  labelCol={{ span: 4 }} wrapperCol={{ span: 19 }} onSubmit={this.handleSubmit} >
+                <Form.Item label='用户名' >
+                        {getFieldDecorator('name', { rules: [{ ...rules.required  }],initialValue:ok?data["name"]:''
+                        })(
+                            <Input   />
+                        )}
+                    </Form.Item>
+                    <Form.Item label='年龄' >
+                        {getFieldDecorator('age', { rules: [{ ...rules.required  }],initialValue:ok?data["age"]:''
+                        })(
+                            <Input   />
+                        )}
+                    </Form.Item>
+                    <Form.Item label='生日' >
+                        {getFieldDecorator('birthday', { rules: [{ ...rules.required  }],initialValue:moment(ok?moment(data["birthday"]).format(dateFormat.day):moment().format(dateFormat.day), dateFormat.day_hour)
+                        })(
+                            <DatePicker format={dateFormat.day} style={{width:'100%'}}/>
+                        )}
+                    </Form.Item>
+                    <Form.Item label='性别' >
+                        {getFieldDecorator('gender', { rules: [{ ...rules.required  }],initialValue:ok?data["gender"]:''
+                        })(
+                            <Input   />
+                        )}
+                    </Form.Item>
+                    <Form.Item label='家庭地址' >
+                        {getFieldDecorator('home', { rules: [{ ...rules.required  }],initialValue:ok?data["home"]:''
+                        })(
+                            <Input   />
+                        )}
+                    </Form.Item>
+                    <Form.Item label='学校地址' >
+                        {getFieldDecorator('school', { rules: [{ ...rules.required  }],initialValue:ok?data["school"]:''
+                        })(
+                            <Input   />
+                        )}
+                    </Form.Item>
+                    <Form.Item label='监护人' >
+                        {getFieldDecorator('guardian', { rules: [{ ...rules.required  }],initialValue:ok?data["guardian"]:''
+                        })(
+                            <Input   />
+                        )}
+                    </Form.Item>
+                    <Form.Item label='电话' >
+                        {getFieldDecorator('tel', { rules: [{ ...rules.required  }],initialValue:ok?data["tel"]:''
+                        })(
+                            <Input   />
+                        )}
+                    </Form.Item>
+                    <Form.Item label='次级监护人' >
+                        {getFieldDecorator('lastGuardian', { initialValue:ok?data["lastGuardian"]:''
+                        })(
+                            <Input   />
+                        )}
+                    </Form.Item>
+                    <Form.Item label='备用电话' >
+                        {getFieldDecorator('lastGuardianTel', { initialValue:ok?data["lastGuardianTel"]:''
+                        })(
+                            <Input   />
+                        )}
+                    </Form.Item>
+                    <Form.Item label='信息备注' >
+                        {getFieldDecorator('remark', { initialValue:ok?data["remark"]:''
+                        })(
+                            <Input   />
+                        )}
+                    </Form.Item>
+                    <div className={styles.buttons} >
+                        <Button onClick={this.showDrawer} className={styles.cancel} >
+                            返回
+                        </Button>
+                        <Button  type="primary" htmlType="submit">
+                            提交
+                        </Button>
+                    </div>
                 </Form>
           </Drawer>
         );

@@ -71,54 +71,81 @@ class Customer extends Component {
         {
             title: '姓名',
             dataIndex: 'name',
-            width: "15%",
+            width: "8%",
         },
         {
             title: '联系电话',
             dataIndex: 'tel',
-            width: "15%",
+            width: "9%",
         },
         {
-            title: '裸眼远视力',
-            dataIndex: 'ld',
-            width: "15%",
+            title: '已充值金额/账户余额',
+            dataIndex: 'balance',
+            width: "9%",
             render: (text,row) => (
                 <div>
-                   {row.ld}/{row.rd}
+                   {row.money}/{row.balance}
                 </div>
             ),
         },
         {
-            title: '矫正远视力',
-            dataIndex: 'lcva',
-            width: "15%",
+            title: '训练数',
+            dataIndex: 'totalTrainingTime',
+            width: "8%",
             render: (text,row) => (
                 <div>
-                   {row.lcva}/{row.rcva}
+                   {row.totalTrainingTime}/{row.timesOfTraining}
                 </div>
             ),
         },
         {
-            title: '咨询导师',
-            dataIndex: 'tutor',
-            width: "15%",
+            title: '充值记录',
+            dataIndex: 'rechargeCount',
+            width: "5%",
         },
         {
-            title: '创建时间',
-            dataIndex: 'gmtModified',
-            width: "15%",
+            title: '课程记录',
+            dataIndex: 'scheduleCount',
+            width: "5%",
+        },
+        {
+            title: '状态',
+            dataIndex: 'state',
+            width: "5%",
+        },
+        {
+            title: '咨询/诊断表',
+            dataIndex: 'balance',
+            width: "8%",
             render:(text,row) =>(
                 <div>
-                    {moment(text).format('YYYY-MM-DD HH:mm:ss')}
+                   <span>咨询</span>/<span>诊断表</span>
                 </div>
             ),
+        },
+        {
+            title: '主监护人',
+            dataIndex: 'guardian',
+            width: "10%",
+        },
+        {
+            title: '上次训练时间',
+            dataIndex: 'lastTrain',
+            width: "15%",
+            // render:(text,row) =>(
+            //     <div>
+            //         {
+            //             moment(text).format('YYYY-MM-DD HH:mm:ss')}
+            //     </div>
+            // ),
         },
         {
             title: '操作',
-            width: "5%",
+            // width: "10%",
             render: (text,row) => (
                 <div>
-                   <Button  type="primary" icon={'edit'} onClick={this.showDrawer.bind(this,row)}/>
+                   <Button  type="primary" icon={'edit'} onClick={this.showDrawer.bind(this,row)}/>&nbsp;
+                   <Button  type="primary" icon={'plus'} onClick={this.showDrawer.bind(this,row)} title={"添加课程表"}/>
                 </div>
             ),
         },
@@ -133,7 +160,7 @@ class Customer extends Component {
         })
         if(row.id){
             dispatch({
-                type:'customer/getConsultationById',
+                type:'customer/getCustomerById',
                 payload:{
                     id:row.id,
                     orgId:row.orgId,

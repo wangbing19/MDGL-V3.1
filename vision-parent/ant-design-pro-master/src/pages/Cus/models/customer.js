@@ -1,4 +1,5 @@
-import { getConsultation, deleteConsultation, addConsultation, updateConsultation, getConsultationById } from '@/services/consultation';
+import { getCustomer, deleteCustomer, addCustomer, updateCustomer, getCustomerById, updateCustomerState, 
+         getCustomerByConsultationId } from '@/services/customer';
 import {formatData, FormdateFormat} from '@/utils/dataUtils';
 import cookie from 'react-cookies';
 
@@ -50,7 +51,7 @@ export default {
                 tel: payload.tel?payload.tel:'',
             }
             const formData = formatData(payload);
-            const response = yield call(getConsultation,formData);
+            const response = yield call(getCustomer,formData);
             yield put({
                 type: 'save',
                 payload: {
@@ -61,7 +62,7 @@ export default {
         },
         //删除
         *remove({payload,callback}, { select, call, put }) {
-            const response = yield call(deleteConsultation,payload);
+            const response = yield call(deleteCustomer,payload);
             if(callback) callback(response);
             if(response.success){
                 yield put({
@@ -86,7 +87,7 @@ export default {
         },
         //添加
         *add( {payload,callback}, { select, call, put }) {
-            const response = yield call(addConsultation,payload);
+            const response = yield call(addCustomer,payload);
             if(callback) callback(response);
             //刷新页面
             let queryCriteria = yield select(state => state.customer.queryCriteria);
@@ -101,7 +102,7 @@ export default {
         },
         //修改
         *update( {payload,callback}, { select,call, put }) {
-            const response = yield call(updateConsultation,payload);
+            const response = yield call(updateCustomer,payload);
             if(callback) callback(response);
             //刷新页面
             let queryCriteria = yield select(state => state.customer.queryCriteria);
@@ -116,9 +117,9 @@ export default {
             });
         },
         //修改时根据id查询数据
-        *getConsultationById( {payload}, { call, put }) {
+        *getCustomerById( {payload}, { call, put }) {
             const formData = formatData(payload);
-            const response = yield call(getConsultationById,formData);
+            const response = yield call(getCustomerById,formData);
             yield put({
                 type: 'saveCusRow',
                 payload: response,
