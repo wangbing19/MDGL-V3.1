@@ -6,6 +6,7 @@ export default {
   'menu.dashboard': 'Dashboard',
   'menu.cus': '咨询',
   'menu.cus.consultation': '咨询表',
+  'menu.cus.customer': '用户表',
   'menu.dashboard.analysis': '分析页',
   'menu.dashboard.monitor': '监控页',
   'menu.dashboard.workplace': '工作台',

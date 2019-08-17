@@ -4,21 +4,21 @@ import { Input, Button, Drawer, Form, InputNumber, Select, Radio, Row, Col, Tabl
 import StandardTable from '@/components/StandardTable/indexNatice';
 import configStyles from '@/less/config.less';
 import {deleteData} from '@/utils/dataUtils';
-import ConsultationDrawer from './ConsultationDrawer.js';
+import CustomerDrawer from './CustomerDrawer.js';
 import moment from 'moment';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 
-@connect(({consultation, loading }) => ({
-    consultation,
-    loading: loading.models.consultation,
+@connect(({customer, loading }) => ({
+    customer,
+    loading: loading.models.customer,
 }))
 
 //创建表单
 @Form.create()
 
-class Consultation extends Component {
+class Customer extends Component {
     constructor(props) {
         super(props);
         this.state = { };
@@ -31,7 +31,7 @@ class Consultation extends Component {
     getConsultation=(value)=>{
         const { dispatch } = this.props;
         dispatch({
-            type:"consultation/fetch",
+            type:"customer/fetch",
             payload:{
                 pageCurrent:1,
                 orgId:1,
@@ -48,7 +48,7 @@ class Consultation extends Component {
             if (err) return;
             const { dispatch } = this.props
             dispatch({
-                type:'consultation/clearQueryCriteria'
+                type:'customer/clearQueryCriteria'
             })
             //调用查询方法
             this.getConsultation(fieldsValue);
@@ -57,8 +57,8 @@ class Consultation extends Component {
 
     //删除
     delete=()=>{
-        const { dispatch ,consultation:{selectedRowKeys} } = this.props;
-        deleteData(selectedRowKeys,'consultation',dispatch);//通过id删除数据
+        const { dispatch ,customer:{selectedRowKeys} } = this.props;
+        deleteData(selectedRowKeys,'customer',dispatch);//通过id删除数据
     }
 
     columns=[
@@ -126,14 +126,14 @@ class Consultation extends Component {
     
     //添加修改跳转页面
     showDrawer=(row)=>{
-        const {  consultation:{ drawerVisible },dispatch } =this.props;
+        const {  customer:{ drawerVisible },dispatch } =this.props;
         dispatch({
-            type:"consultation/setDrawerVisible",
+            type:"customer/setDrawerVisible",
             payload:!drawerVisible,
         })
         if(row.id){
             dispatch({
-                type:'consultation/getConsultationById',
+                type:'customer/getConsultationById',
                 payload:{
                     id:row.id,
                     orgId:row.orgId,
@@ -143,7 +143,7 @@ class Consultation extends Component {
     }
 
     render() {
-        const { consultation: { data, selectedRows, deleteDisabled, msg, selectedRowKeys, }, 
+        const { customer: { data, selectedRows, deleteDisabled, msg, selectedRowKeys, }, 
                 form: { getFieldDecorator,getFieldsValue }, loading, dispatch} = this.props;
         
         return (
@@ -181,18 +181,18 @@ class Consultation extends Component {
                             loading={loading}
                             data={data}
                             columns={this.columns}
-                            type='consultation'
+                            type='customer'
                             queryFormData={getFieldsValue()}
                             dispatch={dispatch}
                             deleteDisabled={deleteDisabled}
                             selectedRowKeys={selectedRowKeys}
                     />
                     {/* 修改，添加 */}
-                    <ConsultationDrawer/>
+                    <CustomerDrawer/>
                 </div>
             </div>
         );
     }
 }
 
-export default Consultation;
+export default Customer;

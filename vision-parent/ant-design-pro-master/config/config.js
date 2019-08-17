@@ -76,7 +76,7 @@ export default {
     'primary-color': primaryColor,
   },
   proxy: {
-    '/consultation/': {
+    '/vision/': {
       target: 'http://localhost:8080/',
       changeOrigin: true,
       //pathRewrite: { '^/sshframe/': '' },

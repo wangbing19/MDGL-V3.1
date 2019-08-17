@@ -3,7 +3,7 @@ import {formatData, FormdateFormat} from '@/utils/dataUtils';
 import cookie from 'react-cookies';
 
 export default {
-    namespace: 'consultation',
+    namespace: 'customer',
 
     state: {
         //选择框点击后存储数据
@@ -41,7 +41,7 @@ export default {
         *fetch( { payload }, { select, call, put }) {
             //从cookie获取limit的值，无值从utilsConfig获取
             if(!cookie.load('limit')){
-                cookie.save('limit',yield select(state => state.consultation.data.pagination.pageSize));
+                cookie.save('limit',yield select(state => state.customer.data.pagination.pageSize));
             }
             payload ={
                 ...payload,
@@ -74,7 +74,7 @@ export default {
                 });
             }
             //刷新页面
-            let queryCriteria = yield select(state => state.consultation.queryCriteria);
+            let queryCriteria = yield select(state => state.customer.queryCriteria);
             yield put({
                 type: 'fetch',
                 payload: {
@@ -89,7 +89,7 @@ export default {
             const response = yield call(addConsultation,payload);
             if(callback) callback(response);
             //刷新页面
-            let queryCriteria = yield select(state => state.consultation.queryCriteria);
+            let queryCriteria = yield select(state => state.customer.queryCriteria);
             yield put({
                 type: 'fetch',
                 payload: {
@@ -104,8 +104,8 @@ export default {
             const response = yield call(updateConsultation,payload);
             if(callback) callback(response);
             //刷新页面
-            let queryCriteria = yield select(state => state.consultation.queryCriteria);
-            const current = yield select(state => state.consultation.data.pagination.current);
+            let queryCriteria = yield select(state => state.customer.queryCriteria);
+            const current = yield select(state => state.customer.data.pagination.current);
             yield put({
                 type: 'fetch',
                 payload: {

@@ -35,6 +35,11 @@ export default [
             path: '/cus/consultation/consultation',
             name: 'consultation',
             component: './Cus/Consultation/Consultation',
+          },
+          {
+            path: '/cus/customer/customer',
+            name: 'customer',
+            component: './Cus/Customer/Customer',
           }
         ],
       },
