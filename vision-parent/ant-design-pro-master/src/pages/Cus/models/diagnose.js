@@ -1,10 +1,9 @@
-import { getCustomer, deleteCustomer, addCustomer, updateCustomer, getCustomerById, updateCustomerState, 
-         getCustomerByConsultationId } from '@/services/customer';
+import { getDiagnose, deleteDiagnose, addDiagnose, updateDiagnose, getDiagnoseById, getByCustomerId } from '@/services/diagnose';
 import {formatData, FormdateFormat} from '@/utils/dataUtils';
 import cookie from 'react-cookies';
 
 export default {
-    namespace: 'customer',
+    namespace: 'diagnose',
 
     state: {
         //选择框点击后存储数据
@@ -27,7 +26,7 @@ export default {
         //选择框点击后存储id值
         selectedRowKeys:[],
         //查询行信息
-        cusRow:{
+        diaRow:{
             status:201,
             ok: false,
             msg: "",
@@ -42,7 +41,7 @@ export default {
         *fetch( { payload }, { select, call, put }) {
             //从cookie获取limit的值，无值从utilsConfig获取
             if(!cookie.load('limit')){
-                cookie.save('limit',yield select(state => state.customer.data.pagination.pageSize));
+                cookie.save('limit',yield select(state => state.diagnose.data.pagination.pageSize));
             }
             payload ={
                 ...payload,
@@ -51,7 +50,7 @@ export default {
                 tel: payload.tel?payload.tel:'',
             }
             const formData = formatData(payload);
-            const response = yield call(getCustomer,formData);
+            const response = yield call(getDiagnose,formData);
             yield put({
                 type: 'save',
                 payload: {
@@ -62,7 +61,7 @@ export default {
         },
         //删除
         *remove({payload,callback}, { select, call, put }) {
-            const response = yield call(deleteCustomer,payload);
+            const response = yield call(deleteDiagnose,payload);
             if(callback) callback(response);
             if(response.success){
                 yield put({
@@ -75,7 +74,7 @@ export default {
                 });
             }
             //刷新页面
-            let queryCriteria = yield select(state => state.customer.queryCriteria);
+            let queryCriteria = yield select(state => state.diagnose.queryCriteria);
             yield put({
                 type: 'fetch',
                 payload: {
@@ -87,10 +86,10 @@ export default {
         },
         //添加
         *add( {payload,callback}, { select, call, put }) {
-            const response = yield call(addCustomer,payload);
+            const response = yield call(addDiagnose,payload);
             if(callback) callback(response);
             //刷新页面
-            let queryCriteria = yield select(state => state.customer.queryCriteria);
+            let queryCriteria = yield select(state => state.diagnose.queryCriteria);
             yield put({
                 type: 'fetch',
                 payload: {
@@ -102,11 +101,11 @@ export default {
         },
         //修改
         *update( {payload,callback}, { select,call, put }) {
-            const response = yield call(updateCustomer,payload);
+            const response = yield call(updateDiagnose,payload);
             if(callback) callback(response);
             //刷新页面
-            let queryCriteria = yield select(state => state.customer.queryCriteria);
-            const current = yield select(state => state.customer.data.pagination.current);
+            let queryCriteria = yield select(state => state.diagnose.queryCriteria);
+            const current = yield select(state => state.diagnose.data.pagination.current);
             yield put({
                 type: 'fetch',
                 payload: {
@@ -117,29 +116,12 @@ export default {
             });
         },
         //修改时根据id查询数据
-        *getCustomerById( {payload}, { call, put }) {
+        *getDiagnoseById( {payload}, { call, put }) {
             const formData = formatData(payload);
-            const response = yield call(getCustomerById,formData);
+            const response = yield call(getDiagnoseById,formData);
             yield put({
-                type: 'saveCusRow',
+                type: 'saveDiaRow',
                 payload: response,
-            });
-        },
-        //修改用户状态
-        *updateCustomerState( {payload,callback}, { select, call, put }) {
-            const formData = formatData(payload);
-            const response = yield call(updateCustomerState,formData);
-            if(callback) callback(response);
-            //刷新页面
-            let queryCriteria = yield select(state => state.customer.queryCriteria);
-            const current = yield select(state => state.customer.data.pagination.current);
-            yield put({
-                type: 'fetch',
-                payload: {
-                    ...queryCriteria,
-                    pageCurrent: current,
-                    orgId: 1,
-                },
             });
         },
     },
@@ -190,10 +172,10 @@ export default {
             };
         },
         //修改时根据id查询数据
-        saveCusRow(state,action){
+        saveDiaRow(state,action){
             return {
                 ...state,
-                cusRow:{
+                diaRow:{
                     ...action.payload,
                 }
             };
@@ -202,7 +184,7 @@ export default {
         clearFeomData(state){
             return {
                 ...state,
-                cusRow:{
+                diaRow:{
                     status:201,
                     ok: false,
                     msg: "",

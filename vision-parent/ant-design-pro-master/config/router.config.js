@@ -25,7 +25,7 @@ export default [
     routes: [
       // dashboard
       { path: '/', redirect: '/dashboard/analysis', authority: ['admin', 'user'] },
-      // forms
+      // cus
       {
         path: '/cus',
         icon: 'form',
@@ -40,7 +40,38 @@ export default [
             path: '/cus/customer/customer',
             name: 'customer',
             component: './Cus/Customer/Customer',
-          }
+          },
+          {
+            path: '/cus/diagnose/diagnose',
+            name: 'diagnose',
+            component: './Cus/Diagnose/Diagnose',
+          },
+        ],
+      },
+      // cus
+      {
+        path: '/train',
+        icon: 'form',
+        name: 'train',
+        routes: [
+          {
+            path: '/train/traInformationrecord/traInformationrecord',
+            name: 'traInformationrecord',
+            component: './Train/TraInformationrecord/TraInformationrecord',
+          },
+        ],
+      },
+      // system
+      {
+        path: '/system',
+        icon: 'form',
+        name: 'system',
+        routes: [
+          {
+            path: '/system/symptomType/symptomType',
+            name: 'symptomType',
+            component: './System/SymptomType/SymptomType',
+          },
         ],
       },
       {

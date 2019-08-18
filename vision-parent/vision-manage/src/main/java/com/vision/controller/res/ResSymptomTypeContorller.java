@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -94,7 +95,7 @@ public class ResSymptomTypeContorller {
 
             Integer result = resSymptomTypeSvervise.updateSymptomType(resSymptomType);
             if (result != null && result != 0) {
-                return JsonResult.oK();
+                return JsonResult.oK("修改成功");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -124,7 +125,7 @@ public class ResSymptomTypeContorller {
 
             Integer result = resSymptomTypeSvervise.addSymptomType(resSymptomType);
             if (result != null && result != 0) {
-                return JsonResult.oK();
+                return JsonResult.oK("添加成功");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -155,7 +156,7 @@ public class ResSymptomTypeContorller {
 
             Integer row = resSymptomTypeSvervise.deleteSymptomType(id, orgId);
             if (row != null) {
-                return JsonResult.oK();
+                return JsonResult.oK("删除");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -184,6 +185,39 @@ public class ResSymptomTypeContorller {
             e.printStackTrace();
         }
         return JsonResult.build(201, "数据或已删除");
+    }
+    
+    /**
+     * 修改状态
+     * @param cusVo
+     * @return
+     */
+    @RequestMapping("/updateState")
+    @ResponseBody
+    public JsonResult updateState(CusVo cusVo) {
+    	//获取登录用户信息
+		if(cusVo.getId()==null||cusVo.getId()<=0)
+			return JsonResult.build(201, "id错误");
+		if(cusVo.getOrgId()==null||cusVo.getOrgId()<0)
+			return JsonResult.build(201, "orgId错误");
+		if(cusVo.getState()!=0 && cusVo.getState()!=1)
+			return JsonResult.build(201, "状态错误");
+		
+//    			//获取账号信息
+//    			SysUser user = null;
+//    			if(user.getOrganizationId()!=cusVo.getOrgId().longValue())
+//    				return JsonResult.build(201, "该账号不能修改该客户状态，请联系客户所属门店修改");
+//    			cusVo.setUser(user.getUserName());
+		try {
+			Integer row = resSymptomTypeSvervise.updateState(cusVo);
+			if(row != null && row != 0) {
+				return JsonResult.oK("修改状态成功");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("基于用户id修改用户状态=============错误=================");
+		}
+		return JsonResult.build(201, "状态修改失败");
     }
 
 }

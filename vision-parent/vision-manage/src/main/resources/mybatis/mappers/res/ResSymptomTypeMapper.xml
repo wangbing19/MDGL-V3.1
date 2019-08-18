@@ -20,8 +20,8 @@
 	<select id="findPageObjects"
 		resultType="com.vision.pojo.res.ResSymptomType">
 		select * from res_symptom_type
-		<include refid="queryWhereId" /> 
-		limit #{startIndex},#{pageSize}
+		<include refid="queryWhereId" /> ORDER BY gmt_create desc
+		limit #{startIndex},#{pageSize} 
 	</select>
 
 	<!-- 基于用户名查询该用户总数,无用户名输入查询所有用户总数 -->

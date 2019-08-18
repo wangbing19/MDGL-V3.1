@@ -27,7 +27,7 @@
 	<select id="findPageObjects" resultType="com.vision.pojo.cus.CusDiagnose">
 		SELECT cus_diagnose.*,cus_customer.name customerName,cus_customer.tel customerTel
 		FROM cus_diagnose LEFT JOIN cus_customer ON cus_diagnose.customer_id=cus_customer.id
-		<include refid="queryWhereId" />
+		<include refid="queryWhereId" /> ORDER BY gmt_create desc 
 		limit #{startIndex},#{pageSize}
 	</select>
 

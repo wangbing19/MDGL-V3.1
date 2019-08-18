@@ -31,7 +31,7 @@
 	<select id="findPageObjects"
 		resultType="com.vision.pojo.cus.CusSchedule">
 		select * from cus_schedule
-		<include refid="queryWhereId" /> 
+		<include refid="queryWhereId" /> ORDER BY gmt_create desc 
 		limit #{startIndex},#{pageSize}
 	</select>
 	

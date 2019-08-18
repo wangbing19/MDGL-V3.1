@@ -4,21 +4,21 @@ import { Input, Button, Drawer, Form, InputNumber, Select, Radio, Row, Col, Tabl
 import StandardTable from '@/components/StandardTable/indexNatice';
 import configStyles from '@/less/config.less';
 import {deleteData} from '@/utils/dataUtils';
-import CustomerDrawer from './CustomerDrawer.js';
+import SymptomTypeDrawer from './SymptomTypeDrawer.js';
 import moment from 'moment';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 
-@connect(({customer, loading }) => ({
-    customer,
-    loading: loading.models.customer,
+@connect(({symptomType, loading }) => ({
+    symptomType,
+    loading: loading.models.symptomType,
 }))
 
 //创建表单
 @Form.create()
 
-class Customer extends Component {
+class SymptomType extends Component {
     constructor(props) {
         super(props);
         this.state = { };
@@ -31,7 +31,7 @@ class Customer extends Component {
     getConsultation=(value)=>{
         const { dispatch } = this.props;
         dispatch({
-            type:"customer/fetch",
+            type:"symptomType/fetch",
             payload:{
                 pageCurrent:1,
                 orgId:1,
@@ -48,7 +48,7 @@ class Customer extends Component {
             if (err) return;
             const { dispatch } = this.props
             dispatch({
-                type:'customer/clearQueryCriteria'
+                type:'symptomType/clearQueryCriteria'
             })
             //调用查询方法
             this.getConsultation(fieldsValue);
@@ -57,8 +57,8 @@ class Customer extends Component {
 
     //删除
     delete=()=>{
-        const { dispatch ,customer:{selectedRowKeys} } = this.props;
-        deleteData(selectedRowKeys,'customer',dispatch);//通过id删除数据
+        const { dispatch ,symptomType:{selectedRowKeys} } = this.props;
+        deleteData(selectedRowKeys,'symptomType',dispatch);//通过id删除数据
     }
 
     columns=[
@@ -69,49 +69,14 @@ class Customer extends Component {
             width: "5%",
         },
         {
-            title: '姓名',
-            dataIndex: 'name',
-            width: "8%",
+            title: '服务名称',
+            dataIndex: 'title',
+            width: "15%",
         },
         {
-            title: '联系电话',
-            dataIndex: 'tel',
-            width: "9%",
-        },
-        {
-            title: '已充值金额/账户余额',
-            dataIndex: 'balance',
-            width: "9%",
-            render: (text,row) => (
-                <div>
-                   {row.money}/{row.balance}
-                </div>
-            ),
-        },
-        {
-            title: '训练数',
-            dataIndex: 'totalTrainingTime',
-            width: "8%",
-            render: (text,row) => (
-                <div onClick={this.showTotalTrainingTime.bind(this,row)} >
-                   {row.totalTrainingTime}/{row.timesOfTraining}
-                </div>
-            ),
-        },
-        {
-            title: '充值记录',
-            dataIndex: 'rechargeCount',
-            width: "5%",
-        },
-        {
-            title: '课程记录',
-            dataIndex: 'scheduleCount',
-            width: "5%",
-            render: (text,row) => (
-                <div onClick={this.showScheduleCount.bind(this,row)}>
-                    {text}
-                </div>
-            ),
+            title: '服务描述',
+            dataIndex: 'describes',
+            // width: "25%",
         },
         {
             title: '状态',
@@ -119,76 +84,46 @@ class Customer extends Component {
             width: "5%",
             render: (text,row) => (
                 <div onClick={this.updateState.bind(this,row)} style={{color:text==1?"green":"red"}}>
-                    {text==1?"正常":"禁用"}
+                   {text==1?"有效":"失效"}
                 </div>
             ),
         },
         {
-            title: '咨询/诊断表',
-            dataIndex: 'balance',
-            width: "8%",
+            title: '创建时间',
+            dataIndex: 'gmtCreate',
+            width: "15%",
             render:(text,row) =>(
                 <div>
-                   <span onClick={this.showConsultation.bind(this,row)}>咨询</span>
-                   /<span onClick={this.showDiagnose.bind(this,row)}>诊断表</span>
+                    {moment(text).format('YYYY-MM-DD HH:mm:ss')}
                 </div>
             ),
         },
         {
-            title: '主监护人',
-            dataIndex: 'guardian',
-            width: "10%",
-        },
-        {
-            title: '上次训练时间',
-            dataIndex: 'lastTrain',
+            title: '修改时间',
+            dataIndex: 'gmtModified',
             width: "15%",
+            render:(text,row) =>(
+                <div>
+                    {moment(text).format('YYYY-MM-DD HH:mm:ss')}
+                </div>
+            ),
         },
         {
             title: '操作',
-            // width: "10%",
+            width: "10%",
             render: (text,row) => (
                 <div>
-                   <Button  type="primary" icon={'edit'} onClick={this.showDrawer.bind(this,row)}/>&nbsp;
-                   <Button  type="primary" icon={'plus'} onClick={this.addSchedule.bind(this,row)} title={"添加课程表"}/>
+                   <Button  type="primary" icon={'edit'} onClick={this.showDrawer.bind(this,row)}/>
                 </div>
             ),
         },
     ]
     
-    //添加修改跳转页面
-    showDrawer=(row)=>{
-        const {  customer:{ drawerVisible },dispatch } =this.props;
-        dispatch({
-            type:"customer/setDrawerVisible",
-            payload:!drawerVisible,
-        })
-        if(row.id){
-            dispatch({
-                type:'customer/getCustomerById',
-                payload:{
-                    id:row.id,
-                    orgId:row.orgId,
-                },
-            })
-        }
-    }
-
-    //跳转训练数页面
-    showTotalTrainingTime=(row)=>{
-        alert(row.id+"跳转训练数页面")
-    }
-
-    //跳转课程记录
-    showScheduleCount=(row)=>{
-        alert(row.id+"跳转课程记录")
-    }
-
     //修改用户状态
     updateState=(row)=>{
         const { dispatch } =this.props;
         dispatch({
-            type:'customer/updateCustomerState',
+            type:'symptomType/updateState',
             payload:{
                 id:row.id,
                 orgId:row.orgId,
@@ -200,25 +135,27 @@ class Customer extends Component {
         })
     }
 
-    //跳转咨询表
-    showConsultation=(row)=>{
-        alert(row.consultationId)
-    }
-
-    //跳转诊断表
-    showDiagnose=(row)=>{
-        alert(row.diagnoseId)
-    }
-
-    //跳转到添加课程表页面
-    addSchedule=(row)=>{
-        alert(row.id)
+    //添加修改跳转页面
+    showDrawer=(row)=>{
+        const {  symptomType:{ drawerVisible },dispatch } =this.props;
+        dispatch({
+            type:"symptomType/setDrawerVisible",
+            payload:!drawerVisible,
+        })
+        if(row.id){
+            dispatch({
+                type:'symptomType/getSymptomTypeById',
+                payload:{
+                    id:row.id,
+                    orgId:row.orgId,
+                },
+            })
+        }
     }
 
     render() {
-        const { customer: { data, selectedRows, deleteDisabled, msg, selectedRowKeys, }, 
+        const { symptomType: { data, selectedRows, deleteDisabled, msg, selectedRowKeys, }, 
                 form: { getFieldDecorator,getFieldsValue }, loading, dispatch} = this.props;
-        
         return (
                 
             <div>
@@ -228,12 +165,7 @@ class Customer extends Component {
                             <Row >
                                 <Col md={8} sm={24}>
                                     <FormItem label="名称">
-                                        {getFieldDecorator('name')(<Input placeholder="请输入"/>)}
-                                    </FormItem>
-                                </Col>
-                                <Col md={8} sm={24} >
-                                    <FormItem label="电话">
-                                        {getFieldDecorator('tel')(<Input placeholder="请输入"/>)}
+                                        {getFieldDecorator('title')(<Input placeholder="请输入"/>)}
                                     </FormItem>
                                 </Col>
                                 <Col md={8} sm={24} >
@@ -254,18 +186,18 @@ class Customer extends Component {
                             loading={loading}
                             data={data}
                             columns={this.columns}
-                            type='customer'
+                            type='symptomType'
                             queryFormData={getFieldsValue()}
                             dispatch={dispatch}
                             deleteDisabled={deleteDisabled}
                             selectedRowKeys={selectedRowKeys}
                     />
                     {/* 修改，添加 */}
-                    <CustomerDrawer/>
+                    <SymptomTypeDrawer/>
                 </div>
             </div>
         );
     }
 }
 
-export default Customer;
+export default SymptomType;

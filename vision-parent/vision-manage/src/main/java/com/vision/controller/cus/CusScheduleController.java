@@ -67,7 +67,7 @@ public class CusScheduleController {
 			
 			Integer rows = cusScheduleService.deleteSchedule(id,orgId);
 			if(rows !=null) {
-				return JsonResult.oK();
+				return JsonResult.oK("删除成功");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -116,7 +116,7 @@ public class CusScheduleController {
 			
 			Integer rows = cusScheduleService.addSchedule(cusSchedule);
 			if(rows != 0 && rows != null) {
-				return JsonResult.oK();
+				return JsonResult.oK("添加成功");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -151,7 +151,7 @@ public class CusScheduleController {
 			
 			Integer rows = cusScheduleService.updateSchedule(cusSchedule);
 			if(rows != 0 && rows != null) {
-				return JsonResult.oK();
+				return JsonResult.oK("修改成功");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

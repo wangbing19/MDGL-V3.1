@@ -13,26 +13,26 @@ const { MonthPicker, RangePicker } = DatePicker;
 
 @Form.create()
 
-@connect(({customer, loading }) => ({
-    customer,
-    loading: loading.models.customer,
+@connect(({traInformationrecord, loading }) => ({
+    traInformationrecord,
+    loading: loading.models.traInformationrecord,
 }))
 
 
-class CustomerDrawer extends Component {
+class TraInformationrecordDrawer extends Component {
     constructor(props) {
         super(props);
         this.state = {  };
     }
 
     showDrawer=()=>{
-        const {customer: { drawerVisible }, dispatch} = this.props;
+        const {traInformationrecord: { drawerVisible }, dispatch} = this.props;
         dispatch({
-            type:'customer/setDrawerVisible',
+            type:'traInformationrecord/setDrawerVisible',
             payload:!drawerVisible,
         })
         dispatch({
-            type:'customer/clearFeomData',
+            type:'traInformationrecord/clearFeomData',
         })
         //清空表单
         this.props.form.resetFields();
@@ -44,18 +44,22 @@ class CustomerDrawer extends Component {
         e.preventDefault();
         this.props.form.validateFields((err, fieldsValue) => {
             if (!err) {
-                const {customer: {  cusRow, selectedRows }, dispatch } = this.props;
-                const { data, ok} = cusRow;
+                const {traInformationrecord: {  traRow, selectedRows }, dispatch } = this.props;
+                const { data, ok} = traRow;
                 const formData = formatData(fieldsValue,"",data["id"]);
                 fieldsValue={
                     ...fieldsValue,
-                    "birthday":fieldsValue['birthday'].format('YYYY/MM/DD'),
+                    "endTime":fieldsValue['endTime'].format('YYYY/MM/DD HH:mm:ss'),
                 }
                 //封装表单数据对象
                 // const formData = formatData(fieldsValue);
-                formData.append("orgId",1)
+                formData.append("orgId",1);
+                if(ok){
+                    formData.append("customerId",data["customerId"]);
+                    formData.append("scheduleId",data["scheduleId"]);
+                }
                 //发起请求
-                formDataSubmit(dispatch,'customer',formData);
+                formDataSubmit(dispatch,'traInformationrecord',formData);
                 //关闭抽屉
                 this.showDrawer();
             }
@@ -64,8 +68,8 @@ class CustomerDrawer extends Component {
 
 
     render() {
-        const {form: {getFieldDecorator} ,customer: { drawerVisible, cusRow}, dispatch } = this.props;
-        const { data, ok} = cusRow;
+        const {form: {getFieldDecorator} ,traInformationrecord: { drawerVisible, traRow}, dispatch } = this.props;
+        const { data, ok} = traRow;
         return (
             <Drawer
             title={ok?"修改":"添加"}
@@ -76,70 +80,52 @@ class CustomerDrawer extends Component {
             width={'40%'}
             >
                 <Form  labelCol={{ span: 4 }} wrapperCol={{ span: 19 }} onSubmit={this.handleSubmit} >
-                <Form.Item label='用户名' >
+                    <Form.Item label='姓名' >
                         {getFieldDecorator('name', { rules: [{ ...rules.required  }],initialValue:ok?data["name"]:''
                         })(
                             <Input   />
                         )}
                     </Form.Item>
-                    <Form.Item label='年龄' >
-                        {getFieldDecorator('age', { rules: [{ ...rules.required  }],initialValue:ok?data["age"]:''
+                    <Form.Item label='裸眼视力(左)' >
+                        {getFieldDecorator('lVision', { rules: [{ ...rules.required  }],initialValue:ok?data["lVision"]:''
                         })(
                             <Input   />
                         )}
                     </Form.Item>
-                    <Form.Item label='生日' >
-                        {getFieldDecorator('birthday', { rules: [{ ...rules.required  }],initialValue:moment(ok?moment(data["birthday"]).format(dateFormat.day):moment().format(dateFormat.day), dateFormat.day)
-                        })(
-                            <DatePicker format={dateFormat.day} style={{width:'100%'}}/>
-                        )}
-                    </Form.Item>
-                    <Form.Item label='性别' >
-                        {getFieldDecorator('gender', { rules: [{ ...rules.required  }],initialValue:ok?data["gender"]:''
+                    <Form.Item label='裸眼视力(右)' >
+                        {getFieldDecorator('rVision', { rules: [{ ...rules.required  }],initialValue:ok?data["rVision"]:''
                         })(
                             <Input   />
                         )}
                     </Form.Item>
-                    <Form.Item label='家庭地址' >
-                        {getFieldDecorator('home', { rules: [{ ...rules.required  }],initialValue:ok?data["home"]:''
+                    <Form.Item label='评分' >
+                        {getFieldDecorator('grade', { rules: [{ ...rules.required  }],initialValue:ok?data["grade"]:''
                         })(
                             <Input   />
                         )}
                     </Form.Item>
-                    <Form.Item label='学校地址' >
-                        {getFieldDecorator('school', { rules: [{ ...rules.required  }],initialValue:ok?data["school"]:''
+                    <Form.Item label='评价' >
+                        {getFieldDecorator('evaluate', { rules: [{ ...rules.required  }],initialValue:ok?data["evaluate"]:''
+                        })(
+                            <Input.TextArea rows={4}/>
+                        )}
+                    </Form.Item>
+                    <Form.Item label='项目内容' >
+                        {getFieldDecorator('content', { rules: [{ ...rules.required  }],initialValue:ok?data["sccontenthool"]:''
                         })(
                             <Input   />
                         )}
                     </Form.Item>
-                    <Form.Item label='监护人' >
-                        {getFieldDecorator('guardian', { rules: [{ ...rules.required  }],initialValue:ok?data["guardian"]:''
+                    <Form.Item label='训练师' >
+                        {getFieldDecorator('tutor', { rules: [{ ...rules.required  }],initialValue:ok?data["tutor"]:''
                         })(
                             <Input   />
                         )}
                     </Form.Item>
-                    <Form.Item label='电话' >
-                        {getFieldDecorator('tel', { rules: [{ ...rules.required  }],initialValue:ok?data["tel"]:''
+                    <Form.Item label='时间' >
+                        {getFieldDecorator('endTime', { rules: [{ ...rules.required  }],initialValue:moment(ok?moment(data["endTime"]).format(dateFormat.day_hour):moment().format(dateFormat.day_hour), dateFormat.day_hour)
                         })(
-                            <Input   />
-                        )}
-                    </Form.Item>
-                    <Form.Item label='次级监护人' >
-                        {getFieldDecorator('lastGuardian', { initialValue:ok?data["lastGuardian"]:''
-                        })(
-                            <Input   />
-                        )}
-                    </Form.Item>
-                    <Form.Item label='备用电话' >
-                        {getFieldDecorator('lastGuardianTel', { initialValue:ok?data["lastGuardianTel"]:''
-                        })(
-                            <Input   />
-                        )}
-                    </Form.Item>
-                    <Form.Item label='信息备注' >
-                        {getFieldDecorator('remark', { initialValue:ok?data["remark"]:''
-                        })(
-                            <Input.TextArea rows={4}   />
+                            <DatePicker format={dateFormat.day_hour} style={{width:'100%'}}/>
                         )}
                     </Form.Item>
                     <div className={styles.buttons} >
@@ -156,4 +142,4 @@ class CustomerDrawer extends Component {
     }
 }
 
-export default CustomerDrawer;
+export default TraInformationrecordDrawer;

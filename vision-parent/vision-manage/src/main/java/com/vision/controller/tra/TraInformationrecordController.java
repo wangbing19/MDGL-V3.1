@@ -102,7 +102,7 @@ public class TraInformationrecordController {
 			
 			Integer rows = traInformationrecordService.deleteTraInfor(id, orgId);
 			if(rows != null) {
-				return JsonResult.oK();
+				return JsonResult.oK("删除成功");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
