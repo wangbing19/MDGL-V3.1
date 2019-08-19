@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain=true)
 public class PpoTrainerOrganization extends BasePojo{
-	private Long tarinerId;
+	private Long id;
 	private Long organizationId; 
 	private String trainerName;
 	private String trainerGender;
@@ -23,7 +23,7 @@ public class PpoTrainerOrganization extends BasePojo{
 	private Long serviceItemsId;
 	private Integer numberPeople;
 	private  String linkman;
-	private Integer phone;
+	private String phone;
 	private Integer trainerState;
 	private String createdUser;
 	private String modifiedUser;

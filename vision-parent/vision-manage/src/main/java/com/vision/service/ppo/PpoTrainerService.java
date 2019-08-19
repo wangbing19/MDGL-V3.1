@@ -2,10 +2,12 @@ package com.vision.service.ppo;
 
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.vision.pojo.ppo.PpoAppointmentTime;
 import com.vision.pojo.ppo.PpoTrainer;
+import com.vision.pojo.ppo.vo.PpoTrainerOrganization;
 import com.vision.vo.PageObject;
 
 public interface PpoTrainerService {
@@ -27,6 +29,8 @@ public interface PpoTrainerService {
 
 	int updateAppointmentTime(PpoAppointmentTime ppoAppointmentTime);
 
-	Integer dodeletePpoTrainer(Integer tarinerId);
+	Integer dodeletePpoTrainer(List<Long> list);
+
+	PpoTrainerOrganization findPpoTrainerOne(PpoTrainer ppoTrainer);
 
 }

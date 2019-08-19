@@ -14,6 +14,7 @@ import com.vision.pojo.sys.vo.SysRoleOrganizationResult;
 import com.vision.service.sys.SysRoleService;
 import com.vision.vo.CheckBox;
 import com.vision.vo.JsonResult;
+import com.vision.vo.PageObject;
 
 @Controller
 @RequestMapping("/sysRole/")
@@ -55,6 +56,7 @@ public class SysRoleController {
 	@ResponseBody
 	public JsonResult updateRole(SysRole sysRole,Integer[] menuIds) {
 		try {
+			
 			int result = sysRoleService.updateRole(sysRole,menuIds);
 			return JsonResult.oK(result);
 		} catch (Exception e) {
@@ -120,9 +122,9 @@ public class SysRoleController {
 	  */
 	 @RequestMapping("doFindRoleAll")
 	 @ResponseBody
-	 public JsonResult doFindRoleAll(){
+	 public JsonResult doFindRoleAll(Integer pageCurrent,Integer pageSize){
 	    try {
-	    	List<SysRole> result = sysRoleService.doFindRoleAll();
+	    	 PageObject<SysRole> result = sysRoleService.doFindRoleAll(pageCurrent,pageSize);
 	    	return JsonResult.oK(result);
 		} catch (Exception e) {
 			e.printStackTrace();

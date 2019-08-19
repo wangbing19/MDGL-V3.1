@@ -14,6 +14,7 @@ import com.vision.mapper.ppo.PpoAppointmentTimeMapper;
 import com.vision.mapper.ppo.PpoTrainerMapper;
 import com.vision.pojo.ppo.PpoAppointmentTime;
 import com.vision.pojo.ppo.PpoTrainer;
+import com.vision.pojo.ppo.vo.PpoTrainerOrganization;
 import com.vision.service.ppo.PpoTrainerService;
 import com.vision.service.tool.ToolOrganizationIdList;
 import com.vision.vo.PageObject;
@@ -54,7 +55,7 @@ public class PpoTrainerServiseImpl implements PpoTrainerService{
 			Long organizationId) {
 
 		if(pageCurrent==null||pageCurrent<=0) throw new ServiceException("参数不合法");
-		if(organizationId==null||organizationId<=0) throw new ServiceException("组织id不能为空或id错误");
+		if(organizationId==null||organizationId<0) throw new ServiceException("组织id不能为空或id错误");
 
 		QueryWrapper<PpoTrainer> queryWrapper = new QueryWrapper<PpoTrainer>();
 		
@@ -172,11 +173,27 @@ public class PpoTrainerServiseImpl implements PpoTrainerService{
 
 
 	@Override
-	public Integer dodeletePpoTrainer(Integer tarinerId) {
-		if(tarinerId ==null)
+	public Integer dodeletePpoTrainer(List<Long> list) {
+		if(list.size() ==0)
 			throw new ServiceException("训练师id不能为空");
-		int deleteById = ppoTrainerMapper.deleteById(tarinerId);
-		return deleteById;
+		
+		int deleteBatchIds = ppoTrainerMapper.deleteBatchIds(list);
+		return deleteBatchIds;
+	}
+
+
+
+	@Override
+	public PpoTrainerOrganization findPpoTrainerOne(PpoTrainer ppoTrainer) {
+		if(ppoTrainer.getId() ==null)
+			throw new ServiceException("训练师id不能为空");
+		Long id=ppoTrainer.getId();
+		Long orgId=ppoTrainer.getOrganizationId();
+		ppoTrainerMapper.selectById(id);
+		
+		PpoTrainerOrganization ppoTrainerOrganization = ppoTrainerMapper.findPpoTrainerOne(id);
+		
+		return ppoTrainerOrganization;
 	}
 
 

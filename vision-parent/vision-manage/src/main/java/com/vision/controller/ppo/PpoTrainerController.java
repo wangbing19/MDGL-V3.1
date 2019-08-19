@@ -1,5 +1,6 @@
 package com.vision.controller.ppo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.vision.pojo.ppo.PpoAppointmentTime;
 import com.vision.pojo.ppo.PpoTrainer;
+import com.vision.pojo.ppo.vo.PpoTrainerOrganization;
 import com.vision.service.ppo.PpoTrainerService;
 import com.vision.vo.JsonResult;
 import com.vision.vo.PageObject;
@@ -28,7 +30,7 @@ public class PpoTrainerController {
 	@ResponseBody
 	public JsonResult findPpoTrainerAll(  String trainerName,  Integer pageCurrent,Integer pageSize,Long organizationId) {
 		try {
-			//organizationId = 0L;
+			organizationId = 0L;
 			PageObject<PpoTrainer> pageObject = ppoTrainerService.findPpoTrainerAll(trainerName, pageCurrent,pageSize,organizationId);
 			return JsonResult.oK(pageObject);
 		} catch (Exception e) {
@@ -40,7 +42,27 @@ public class PpoTrainerController {
 		
 	}
 	
-	
+	/**
+	 * 查询所有训练师
+	 * @param appointmentName
+	 * @param pageCurrent
+	 * @return
+	 */
+	@RequestMapping("/doFindPpoTrainerOne")
+	@ResponseBody
+	public JsonResult findPpoTrainerOne( PpoTrainer ppoTrainer ) {
+		try {
+		
+			PpoTrainerOrganization one = ppoTrainerService.findPpoTrainerOne(ppoTrainer);
+			return JsonResult.oK(one);
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+		}
+		
+		return JsonResult.build(201, "查询失败");
+		
+	}
 	
 	/**
      * 添加训练师
@@ -94,10 +116,13 @@ public class PpoTrainerController {
 	 */
 	 @RequestMapping("/dodeletePpoTrainer")
 	    @ResponseBody
-	    public JsonResult dodeletePpoTrainer(Integer tarinerId) {
+	    public JsonResult dodeletePpoTrainer(Long ...id) {
 	    	try {
-	    		
-	    		Integer result=ppoTrainerService.dodeletePpoTrainer(tarinerId);
+	    		ArrayList<Long> list = new ArrayList<Long>();
+	    		for (Long long1 : id) {
+	    			list.add(long1);
+				}
+	    		Integer result=ppoTrainerService.dodeletePpoTrainer(list);
 	    		return JsonResult.oK(result);
 			} catch (Exception e) {
 				e.printStackTrace();

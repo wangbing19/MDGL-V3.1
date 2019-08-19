@@ -14,12 +14,14 @@ import com.vision.mapper.sys.SysRoleMapper;
 import com.vision.mapper.sys.SysRoleMenusMapper;
 import com.vision.mapper.sys.SysUserMapper;
 import com.vision.mapper.sys.SysUserRoleMapper;
+import com.vision.pojo.ppo.PpoTrainer;
 import com.vision.pojo.sys.SysRole;
 import com.vision.pojo.sys.SysRoleUser;
 import com.vision.pojo.sys.vo.SysRoleMenus;
 import com.vision.pojo.sys.vo.SysRoleOrganizationResult;
 import com.vision.service.sys.SysRoleService;
 import com.vision.vo.CheckBox;
+import com.vision.vo.PageObject;
 
 
 @Service
@@ -48,6 +50,7 @@ public class SysRoleServiceImpl implements SysRoleService{
 		sysRoleMenusMapper.insertObject(sysRole.getId(),menuIds);
 		return result;
 	}
+	
 	@Override
 	public int deleteRole(Integer id) {
 		//1.参数合法性校验
@@ -67,6 +70,7 @@ public class SysRoleServiceImpl implements SysRoleService{
 		
 		return rows;
 	}
+	
 	@Override
 	public int updateRole(SysRole sysRole, Integer[] menuIds) {
 		//1.参数验证
@@ -92,12 +96,14 @@ public class SysRoleServiceImpl implements SysRoleService{
 				return rows;
 		
 	}
+	
 	@Override
 	public List<CheckBox> findObjects() {
 		
 		List<CheckBox> result = sysRoleMapper.findObjects();
 		return result;
 	}
+	
 	@Override
 	public SysRoleOrganizationResult findObjectById(Integer id) {
 		
@@ -108,6 +114,7 @@ public class SysRoleServiceImpl implements SysRoleService{
 			throw new ServiceException("记录可能已经不存在");
 			return result;
 	}
+	
 	@Override
 	public List<SysRole> findObjectByIds(Integer[] ids) {
 				ArrayList<Integer> arrayList = new ArrayList<>();
@@ -118,13 +125,23 @@ public class SysRoleServiceImpl implements SysRoleService{
 		List<SysRole> selectBatchIds = sysRoleMapper.selectBatchIds(arrayList);
 		return selectBatchIds;
 	}
+	
 	@Override
-	public List<SysRole> doFindRoleAll() {
+	public PageObject<SysRole> doFindRoleAll(Integer pageCurrent,Integer pageSize) {
+		
+		 
+		int startIndex=(pageCurrent-1)*pageSize;
+		QueryWrapper<SysRole> queryWrapper = new QueryWrapper<SysRole>();
+		Integer pageCount = sysRoleMapper.selectCount(queryWrapper);
+		List<SysRole> selectList = sysRoleMapper.doFindRoleAll(startIndex, pageSize);
+		PageObject<SysRole> pageObject = new PageObject<SysRole>();
+		pageObject.setPageCurrent(pageCurrent);
+		pageObject.setPageSize(pageSize);
+		pageObject.setPageCount(pageCount);
+		pageObject.setRecords(selectList);
 		
 		
-		List<SysRole> selectList = sysRoleMapper.selectList(null);
-		
-		return selectList;
+		return pageObject;
 	}
 	
 	

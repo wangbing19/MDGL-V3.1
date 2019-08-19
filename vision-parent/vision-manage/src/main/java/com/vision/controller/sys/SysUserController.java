@@ -80,7 +80,7 @@ public class SysUserController {
 	@RequestMapping("doFindPageObjects")
 	@ResponseBody
 	public JsonResult doFindPageObjects(Long organizationId,String username,Integer pageCurrent,Integer pageSize){
-		
+		organizationId=0L;
 		PageObject<SysUserOrganization> pageObject=sysUserService.findPageObjects(organizationId,username,pageCurrent,pageSize);
 		return new JsonResult(pageObject);
 	}
