@@ -152,6 +152,25 @@ public class SysUserController {
 			return JsonResult.build(201, "查询失败！");
 		}
 	 
+	 
+	 /**
+	  * 用于前端修改时的查询
+	  * @param userId
+	  * @return
+	  */
+	 @RequestMapping("doFindUserByIdWeb")
+	 @ResponseBody
+		public JsonResult findUserByIdWeb(Integer userId){
+		 try {
+			 SysUser result=sysUserService.findUserByIdWeb(userId);
+			 return JsonResult.oK(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+			
+			return JsonResult.build(201, "查询失败！");
+		}
+	 
 	 /**
 	  * 用于权限用户认证时，根据id查询该用户信息
 	  * @param userId

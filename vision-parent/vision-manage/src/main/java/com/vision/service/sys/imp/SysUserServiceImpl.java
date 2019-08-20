@@ -12,8 +12,10 @@ import org.springframework.util.StringUtils;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.vision.exception.ServiceException;
+import com.vision.mapper.sys.SysOrganizationMapper;
 import com.vision.mapper.sys.SysUserMapper;
 import com.vision.mapper.sys.SysUserRoleMapper;
+import com.vision.pojo.sys.SysOrganization;
 import com.vision.pojo.sys.SysUser;
 import com.vision.pojo.sys.vo.SysUserOrganization;
 import com.vision.service.sys.SysUserService;
@@ -24,6 +26,8 @@ public class SysUserServiceImpl implements SysUserService{
 	private SysUserMapper sysUserMapper;
 	@Autowired
 	private SysUserRoleMapper sysUserRoleMapper;
+	@Autowired
+	SysOrganizationMapper sysOrganizationMapper;
 	@Override
 	public int saveObject(SysUser entity, Integer[] roleIds) {
 		
@@ -55,7 +59,7 @@ public class SysUserServiceImpl implements SysUserService{
 				//entity.setModifiedUser(user.getUsername());
 				int rows=sysUserMapper.insertObject(entity);
 				//3.保存用户与角色关系数据
-				sysUserRoleMapper.insertObjects(entity.getUserId(),roleIds);
+				sysUserRoleMapper.insertObjects(entity.getId(),roleIds);
 				return rows;
 	}
 	@Override
@@ -69,8 +73,8 @@ public class SysUserServiceImpl implements SysUserService{
 				//2.保存用户自身信息
 				int rows=sysUserMapper.updateById(entity);
 				//3.保存用户与角色关系数据
-				sysUserRoleMapper.deleteObjectsByUserId(entity.getUserId());
-				sysUserRoleMapper.insertObjects(entity.getUserId(),roleIds);
+				sysUserRoleMapper.deleteObjectsByUserId(entity.getId());
+				sysUserRoleMapper.insertObjects(entity.getId(),roleIds);
 				return rows;
 	}
 	@Override
@@ -177,5 +181,13 @@ public class SysUserServiceImpl implements SysUserService{
 		queryWrapper.eq("user_name", userName);
 		SysUser selectOne = sysUserMapper.selectOne(queryWrapper);
 		return selectOne;
+	}
+	@Override
+	public SysUser findUserByIdWeb(Integer userId) {
+		//
+		SysUser selectById = sysUserMapper.selectById(userId);
+		SysOrganization selectById2 = sysOrganizationMapper.selectById(selectById.getOrganizationId());
+		selectById.setSysOrganization(selectById2);
+		return selectById;
 	}
 }
