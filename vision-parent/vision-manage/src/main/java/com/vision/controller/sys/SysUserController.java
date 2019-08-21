@@ -160,9 +160,9 @@ public class SysUserController {
 	  */
 	 @RequestMapping("doFindUserByIdWeb")
 	 @ResponseBody
-		public JsonResult findUserByIdWeb(Integer userId){
+		public JsonResult findUserByIdWeb(SysUser SysUser){
 		 try {
-			 SysUser result=sysUserService.findUserByIdWeb(userId);
+			 SysUser result=sysUserService.findUserByIdWeb(SysUser.getId());
 			 return JsonResult.oK(result);
 		} catch (Exception e) {
 			e.printStackTrace();

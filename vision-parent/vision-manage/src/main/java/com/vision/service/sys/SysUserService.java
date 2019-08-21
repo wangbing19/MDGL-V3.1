@@ -25,6 +25,6 @@ public interface SysUserService{
 
 	SysUser findUserByName(String userName);
 
-	SysUser findUserByIdWeb(Integer userId);
+	SysUser findUserByIdWeb(Long userId);
 
 }

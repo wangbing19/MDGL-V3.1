@@ -183,11 +183,12 @@ public class SysUserServiceImpl implements SysUserService{
 		return selectOne;
 	}
 	@Override
-	public SysUser findUserByIdWeb(Integer userId) {
+	public SysUser findUserByIdWeb(Long userId) {
 		//
 		SysUser selectById = sysUserMapper.selectById(userId);
 		SysOrganization selectById2 = sysOrganizationMapper.selectById(selectById.getOrganizationId());
-		selectById.setSysOrganization(selectById2);
+		selectById.setOrganizationName(selectById2.getOrganizationName());
+		selectById.setOrganizationAddress(selectById2.getOrganizationAddress());
 		return selectById;
 	}
 }
