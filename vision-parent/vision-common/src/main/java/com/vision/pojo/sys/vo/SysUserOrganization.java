@@ -16,7 +16,7 @@ import lombok.experimental.Accessors;
 public class SysUserOrganization {
 	
 	
-	private Long userId;
+	private Long id;
 	private Date loginTime;
 	private String userName;
 	private String password;

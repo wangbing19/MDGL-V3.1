@@ -3,6 +3,7 @@ package com.vision.pojo.sys;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
@@ -14,7 +15,7 @@ import lombok.experimental.Accessors;
 @TableName("sys_user")
 public class SysUser {
 	@TableId(type=IdType.AUTO)
-	private Long userId;
+	private Long id;
 	//登陆时间
 	private Date loginTime;
 	//姓名
@@ -41,4 +42,9 @@ public class SysUser {
 	private String createdUser;
 	private Date modifiedTime;
 	private String modifiedUser;
+	/**组织信息*/
+	@TableField(exist=false)
+	private String organizationName; 
+	@TableField(exist=false)
+	private String organizationAddress;;
 }
