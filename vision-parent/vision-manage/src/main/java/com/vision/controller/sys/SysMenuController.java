@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.vision.pojo.sys.SysMenu;
 import com.vision.service.sys.SysMenuService;
+import com.vision.util.GetMenusTreeData;
 import com.vision.util.GetTreeData;
 import com.vision.vo.JsonResult;
 import com.vision.vo.Node;
+import com.vision.vo.TreeMenus;
 import com.vision.vo.TreeStructure;
 
 @Controller
@@ -64,7 +66,23 @@ public class SysMenuController {
 			GetTreeData<SysMenu> tree = new GetTreeData<>();
 			TreeStructure<SysMenu> treeData = tree.getTree(result);
 			
-			return JsonResult.oK(treeData);
+			
+			
+			List<TreeMenus<SysMenu>> result1 = new ArrayList<>();
+			for(int i = 0; i < list.size() ; i++) {
+				TreeMenus<SysMenu> treeStructure = new TreeMenus<>();
+				treeStructure.setKey((Long)list.get(i).getId());
+				treeStructure.setTitle(list.get(i).getName());
+				treeStructure.setValue((Long)list.get(i).getId());
+				treeStructure.setpId((Long)list.get(i).getParentId());
+				 result1.add(treeStructure);
+			}
+			
+			GetMenusTreeData<SysMenu> tree1 = new GetMenusTreeData();
+			TreeMenus<SysMenu> tree2 = tree1.getTree(result1);
+			
+			
+			return JsonResult.oK(tree2);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -104,6 +122,26 @@ public class SysMenuController {
 			if(result == -1) {
 				return JsonResult.build(400, "该菜单下有子菜单不能删除");
 			}
+			return JsonResult.oK(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return JsonResult.build(201, "菜单查询失败!");
+		
+	}
+	
+	/**
+	 * 删除菜单信息
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("doFindMenuOne")
+	@ResponseBody
+	public JsonResult findMenuOne(Long id) {
+		try {
+			SysMenu result = sysMenuService.findMenuOne(id);
+			
 			return JsonResult.oK(result);
 		} catch (Exception e) {
 			e.printStackTrace();
