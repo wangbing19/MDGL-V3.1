@@ -59,6 +59,12 @@ export default [
             name: 'traInformationrecord',
             component: './Train/TraInformationrecord/TraInformationrecord',
           },
+          //schedule
+          {
+            path: '/train/schedule/schedule',
+            name: 'schedule',
+            component: './Train/Schedule/Schedule',
+          },
         ],
       },
       // system

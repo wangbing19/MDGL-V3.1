@@ -10,6 +10,7 @@ export default {
   'menu.cus.diagnose': '诊断表',
   'menu.train': '训练',
   'menu.train.traInformationrecord': '训练记录表',
+  'menu.train.schedule': '课程表',
   'menu.system': '系统',
   'menu.system.symptomType': '资源配置',
   'menu.dashboard.analysis': '分析页',

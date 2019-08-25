@@ -46,18 +46,11 @@ class TraInformationrecordDrawer extends Component {
             if (!err) {
                 const {traInformationrecord: {  traRow, selectedRows }, dispatch } = this.props;
                 const { data, ok} = traRow;
-                const formData = formatData(fieldsValue,"",data["id"]);
                 fieldsValue={
                     ...fieldsValue,
                     "endTime":fieldsValue['endTime'].format('YYYY/MM/DD HH:mm:ss'),
                 }
-                //封装表单数据对象
-                // const formData = formatData(fieldsValue);
-                formData.append("orgId",1);
-                if(ok){
-                    formData.append("customerId",data["customerId"]);
-                    formData.append("scheduleId",data["scheduleId"]);
-                }
+                const formData = formatData(fieldsValue,"",data["id"]);
                 //发起请求
                 formDataSubmit(dispatch,'traInformationrecord',formData);
                 //关闭抽屉
@@ -79,7 +72,25 @@ class TraInformationrecordDrawer extends Component {
             visible={drawerVisible}
             width={'40%'}
             >
-                <Form  labelCol={{ span: 4 }} wrapperCol={{ span: 19 }} onSubmit={this.handleSubmit} >
+                <Form  labelCol={{ span: 5 }} wrapperCol={{ span: 18 }} onSubmit={this.handleSubmit} >
+                    <Form.Item style={{display:"none"}} >
+                        {getFieldDecorator('customerId', { rules: [{ ...rules.required  }],initialValue:ok?data["customerId"]:''
+                        })(
+                            <Input />
+                        )}
+                    </Form.Item>
+                    <Form.Item style={{display:"none"}} >
+                        {getFieldDecorator('scheduleId', { rules: [{ ...rules.required  }],initialValue:ok?data["scheduleId"]:''
+                        })(
+                            <Input />
+                        )}
+                    </Form.Item>
+                    <Form.Item style={{display:"none"}} >
+                        {getFieldDecorator('orgId', { rules: [{ ...rules.required  }],initialValue:ok?data["orgId"]:1
+                        })(
+                            <Input />
+                        )}
+                    </Form.Item>
                     <Form.Item label='姓名' >
                         {getFieldDecorator('name', { rules: [{ ...rules.required  }],initialValue:ok?data["name"]:''
                         })(
@@ -111,7 +122,7 @@ class TraInformationrecordDrawer extends Component {
                         )}
                     </Form.Item>
                     <Form.Item label='项目内容' >
-                        {getFieldDecorator('content', { rules: [{ ...rules.required  }],initialValue:ok?data["sccontenthool"]:''
+                        {getFieldDecorator('content', { rules: [{ ...rules.required  }],initialValue:ok?data["content"]:''
                         })(
                             <Input   />
                         )}
