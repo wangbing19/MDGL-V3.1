@@ -98,21 +98,21 @@ class TraInformationrecordDrawer extends Component {
                         )}
                     </Form.Item>
                     <Form.Item label='裸眼视力(左)' >
-                        {getFieldDecorator('lVision', { rules: [{ ...rules.required  }],initialValue:ok?data["lVision"]:''
+                        {getFieldDecorator('lVision', { rules: [{ ...rules.required  }],initialValue:ok?data["lvision"]:''
                         })(
-                            <Input   />
+                            <InputNumber style={{width:"100%"}}   />
                         )}
                     </Form.Item>
                     <Form.Item label='裸眼视力(右)' >
-                        {getFieldDecorator('rVision', { rules: [{ ...rules.required  }],initialValue:ok?data["rVision"]:''
+                        {getFieldDecorator('rVision', { rules: [{ ...rules.required  }],initialValue:ok?data["rvision"]:''
                         })(
-                            <Input   />
+                            <InputNumber style={{width:"100%"}}   />
                         )}
                     </Form.Item>
                     <Form.Item label='评分' >
                         {getFieldDecorator('grade', { rules: [{ ...rules.required  }],initialValue:ok?data["grade"]:''
                         })(
-                            <Input   />
+                            <InputNumber style={{width:"100%"}}   />
                         )}
                     </Form.Item>
                     <Form.Item label='评价' >

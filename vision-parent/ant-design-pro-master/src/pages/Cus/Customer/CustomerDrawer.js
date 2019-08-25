@@ -85,7 +85,7 @@ class CustomerDrawer extends Component {
                     <Form.Item label='年龄' >
                         {getFieldDecorator('age', { rules: [{ ...rules.required  }],initialValue:ok?data["age"]:''
                         })(
-                            <Input   />
+                            <InputNumber style={{width:"100%"}}   />
                         )}
                     </Form.Item>
                     <Form.Item label='生日' >

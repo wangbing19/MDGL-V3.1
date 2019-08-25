@@ -90,6 +90,9 @@ class ConsultationDrawer extends Component {
             this.setState({
                 fVisionConditionIsCan:false,
             })
+            this.props.form.setFieldsValue({
+                fOther: "",
+            })
         }
         
     }
@@ -103,6 +106,9 @@ class ConsultationDrawer extends Component {
         } else if(e.target.value!="11"){
             this.setState({
                 mVisionConditionIsCan:false,
+            })
+            this.props.form.setFieldsValue({
+                mOther: "",
             })
         }
     }
@@ -185,7 +191,7 @@ class ConsultationDrawer extends Component {
                         <Form.Item label='年龄' >
                             {getFieldDecorator('age', { rules: [{ ...rules.required  }],initialValue:ok?data["age"]:''
                             })(
-                                <Input   />
+                                <InputNumber style={{width:"100%"}}   />
                             )}
                         </Form.Item>
                     </Col>
@@ -201,7 +207,7 @@ class ConsultationDrawer extends Component {
                         <Form.Item label='联系方式' >
                             {getFieldDecorator('tel', { rules: [{ ...rules.required  }],initialValue:ok?data["tel"]:''
                             })(
-                                <Input   />
+                                <InputNumber style={{width:"100%"}}   />
                             )}
                         </Form.Item>
                     </Col>
@@ -228,7 +234,7 @@ class ConsultationDrawer extends Component {
                         <Form.Item label='年份' >
                             {getFieldDecorator('declineTimeYear', { rules: [{ ...rules.required  }],initialValue:ok?data["declineTimeYear"]:''
                             })(
-                                <Input   />
+                                <InputNumber style={{width:"100%"}}   />
                             )}
                         </Form.Item>
                     </Col>
@@ -236,21 +242,7 @@ class ConsultationDrawer extends Component {
                         <Form.Item label='月份' >
                             {getFieldDecorator('declineTimeMonth', { rules: [{ ...rules.required  }],initialValue:ok?data["declineTimeMonth"]:''
                             })(
-                                <Input   />
-                                // <Select defaultValue="1" style={{ width: 120 }} >
-                                //     <Option value="1">1月</Option>
-                                //     <Option value="2">2月</Option>
-                                //     <Option value="3">3月</Option>
-                                //     <Option value="4">4月</Option>
-                                //     <Option value="5">5月</Option>
-                                //     <Option value="6">6月</Option>
-                                //     <Option value="7">7月</Option>
-                                //     <Option value="8">8月</Option>
-                                //     <Option value="9">9月</Option>
-                                //     <Option value="10">10月</Option>
-                                //     <Option value="11">11月</Option>
-                                //     <Option value="12">12月</Option>
-                                // </Select>
+                                <InputNumber style={{width:"100%"}}   />
                             )}
                         </Form.Item>
                     </Col>
@@ -327,7 +319,7 @@ class ConsultationDrawer extends Component {
                 <Row >
                     <Col md={18} sm={24}>
                         <Form.Item label='' >
-                            {getFieldDecorator('fVisionCondition', { rules: [{ ...rules.required  }],initialValue:ok?data["fVisionCondition"]:'0'
+                            {getFieldDecorator('fVisionCondition', { rules: [{ ...rules.required  }],initialValue:ok?data["fvisionCondition"]:'0'
                             })(
                                 <Radio.Group onChange={this.fVisionConditionIsCan}>
                                     &nbsp;&nbsp;近视(<Radio value={"0"}>轻</Radio>
@@ -349,7 +341,7 @@ class ConsultationDrawer extends Component {
                     </Col>
                     <Col md={6} sm={24} >
                         <Form.Item label='其他眼病 ' >
-                            {getFieldDecorator('fOther', { rules: [{ required:fVisionConditionIsCan }],initialValue:ok?data["fOther"]:''
+                            {getFieldDecorator('fOther', { rules: [{ required:fVisionConditionIsCan }],initialValue:ok?data["fother"]:''
                             })(
                                 <Input  disabled={!fVisionConditionIsCan} />
                             )}
@@ -360,7 +352,7 @@ class ConsultationDrawer extends Component {
                 <Row >
                     <Col md={18} sm={24}>
                         <Form.Item label='' >
-                            {getFieldDecorator('mVisionCondition', { rules: [{ ...rules.required  }],initialValue:ok?data["mVisionCondition"]:''
+                            {getFieldDecorator('mVisionCondition', { rules: [{ ...rules.required  }],initialValue:ok?data["mvisionCondition"]:''
                             })(
                                 <Radio.Group onChange={this.mVisionConditionIsCan}>
                                     &nbsp;&nbsp;近视(<Radio value={"0"}>轻</Radio>
@@ -382,7 +374,7 @@ class ConsultationDrawer extends Component {
                     </Col>
                     <Col md={6} sm={24} >
                         <Form.Item label='其他眼病' >
-                            {getFieldDecorator('mOther', { rules: [{ required:mVisionConditionIsCan  }],initialValue:ok?data["mOther"]:''
+                            {getFieldDecorator('mOther', { rules: [{ required:mVisionConditionIsCan  }],initialValue:ok?data["mother"]:''
                             })(
                                 <Input disabled={!mVisionConditionIsCan}  />
                             )}
@@ -544,17 +536,17 @@ class ConsultationDrawer extends Component {
                 <Row >
                     <Col md={12} sm={24}>
                         <Form.Item label='右眼' >
-                            {getFieldDecorator('rD', { rules: [{ ...rules.required  }],initialValue:ok?data["rD"]:''
+                            {getFieldDecorator('rD', { rules: [{ ...rules.required  }],initialValue:ok?data["rd"]:''
                             })(
-                                <Input   />
+                                <InputNumber style={{width:"100%"}}   />
                             )}
                         </Form.Item>
                     </Col>
                     <Col md={12} sm={24} >
                         <Form.Item label='左眼' >
-                            {getFieldDecorator('lD', { rules: [{ ...rules.required  }],initialValue:ok?data["lD"]:''
+                            {getFieldDecorator('lD', { rules: [{ ...rules.required  }],initialValue:ok?data["ld"]:''
                             })(
-                                <Input   />
+                                <InputNumber  style={{width:"100%"}}   />
                             )}
                         </Form.Item>
                     </Col>
@@ -563,17 +555,17 @@ class ConsultationDrawer extends Component {
                 <Row >
                     <Col md={12} sm={24}>
                         <Form.Item label='右眼' >
-                            {getFieldDecorator('rCva', { rules: [{ ...rules.required  }],initialValue:ok?data["rCva"]:''
+                            {getFieldDecorator('rCva', { rules: [{ ...rules.required  }],initialValue:ok?data["rcva"]:''
                             })(
-                                <Input   />
+                                <InputNumber style={{width:"100%"}}    />
                             )}
                         </Form.Item>
                     </Col>
                     <Col md={12} sm={24} >
                         <Form.Item label='左眼' >
-                            {getFieldDecorator('lCva', { rules: [{ ...rules.required  }],initialValue:ok?data["lCva"]:''
+                            {getFieldDecorator('lCva', { rules: [{ ...rules.required  }],initialValue:ok?data["lcva"]:''
                             })(
-                                <Input   />
+                                <InputNumber style={{width:"100%"}}    />
                             )}
                         </Form.Item>
                     </Col>
@@ -591,7 +583,7 @@ class ConsultationDrawer extends Component {
                         <Form.Item label='时间' >
                             {getFieldDecorator('gmtCreate', { initialValue:moment(moment().format(dateFormat.day_hour), dateFormat.day_hour)
                             })(
-                                <DatePicker disabled format="YYYY-MM-DD HH:mm:ss" />
+                                <DatePicker disabled format="YYYY-MM-DD HH:mm:ss" style={{width:"100%"}}  />
                             )}
                         </Form.Item>
                     </Col>

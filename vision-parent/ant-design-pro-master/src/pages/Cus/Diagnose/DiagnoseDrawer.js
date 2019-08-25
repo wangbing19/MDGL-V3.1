@@ -79,25 +79,25 @@ class DiagnoseDrawer extends Component {
                 <Row >
                     <Col md={6} sm={24}>
                         <Form.Item label='（' >
-                            {getFieldDecorator('rDs', { rules: [{ ...rules.required  }],initialValue:ok?data["rDs"]:''
+                            {getFieldDecorator('rDs', { rules: [{ ...rules.required  }],initialValue:ok?data["rds"]:''
                             })(
-                                <Input   />
+                                <InputNumber style={{width:"100%"}}   />
                             )}
                         </Form.Item>
                     </Col>
                     <Col md={6} sm={24} >
                         <Form.Item label='）DS + （' >
-                            {getFieldDecorator('rDc', { rules: [{ ...rules.required  }],initialValue:ok?data["rDc"]:''
+                            {getFieldDecorator('rDc', { rules: [{ ...rules.required  }],initialValue:ok?data["rdc"]:''
                             })(
-                                <Input   />
+                                <InputNumber style={{width:"100%"}}   />
                             )}
                         </Form.Item>
                     </Col>
                     <Col md={6} sm={24} >
                         <Form.Item label='）DC + （' >
-                            {getFieldDecorator('rX', { rules: [{ ...rules.required  }],initialValue:ok?data["rX"]:''
+                            {getFieldDecorator('rX', { rules: [{ ...rules.required  }],initialValue:ok?data["rx"]:''
                             })(
-                                <Input   />
+                                <InputNumber style={{width:"100%"}}   />
                             )}
                         </Form.Item>
                     </Col>
@@ -107,9 +107,9 @@ class DiagnoseDrawer extends Component {
                     </Row><Row>
                     <Col md={6} sm={24} >
                         <Form.Item label='→  视力：（' >
-                            {getFieldDecorator('rD', { rules: [{ ...rules.required  }],initialValue:ok?data["rD"]:''
+                            {getFieldDecorator('rD', { rules: [{ ...rules.required  }],initialValue:ok?data["rd"]:''
                             })(
-                                <Input   />
+                                <InputNumber style={{width:"100%"}}   />
                             )}
                         </Form.Item>
                     </Col>
@@ -121,25 +121,25 @@ class DiagnoseDrawer extends Component {
                 <Row >
                     <Col md={6} sm={24}>
                         <Form.Item label='（' >
-                            {getFieldDecorator('lDs', { rules: [{ ...rules.required  }],initialValue:ok?data["lDs"]:''
+                            {getFieldDecorator('lDs', { rules: [{ ...rules.required  }],initialValue:ok?data["lds"]:''
                             })(
-                                <Input   />
+                                <InputNumber style={{width:"100%"}}   />
                             )}
                         </Form.Item>
                     </Col>
                     <Col md={6} sm={24} >
                         <Form.Item label='）DS + （' >
-                            {getFieldDecorator('lDc', { rules: [{ ...rules.required  }],initialValue:ok?data["lDc"]:''
+                            {getFieldDecorator('lDc', { rules: [{ ...rules.required  }],initialValue:ok?data["ldc"]:''
                             })(
-                                <Input   />
+                                <InputNumber style={{width:"100%"}}   />
                             )}
                         </Form.Item>
                     </Col>
                     <Col md={6} sm={24} >
                         <Form.Item label='）DC + （' >
-                            {getFieldDecorator('lX', { rules: [{ ...rules.required  }],initialValue:ok?data["lX"]:''
+                            {getFieldDecorator('lX', { rules: [{ ...rules.required  }],initialValue:ok?data["lx"]:''
                             })(
-                                <Input   />
+                                <InputNumber style={{width:"100%"}}   />
                             )}
                         </Form.Item>
                     </Col>
@@ -149,9 +149,9 @@ class DiagnoseDrawer extends Component {
                     </Row><Row>
                     <Col md={6} sm={24} >
                         <Form.Item label='°）→  视力：（' >
-                            {getFieldDecorator('lD', { rules: [{ ...rules.required  }],initialValue:ok?data["lD"]:''
+                            {getFieldDecorator('lD', { rules: [{ ...rules.required  }],initialValue:ok?data["ld"]:''
                             })(
-                                <Input   />
+                                <InputNumber style={{width:"100%"}}   />
                             )}
                         </Form.Item>
                     </Col>
@@ -164,7 +164,7 @@ class DiagnoseDrawer extends Component {
                         <Form.Item label='3.瞳距: ' >
                             {getFieldDecorator('pupilDistance', { rules: [{ ...rules.required  }],initialValue:ok?data["pupilDistance"]:''
                             })(
-                                <Input   />
+                                <InputNumber style={{width:"100%"}}   />
                             )}
                         </Form.Item>
                     </Col>
@@ -176,17 +176,17 @@ class DiagnoseDrawer extends Component {
                 <Row >
                     <Col md={5} sm={24}>
                         <Form.Item label='右眼（度数' >
-                            {getFieldDecorator('rGlassesD', { rules: [{ ...rules.required  }],initialValue:ok?data["rGlassesD"]:''
+                            {getFieldDecorator('rGlassesD', { rules: [{ ...rules.required  }],initialValue:ok?data["rglassesD"]:''
                             })(
-                                <Input   />
+                                <InputNumber style={{width:"100%"}}   />
                             )}
                         </Form.Item>
                     </Col>
                     <Col md={5} sm={24}>
                         <Form.Item label='°， 散光' >
-                            {getFieldDecorator('rGlassesDc', { rules: [{ ...rules.required  }],initialValue:ok?data["rGlassesDc"]:''
+                            {getFieldDecorator('rGlassesDc', { rules: [{ ...rules.required  }],initialValue:ok?data["rglassesDc"]:''
                             })(
-                                <Input   />
+                                <InputNumber style={{width:"100%"}}   />
                             )}
                         </Form.Item>
                     </Col>
@@ -196,17 +196,17 @@ class DiagnoseDrawer extends Component {
                     </Row><Row>
                     <Col md={5} sm={24}>
                         <Form.Item label='左眼（度数' >
-                            {getFieldDecorator('lGlassesD', { rules: [{ ...rules.required  }],initialValue:ok?data["lGlassesD"]:''
+                            {getFieldDecorator('lGlassesD', { rules: [{ ...rules.required  }],initialValue:ok?data["lglassesD"]:''
                             })(
-                                <Input   />
+                                <InputNumber style={{width:"100%"}}   />
                             )}
                         </Form.Item>
                     </Col>
                     <Col md={5} sm={24}>
                         <Form.Item label='°， 散光' >
-                            {getFieldDecorator('lGlassesDc', { rules: [{ ...rules.required  }],initialValue:ok?data["lGlassesDc"]:''
+                            {getFieldDecorator('lGlassesDc', { rules: [{ ...rules.required  }],initialValue:ok?data["lglassesDc"]:''
                             })(
-                                <Input   />
+                                <InputNumber style={{width:"100%"}}   />
                             )}
                         </Form.Item>
                     </Col>
