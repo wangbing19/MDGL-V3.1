@@ -6,6 +6,7 @@ import {rules,dateFormat} from '../../../../config/utilsConfig';
 import {formDataSubmit,formatData} from '@/utils/dataUtils';
 import cookie from 'react-cookies';
 import moment from 'moment';
+import { routerRedux } from 'dva/router';
 
 const { TextArea } = Input;
 const Option = Select.Option;
@@ -25,8 +26,8 @@ class CustomerDrawer extends Component {
         this.state = {  };
     }
 
-    showDrawer=()=>{
-        const {customer: { drawerVisible }, dispatch} = this.props;
+    showDrawer=(e)=>{
+        const {customer: { drawerVisible, consultation }, dispatch} = this.props;
         dispatch({
             type:'customer/setDrawerVisible',
             payload:!drawerVisible,
@@ -36,6 +37,18 @@ class CustomerDrawer extends Component {
         })
         //清空表单
         this.props.form.resetFields();
+        if(e==1&&consultation){
+            this.props.dispatch(routerRedux.push({ 
+                pathname: '/cus/customer/customer',
+                params:{
+                    name:consultation["name"]
+                }
+            }))
+        }
+        dispatch({
+            type:'customer/setConsultation',
+            payload:{},
+        })
     }
 
 
@@ -57,14 +70,14 @@ class CustomerDrawer extends Component {
                 //发起请求
                 formDataSubmit(dispatch,'customer',formData);
                 //关闭抽屉
-                this.showDrawer();
+                this.showDrawer(1);
             }
         });
     }
 
 
     render() {
-        const {form: {getFieldDecorator} ,customer: { drawerVisible, cusRow}, dispatch } = this.props;
+        const {form: {getFieldDecorator} ,customer: { drawerVisible, cusRow, consultation}, dispatch } = this.props;
         const { data, ok} = cusRow;
         return (
             <Drawer
@@ -76,14 +89,20 @@ class CustomerDrawer extends Component {
             width={'40%'}
             >
                 <Form  labelCol={{ span: 4 }} wrapperCol={{ span: 19 }} onSubmit={this.handleSubmit} >
-                <Form.Item label='用户名' >
-                        {getFieldDecorator('name', { rules: [{ ...rules.required  }],initialValue:ok?data["name"]:''
+                    <Form.Item style={{display:"none"}} >
+                        {getFieldDecorator('consultationId', { rules: [{ ...rules.required  }],initialValue:ok?data["consultationId"]:consultation["id"]
+                        })(
+                            <Input   />
+                        )}
+                    </Form.Item>
+                    <Form.Item label='用户名' >
+                        {getFieldDecorator('name', { rules: [{ ...rules.required  }],initialValue:ok?data["name"]:consultation["name"]
                         })(
                             <Input   />
                         )}
                     </Form.Item>
                     <Form.Item label='年龄' >
-                        {getFieldDecorator('age', { rules: [{ ...rules.required  }],initialValue:ok?data["age"]:''
+                        {getFieldDecorator('age', { rules: [{ ...rules.required  }],initialValue:ok?data["age"]:consultation["age"]
                         })(
                             <InputNumber style={{width:"100%"}}   />
                         )}
@@ -95,7 +114,7 @@ class CustomerDrawer extends Component {
                         )}
                     </Form.Item>
                     <Form.Item label='性别' >
-                        {getFieldDecorator('gender', { rules: [{ ...rules.required  }],initialValue:ok?data["gender"]:''
+                        {getFieldDecorator('gender', { rules: [{ ...rules.required  }],initialValue:ok?data["gender"]:consultation["gender"]
                         })(
                             <Input   />
                         )}
@@ -119,7 +138,7 @@ class CustomerDrawer extends Component {
                         )}
                     </Form.Item>
                     <Form.Item label='电话' >
-                        {getFieldDecorator('tel', { rules: [{ ...rules.required  }],initialValue:ok?data["tel"]:''
+                        {getFieldDecorator('tel', { rules: [{ ...rules.required  }],initialValue:ok?data["tel"]:consultation["tel"]
                         })(
                             <Input   />
                         )}

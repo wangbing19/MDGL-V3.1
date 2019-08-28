@@ -5,13 +5,16 @@ import StandardTable from '@/components/StandardTable/indexNatice';
 import configStyles from '@/less/config.less';
 import {deleteData} from '@/utils/dataUtils';
 import ConsultationDrawer from './ConsultationDrawer.js';
+import CustomerDrawer from '@/pages/Cus/Customer/CustomerDrawer'
 import moment from 'moment';
+import { routerRedux } from 'dva/router';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 
-@connect(({consultation, loading }) => ({
+@connect(({consultation, customer, loading }) => ({
     consultation,
+    customer,
     loading: loading.models.consultation,
 }))
 
@@ -81,7 +84,7 @@ class Consultation extends Component {
         {
             title: '裸眼远视力',
             dataIndex: 'ld',
-            width: "15%",
+            width: "10%",
             render: (text,row) => (
                 <div>
                    {row.ld}/{row.rd}
@@ -91,7 +94,7 @@ class Consultation extends Component {
         {
             title: '矫正远视力',
             dataIndex: 'lcva',
-            width: "15%",
+            width: "10%",
             render: (text,row) => (
                 <div>
                    {row.lcva}/{row.rcva}
@@ -101,7 +104,7 @@ class Consultation extends Component {
         {
             title: '咨询导师',
             dataIndex: 'tutor',
-            width: "15%",
+            width: "10%",
         },
         {
             title: '创建时间',
@@ -115,10 +118,10 @@ class Consultation extends Component {
         },
         {
             title: '操作',
-            width: "5%",
             render: (text,row) => (
                 <div>
-                   <Button  type="primary" icon={'edit'} onClick={this.showDrawer.bind(this,row)}/>
+                   <Button  type="primary" icon={'edit'} title="修改" onClick={this.showDrawer.bind(this,row)}/>&nbsp;
+                   <Button  type="primary" icon={'plus'} title="添加用户" onClick={this.addCustomer.bind(this,row)}/>
                 </div>
             ),
         },
@@ -140,6 +143,37 @@ class Consultation extends Component {
                 },
             })
         }
+    }
+
+    //添加用户
+    addCustomer=(row)=>{
+        const {  consultation:{ drawerVisible },dispatch } =this.props;
+        dispatch({
+            type:"customer/getCustomerByConsultationId",
+            payload:{
+                consultationId: row.id,
+            },
+            callback:response=>{
+                if(response.data==0){
+                    dispatch({
+                        type:"customer/setConsultation",
+                        payload:row,
+                    })
+                    dispatch({
+                        type:"customer/setDrawerVisible",
+                        payload:true,
+                    })
+                } else if(response.data==1){
+                    this.props.dispatch(routerRedux.push({ 
+                        pathname: '/cus/customer/customer',
+                        params:{
+                            name:row.name
+                        }
+                    }))
+                }
+            }
+        })
+        
     }
 
     render() {
@@ -189,6 +223,7 @@ class Consultation extends Component {
                     />
                     {/* 修改，添加 */}
                     <ConsultationDrawer/>
+                    <CustomerDrawer/>
                 </div>
             </div>
         );

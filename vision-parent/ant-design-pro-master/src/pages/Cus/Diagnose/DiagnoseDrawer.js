@@ -6,6 +6,7 @@ import {rules,dateFormat} from '../../../../config/utilsConfig';
 import {formDataSubmit,formatData} from '@/utils/dataUtils';
 import cookie from 'react-cookies';
 import moment from 'moment';
+import { routerRedux } from 'dva/router';
 
 const { TextArea } = Input;
 const Option = Select.Option;
@@ -25,8 +26,8 @@ class DiagnoseDrawer extends Component {
         this.state = {  };
     }
 
-    showDrawer=()=>{
-        const {diagnose: { drawerVisible }, dispatch} = this.props;
+    showDrawer=(e)=>{
+        const {diagnose: { drawerVisible, customer }, dispatch} = this.props;
         dispatch({
             type:'diagnose/setDrawerVisible',
             payload:!drawerVisible,
@@ -36,6 +37,19 @@ class DiagnoseDrawer extends Component {
         })
         //清空表单
         this.props.form.resetFields();
+        debugger
+        if(e==1&&customer["id"]){
+            this.props.dispatch(routerRedux.push({ 
+                pathname: '/cus/diagnose/diagnose',
+                params:{
+                    name:customer["name"]
+                }
+            }))
+        }
+        dispatch({
+            type:'diagnose/setCustomer',
+            payload:{},
+        })
     }
 
 
@@ -53,7 +67,7 @@ class DiagnoseDrawer extends Component {
                 //发起请求
                 formDataSubmit(dispatch,'diagnose',formData);
                 //关闭抽屉
-                this.showDrawer();
+                this.showDrawer(1);
             }
         });
     }
@@ -61,7 +75,7 @@ class DiagnoseDrawer extends Component {
 
     render() {
         const { oculopathyOtherIsCan, fVisionConditionIsCan, mVisionConditionIsCan, eyeProjectOtherIsCan, eyePositionOtherIsCan  } = this.state;
-        const {form: {getFieldDecorator} ,diagnose: { drawerVisible, diaRow}, dispatch } = this.props;
+        const {form: {getFieldDecorator} ,diagnose: { drawerVisible, diaRow, customer}, dispatch } = this.props;
         const { data, ok} = diaRow;
         return (
             <Drawer
@@ -73,6 +87,12 @@ class DiagnoseDrawer extends Component {
             width={'70%'}
             >
             <Form  labelCol={{ span: 10 }} wrapperCol={{ span: 13 }} onSubmit={this.handleSubmit} >
+                <Form.Item style={{display:"none"}} >
+                        {getFieldDecorator('customerId', { rules: [{ ...rules.required  }],initialValue:ok?data["customerId"]:customer["id"]
+                        })(
+                            <Input   />
+                        )}
+                </Form.Item>
                 <div className={styles.titleSeting}>验光</div>
                 <br/><br/>
                 <div>1.右眼</div>

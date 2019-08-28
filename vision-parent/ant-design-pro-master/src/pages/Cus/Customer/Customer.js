@@ -6,12 +6,17 @@ import configStyles from '@/less/config.less';
 import {deleteData} from '@/utils/dataUtils';
 import CustomerDrawer from './CustomerDrawer.js';
 import moment from 'moment';
+import { routerRedux } from 'dva/router';
+import ConsultationDrawer from '@/pages/Cus/Consultation/ConsultationDrawer'
+import DiagnoseDrawer from '@/pages/Cus/Diagnose/DiagnoseDrawer'
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 
-@connect(({customer, loading }) => ({
+@connect(({customer, consultation, diagnose, loading }) => ({
     customer,
+    consultation,
+    diagnose,
     loading: loading.models.customer,
 }))
 
@@ -25,7 +30,7 @@ class Customer extends Component {
     }
 
     componentDidMount=()=>{
-        this.getConsultation();
+        this.getConsultation(this.props.location.params);
     }
 
     getConsultation=(value)=>{
@@ -146,10 +151,9 @@ class Customer extends Component {
         },
         {
             title: '操作',
-            // width: "10%",
             render: (text,row) => (
                 <div>
-                   <Button  type="primary" icon={'edit'} onClick={this.showDrawer.bind(this,row)}/>&nbsp;
+                   <Button  type="primary" icon={'edit'} onClick={this.showDrawer.bind(this,row)} title={"修改用户"}/>&nbsp;
                    <Button  type="primary" icon={'plus'} onClick={this.addSchedule.bind(this,row)} title={"添加课程表"}/>
                 </div>
             ),
@@ -176,12 +180,22 @@ class Customer extends Component {
 
     //跳转训练数页面
     showTotalTrainingTime=(row)=>{
-        alert(row.id+"跳转训练数页面")
+        this.props.dispatch(routerRedux.push({ 
+            pathname: '/train/traInformationrecord/traInformationrecord',
+            params: {
+                customerId:row.id
+            }
+        }))
     }
 
     //跳转课程记录
     showScheduleCount=(row)=>{
-        alert(row.id+"跳转课程记录")
+        this.props.dispatch(routerRedux.push({ 
+            pathname: '/train/schedule/schedule',
+            params: {
+                customerId:row.id
+            }
+        }))
     }
 
     //修改用户状态
@@ -202,17 +216,59 @@ class Customer extends Component {
 
     //跳转咨询表
     showConsultation=(row)=>{
-        alert(row.consultationId)
+        const {  consultation:{ drawerVisible },dispatch } =this.props;
+        
+        if(row.consultationId){
+            dispatch({
+                type:"consultation/setDrawerVisible",
+                payload:!drawerVisible,
+            })
+            dispatch({
+                type:'consultation/getConsultationById',
+                payload:{
+                    id:row.consultationId,
+                    orgId:row.orgId,
+                },
+            })
+        } else{
+            message.info("数据可能已经不存在，请刷新重试");
+        }
     }
 
     //跳转诊断表
     showDiagnose=(row)=>{
-        alert(row.diagnoseId)
+        const {  diagnose:{ drawerVisible },dispatch } =this.props;
+        dispatch({
+            type:"diagnose/setDrawerVisible",
+            payload:!drawerVisible,
+        })
+        dispatch({
+            type:'diagnose/getDiagnoseById',
+            payload:{
+                id:row.diagnoseId,
+                orgId:row.orgId,
+            },
+            callback:response=>{
+                if(!response.data){
+                    dispatch({
+                        type:'diagnose/setCustomer',
+                        payload:row,
+                    })
+                }
+                if(response.data){
+                    dispatch({
+                        type:'diagnose/saveDiaRow',
+                        payload:response,
+                    })
+                }
+            }
+        })
+        
     }
 
     //跳转到添加课程表页面
     addSchedule=(row)=>{
-        alert(row.id)
+        
     }
 
     render() {
@@ -243,7 +299,7 @@ class Customer extends Component {
                         </Form>       
                     </div>
                     <div className={configStyles.rightButton} >
-                        <Button type="primary" icon={'plus'} onClick={this.showDrawer} title="添加" />&nbsp;
+                        {/* <Button type="primary" icon={'plus'} onClick={this.showDrawer} title="添加" />&nbsp; */}
                         <Button type="primary" icon={'delete'} onClick={this.delete} disabled={deleteDisabled} title="删除" />
                     </div>
                 </div>
@@ -262,6 +318,8 @@ class Customer extends Component {
                     />
                     {/* 修改，添加 */}
                     <CustomerDrawer/>
+                    <ConsultationDrawer/>
+                    <DiagnoseDrawer/>
                 </div>
             </div>
         );

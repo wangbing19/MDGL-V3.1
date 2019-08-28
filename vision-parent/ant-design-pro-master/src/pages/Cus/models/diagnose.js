@@ -34,6 +34,7 @@ export default {
         },
         //抽屉页面展示状态
         drawerVisible:false,
+        customer:{},
     },
 
     effects: {
@@ -116,13 +117,14 @@ export default {
             });
         },
         //修改时根据id查询数据
-        *getDiagnoseById( {payload}, { call, put }) {
+        *getDiagnoseById( {payload,callback}, { call, put }) {
             const formData = formatData(payload);
             const response = yield call(getDiagnoseById,formData);
-            yield put({
-                type: 'saveDiaRow',
-                payload: response,
-            });
+            if(callback) callback(response);
+            // yield put({
+            //     type: 'saveDiaRow',
+            //     payload: response,
+            // });
         },
     },
 
@@ -190,6 +192,12 @@ export default {
                     msg: "",
                     data:{},
                 },
+            };
+        },
+        setCustomer(state,action){
+            return {
+                ...state,
+                customer:action.payload,
             };
         },
     },

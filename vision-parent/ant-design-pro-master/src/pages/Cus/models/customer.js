@@ -35,6 +35,7 @@ export default {
         },
         //抽屉页面展示状态
         drawerVisible:false,
+        consultation:{},
     },
 
     effects: {
@@ -142,6 +143,11 @@ export default {
                 },
             });
         },
+        *getCustomerByConsultationId( {payload,callback}, { select, call, put }) {
+            const formData = formatData(payload);
+            const response = yield call(getCustomerByConsultationId,formData);
+            if(callback) callback(response);
+        },
     },
 
     reducers: {
@@ -208,6 +214,12 @@ export default {
                     msg: "",
                     data:{},
                 },
+            };
+        },
+        setConsultation(state,action){
+            return {
+                ...state,
+                consultation:action.payload,
             };
         },
     },

@@ -25,7 +25,7 @@ class Diagnose extends Component {
     }
 
     componentDidMount=()=>{
-        this.getConsultation();
+        this.getConsultation(this.props.location.params);
     }
 
     getConsultation=(value)=>{
@@ -138,6 +138,12 @@ class Diagnose extends Component {
                     id:row.id,
                     orgId:row.orgId,
                 },
+                callback:response=>{
+                    dispatch({
+                        type:'diagnose/saveDiaRow',
+                        payload:response,
+                    })
+                }
             })
         }
     }
@@ -170,7 +176,7 @@ class Diagnose extends Component {
                         </Form>       
                     </div>
                     <div className={configStyles.rightButton} >
-                        <Button type="primary" icon={'plus'} onClick={this.showDrawer} title="添加" />&nbsp;
+                        {/* <Button type="primary" icon={'plus'} onClick={this.showDrawer} title="添加" />&nbsp; */}
                         <Button type="primary" icon={'delete'} onClick={this.delete} disabled={deleteDisabled} title="删除" />
                     </div>
                 </div>

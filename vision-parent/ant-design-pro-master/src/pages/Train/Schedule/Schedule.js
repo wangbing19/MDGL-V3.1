@@ -25,7 +25,11 @@ class Schedule extends Component {
     }
 
     componentDidMount=()=>{
-        this.getConsultation();
+        if(this.props.location.params){
+            this.getConsultation(this.props.location.params);
+        } else{
+            this.getConsultation();
+        }
     }
 
     getConsultation=(value)=>{
