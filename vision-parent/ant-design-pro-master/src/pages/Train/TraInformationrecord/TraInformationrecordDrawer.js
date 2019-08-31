@@ -61,7 +61,7 @@ class TraInformationrecordDrawer extends Component {
 
 
     render() {
-        const {form: {getFieldDecorator} ,traInformationrecord: { drawerVisible, traRow}, dispatch } = this.props;
+        const {form: {getFieldDecorator} ,traInformationrecord: { drawerVisible, traRow, schedule}, dispatch } = this.props;
         const { data, ok} = traRow;
         return (
             <Drawer
@@ -74,13 +74,13 @@ class TraInformationrecordDrawer extends Component {
             >
                 <Form  labelCol={{ span: 5 }} wrapperCol={{ span: 18 }} onSubmit={this.handleSubmit} >
                     <Form.Item style={{display:"none"}} >
-                        {getFieldDecorator('customerId', { rules: [{ ...rules.required  }],initialValue:ok?data["customerId"]:''
+                        {getFieldDecorator('customerId', { rules: [{ ...rules.required  }],initialValue:ok?data["customerId"]:schedule['customerId']
                         })(
-                            <Input />
+                            <Input   />
                         )}
                     </Form.Item>
                     <Form.Item style={{display:"none"}} >
-                        {getFieldDecorator('scheduleId', { rules: [{ ...rules.required  }],initialValue:ok?data["scheduleId"]:''
+                        {getFieldDecorator('scheduleId', { rules: [{ ...rules.required  }],initialValue:ok?data["scheduleId"]:schedule["id"]
                         })(
                             <Input />
                         )}
@@ -92,7 +92,7 @@ class TraInformationrecordDrawer extends Component {
                         )}
                     </Form.Item>
                     <Form.Item label='姓名' >
-                        {getFieldDecorator('name', { rules: [{ ...rules.required  }],initialValue:ok?data["name"]:''
+                        {getFieldDecorator('name', { rules: [{ ...rules.required  }],initialValue:ok?data["name"]:schedule["name"]
                         })(
                             <Input   />
                         )}
@@ -122,7 +122,7 @@ class TraInformationrecordDrawer extends Component {
                         )}
                     </Form.Item>
                     <Form.Item label='项目内容' >
-                        {getFieldDecorator('content', { rules: [{ ...rules.required  }],initialValue:ok?data["content"]:''
+                        {getFieldDecorator('content', { rules: [{ ...rules.required  }],initialValue:ok?data["content"]:schedule["courseTitle"]
                         })(
                             <Input   />
                         )}

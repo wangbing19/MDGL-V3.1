@@ -154,7 +154,7 @@ class Diagnose extends Component {
         
         return (
                 
-            <div>
+            <div className={configStyles.rightSidePage}>
                 <div className={configStyles.content}>
                     <div className={configStyles.tableListForm}>
                         <Form onSubmit={this.handleSearch} layout="inline">

@@ -7,16 +7,18 @@ import {deleteData} from '@/utils/dataUtils';
 import CustomerDrawer from './CustomerDrawer.js';
 import moment from 'moment';
 import { routerRedux } from 'dva/router';
-import ConsultationDrawer from '@/pages/Cus/Consultation/ConsultationDrawer'
-import DiagnoseDrawer from '@/pages/Cus/Diagnose/DiagnoseDrawer'
+import ConsultationDrawer from '@/pages/Cus/Consultation/ConsultationDrawer';
+import DiagnoseDrawer from '@/pages/Cus/Diagnose/DiagnoseDrawer';
+import ScheduleDrawer from '@/pages/Train/Schedule/ScheduleDrawer';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 
-@connect(({customer, consultation, diagnose, loading }) => ({
+@connect(({customer, consultation, diagnose, schedule, loading }) => ({
     customer,
     consultation,
     diagnose,
+    schedule,
     loading: loading.models.customer,
 }))
 
@@ -98,7 +100,7 @@ class Customer extends Component {
             dataIndex: 'totalTrainingTime',
             width: "8%",
             render: (text,row) => (
-                <div onClick={this.showTotalTrainingTime.bind(this,row)} >
+                <div onClick={this.showTotalTrainingTime.bind(this,row)} style={{color:'blue'}}>
                    {row.totalTrainingTime}/{row.timesOfTraining}
                 </div>
             ),
@@ -113,7 +115,7 @@ class Customer extends Component {
             dataIndex: 'scheduleCount',
             width: "5%",
             render: (text,row) => (
-                <div onClick={this.showScheduleCount.bind(this,row)}>
+                <div onClick={this.showScheduleCount.bind(this,row)} style={{color:'blue'}}>
                     {text}
                 </div>
             ),
@@ -134,8 +136,8 @@ class Customer extends Component {
             width: "8%",
             render:(text,row) =>(
                 <div>
-                   <span onClick={this.showConsultation.bind(this,row)}>咨询</span>
-                   /<span onClick={this.showDiagnose.bind(this,row)}>诊断表</span>
+                   <span onClick={this.showConsultation.bind(this,row)} className={configStyles.onClickTitle} >咨询</span>
+                   /<span onClick={this.showDiagnose.bind(this,row)} className={configStyles.onClickTitle} >诊断表</span>
                 </div>
             ),
         },
@@ -148,6 +150,11 @@ class Customer extends Component {
             title: '上次训练时间',
             dataIndex: 'lastTrain',
             width: "15%",
+            render:(text,row) =>(
+                <div>
+                    {text?moment(text).format('YYYY-MM-DD HH:mm:ss'):''}
+                </div>
+            ),
         },
         {
             title: '操作',
@@ -268,7 +275,34 @@ class Customer extends Component {
 
     //跳转到添加课程表页面
     addSchedule=(row)=>{
-        
+        const {  schedule:{ drawerVisible },dispatch } =this.props;
+        dispatch({
+            type:'schedule/getSymptomTypesList',
+            payload:{
+                pageCurrent:1,
+                orgId:1,
+                pageSize:100,
+            },
+            callback:response=>{
+                if(response.ok){
+                    if(response.data.rowCount!=0){
+                        dispatch({
+                            type:"schedule/setDrawerVisible",
+                            payload:!drawerVisible,
+                        })
+                        dispatch({
+                            type:"schedule/setCustomer",
+                            payload:row,
+                        })
+                    } else if(response.data.rowCount==0){
+                        message.info("请添加资源信息");
+                        this.props.dispatch(routerRedux.push({ 
+                            pathname: '/system/symptomType/symptomType',
+                        }))
+                    }
+                }
+            }
+        })
     }
 
     render() {
@@ -277,7 +311,7 @@ class Customer extends Component {
         
         return (
                 
-            <div>
+            <div className={configStyles.rightSidePage}>
                 <div className={configStyles.content}>
                     <div className={configStyles.tableListForm}>
                         <Form onSubmit={this.handleSearch} layout="inline">
@@ -320,6 +354,7 @@ class Customer extends Component {
                     <CustomerDrawer/>
                     <ConsultationDrawer/>
                     <DiagnoseDrawer/>
+                    <ScheduleDrawer/>
                 </div>
             </div>
         );

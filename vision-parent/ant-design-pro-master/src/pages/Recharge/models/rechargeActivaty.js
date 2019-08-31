@@ -1,10 +1,10 @@
-import { getTraInfor, deleteTraInfor, addTraInfor, getTraInforById, getByCustomerId, updateTraInfor, 
-         } from '@/services/traInformationrecord';
+import { getList, deleted, add, getById, update,
+        } from '@/services/rechargeActivaty';
 import {formatData, FormdateFormat} from '@/utils/dataUtils';
 import cookie from 'react-cookies';
 
 export default {
-    namespace: 'traInformationrecord',
+    namespace: 'rechargeActivaty',
 
     state: {
         //选择框点击后存储数据
@@ -27,7 +27,7 @@ export default {
         //选择框点击后存储id值
         selectedRowKeys:[],
         //查询行信息
-        traRow:{
+        activatyRow:{
             status:201,
             ok: false,
             msg: "",
@@ -35,7 +35,6 @@ export default {
         },
         //抽屉页面展示状态
         drawerVisible:false,
-        schedule:{},
     },
 
     effects: {
@@ -43,15 +42,15 @@ export default {
         *fetch( { payload }, { select, call, put }) {
             //从cookie获取limit的值，无值从utilsConfig获取
             if(!cookie.load('limit')){
-                cookie.save('limit',yield select(state => state.traInformationrecord.data.pagination.pageSize));
+                cookie.save('limit',yield select(state => state.rechargeActivaty.data.pagination.pageSize));
             }
             payload ={
                 ...payload,
                 pageSize: +cookie.load('limit'),
-                name: payload.name?payload.name:'',
+                title: payload.title?payload.title:'',
             }
             const formData = formatData(payload);
-            const response = yield call(getTraInfor,formData);
+            const response = yield call(getList,formData);
             yield put({
                 type: 'save',
                 payload: {
@@ -62,7 +61,7 @@ export default {
         },
         //删除
         *remove({payload,callback}, { select, call, put }) {
-            const response = yield call(deleteTraInfor,payload);
+            const response = yield call(deleted,payload);
             if(callback) callback(response);
             if(response.success){
                 yield put({
@@ -75,7 +74,7 @@ export default {
                 });
             }
             //刷新页面
-            let queryCriteria = yield select(state => state.traInformationrecord.queryCriteria);
+            let queryCriteria = yield select(state => state.rechargeActivaty.queryCriteria);
             yield put({
                 type: 'fetch',
                 payload: {
@@ -87,10 +86,10 @@ export default {
         },
         //添加
         *add( {payload,callback}, { select, call, put }) {
-            const response = yield call(addTraInfor,payload);
+            const response = yield call(add,payload);
             if(callback) callback(response);
             //刷新页面
-            let queryCriteria = yield select(state => state.traInformationrecord.queryCriteria);
+            let queryCriteria = yield select(state => state.rechargeActivaty.queryCriteria);
             yield put({
                 type: 'fetch',
                 payload: {
@@ -102,11 +101,11 @@ export default {
         },
         //修改
         *update( {payload,callback}, { select,call, put }) {
-            const response = yield call(updateTraInfor,payload);
+            const response = yield call(update,payload);
             if(callback) callback(response);
             //刷新页面
-            let queryCriteria = yield select(state => state.traInformationrecord.queryCriteria);
-            const current = yield select(state => state.traInformationrecord.data.pagination.current);
+            let queryCriteria = yield select(state => state.rechargeActivaty.queryCriteria);
+            const current = yield select(state => state.rechargeActivaty.data.pagination.current);
             yield put({
                 type: 'fetch',
                 payload: {
@@ -117,11 +116,11 @@ export default {
             });
         },
         //修改时根据id查询数据
-        *getTraInforById( {payload}, { call, put }) {
+        *getById( {payload}, { call, put }) {
             const formData = formatData(payload);
-            const response = yield call(getTraInforById,formData);
+            const response = yield call(getById,formData);
             yield put({
-                type: 'saveTraRow',
+                type: 'saveActivatyRow',
                 payload: response,
             });
         },
@@ -132,7 +131,7 @@ export default {
             return {
                 ...state,
                 queryCriteria:{
-                    name: action.payload.name,
+                    title: action.payload.title,
                 },
                 data:{
                     ...state.data,
@@ -172,10 +171,10 @@ export default {
             };
         },
         //修改时根据id查询数据
-        saveTraRow(state,action){
+        saveActivatyRow(state,action){
             return {
                 ...state,
-                traRow:{
+                activatyRow:{
                     ...action.payload,
                 }
             };
@@ -184,18 +183,12 @@ export default {
         clearFeomData(state){
             return {
                 ...state,
-                traRow:{
+                activatyRow:{
                     status:201,
                     ok: false,
                     msg: "",
                     data:{},
                 },
-            };
-        },
-        setSchedule(state,action){
-            return{
-                ...state,
-                schedule:action.payload
             };
         },
     },

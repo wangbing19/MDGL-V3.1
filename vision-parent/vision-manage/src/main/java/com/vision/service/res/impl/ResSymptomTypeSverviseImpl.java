@@ -1,5 +1,6 @@
 package com.vision.service.res.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -34,23 +35,23 @@ public class ResSymptomTypeSverviseImpl implements ResSymptomTypeSvervise{
 		
 		//2.依据条件获取总记录数并进行验证
 		int rowCount = resSymptomTypeMapper.getRowCount(title, orgId);
+		List<ResSymptomType> records = new ArrayList<ResSymptomType>();
 		if(rowCount==0) {
 			pageObject.setRowCount(rowCount);
-			pageObject.setRecords(null);
+			pageObject.setRecords(records);
 			pageObject.setPageCurrent(pageCurrent);
 			pageObject.setPageSize(pageSize);
 			return pageObject;
 		}
 			
 		int startIndex = (pageCurrent-1)*pageSize;
-		List<ResSymptomType> records =
-				resSymptomTypeMapper.findPageObjects(title, startIndex, pageSize, orgId);
+		records = resSymptomTypeMapper.findPageObjects(title, startIndex, pageSize, orgId);
 		//4.对查询结果进行封装并返回
 		pageObject.setRowCount(rowCount);
 		pageObject.setRecords(records);
 		pageObject.setPageCurrent(pageCurrent);
 		pageObject.setPageSize(pageSize);
-
+		
 		return pageObject;
 	}
 

@@ -67,6 +67,26 @@ export default [
           },
         ],
       },
+      // Recharge
+      {
+        path: '/recharge',
+        icon: 'form',
+        name: 'recharge',
+        routes: [
+          //rechargeActivaty
+          {
+            path: '/recharge/rechargeActivaty/rechargeActivaty',
+            name: 'rechargeActivaty',
+            component: './Recharge/RechargeActivaty/RechargeActivaty',
+          },
+          //rechargeRecord
+          {
+            path: '/recharge/rechargeRecord/rechargeRecord',
+            name: 'rechargeRecord',
+            component: './Recharge/RechargeRecord/RechargeRecord',
+          },
+        ],
+      },
       // system
       {
         path: '/system',

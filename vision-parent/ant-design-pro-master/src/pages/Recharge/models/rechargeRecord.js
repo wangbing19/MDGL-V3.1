@@ -1,10 +1,10 @@
-import { getSchedule, deleteSchedule, addSchedule, getScheduleById, getByCustomerId, updateSchedule } from '@/services/schedule';
-import { getSymptomTypeList } from '@/services/symptomType';
+import { getList, deleted, add, //getById, update,
+        } from '@/services/rechargeRecord';
 import {formatData, FormdateFormat} from '@/utils/dataUtils';
 import cookie from 'react-cookies';
 
 export default {
-    namespace: 'schedule',
+    namespace: 'rechargeRecord',
 
     state: {
         //选择框点击后存储数据
@@ -27,7 +27,7 @@ export default {
         //选择框点击后存储id值
         selectedRowKeys:[],
         //查询行信息
-        scheduleRow:{
+        traRow:{
             status:201,
             ok: false,
             msg: "",
@@ -35,7 +35,6 @@ export default {
         },
         //抽屉页面展示状态
         drawerVisible:false,
-        symptomTypesList:[],
     },
 
     effects: {
@@ -43,15 +42,15 @@ export default {
         *fetch( { payload }, { select, call, put }) {
             //从cookie获取limit的值，无值从utilsConfig获取
             if(!cookie.load('limit')){
-                cookie.save('limit',yield select(state => state.schedule.data.pagination.pageSize));
+                cookie.save('limit',yield select(state => state.rechargeRecord.data.pagination.pageSize));
             }
             payload ={
                 ...payload,
                 pageSize: +cookie.load('limit'),
-                name: payload.name?payload.name:'',
+                title: payload.title?payload.title:'',
             }
             const formData = formatData(payload);
-            const response = yield call(getSchedule,formData);
+            const response = yield call(getList,formData);
             yield put({
                 type: 'save',
                 payload: {
@@ -62,7 +61,7 @@ export default {
         },
         //删除
         *remove({payload,callback}, { select, call, put }) {
-            const response = yield call(deleteSchedule,payload);
+            const response = yield call(deleted,payload);
             if(callback) callback(response);
             if(response.success){
                 yield put({
@@ -75,7 +74,7 @@ export default {
                 });
             }
             //刷新页面
-            let queryCriteria = yield select(state => state.schedule.queryCriteria);
+            let queryCriteria = yield select(state => state.rechargeRecord.queryCriteria);
             yield put({
                 type: 'fetch',
                 payload: {
@@ -87,10 +86,10 @@ export default {
         },
         //添加
         *add( {payload,callback}, { select, call, put }) {
-            const response = yield call(addSchedule,payload);
+            const response = yield call(add,payload);
             if(callback) callback(response);
             //刷新页面
-            let queryCriteria = yield select(state => state.schedule.queryCriteria);
+            let queryCriteria = yield select(state => state.rechargeRecord.queryCriteria);
             yield put({
                 type: 'fetch',
                 payload: {
@@ -101,42 +100,30 @@ export default {
             });
         },
         //修改
-        *update( {payload,callback}, { select,call, put }) {
-            const response = yield call(updateSchedule,payload);
-            if(callback) callback(response);
-            //刷新页面
-            let queryCriteria = yield select(state => state.schedule.queryCriteria);
-            const current = yield select(state => state.schedule.data.pagination.current);
-            yield put({
-                type: 'fetch',
-                payload: {
-                    ...queryCriteria,
-                    pageCurrent: current,
-                    orgId: 1,
-                },
-            });
-        },
+        // *update( {payload,callback}, { select,call, put }) {
+        //     const response = yield call(update,payload);
+        //     if(callback) callback(response);
+        //     //刷新页面
+        //     let queryCriteria = yield select(state => state.rechargeRecord.queryCriteria);
+        //     const current = yield select(state => state.rechargeRecord.data.pagination.current);
+        //     yield put({
+        //         type: 'fetch',
+        //         payload: {
+        //             ...queryCriteria,
+        //             pageCurrent: current,
+        //             orgId: 1,
+        //         },
+        //     });
+        // },
         //修改时根据id查询数据
-        *getScheduleById( {payload}, { call, put }) {
-            const formData = formatData(payload);
-            const response = yield call(getScheduleById,formData);
-            yield put({
-                type: 'saveScheduleRow',
-                payload: response,
-            });
-        },
-        //查询资源信息
-        *getSymptomTypesList( { payload }, { select, call, put }) {
-            const formData = formatData(payload);
-            const response = yield call(getSymptomTypeList,formData);
-            yield put({
-                type: 'saveSymptomTypesList',
-                payload: {
-                    ...response,
-                    ...payload,
-                },
-            });
-        },
+        // *getById( {payload}, { call, put }) {
+        //     const formData = formatData(payload);
+        //     const response = yield call(getById,formData);
+        //     yield put({
+        //         type: 'saveActivatyRow',
+        //         payload: response,
+        //     });
+        // },
     },
 
     reducers: {
@@ -144,7 +131,7 @@ export default {
             return {
                 ...state,
                 queryCriteria:{
-                    name: action.payload.name,
+                    title: action.payload.title,
                 },
                 data:{
                     ...state.data,
@@ -184,10 +171,10 @@ export default {
             };
         },
         //修改时根据id查询数据
-        saveScheduleRow(state,action){
+        saveActivatyRow(state,action){
             return {
                 ...state,
-                scheduleRow:{
+                traRow:{
                     ...action.payload,
                 }
             };
@@ -196,19 +183,12 @@ export default {
         clearFeomData(state){
             return {
                 ...state,
-                scheduleRow:{
+                traRow:{
                     status:201,
                     ok: false,
                     msg: "",
                     data:{},
                 },
-            };
-        },
-        //
-        saveSymptomTypesList(state,action){
-            return {
-                ...state,
-                symptomTypesList:action.payload.data.records,
             };
         },
     },

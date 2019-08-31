@@ -34,6 +34,15 @@ class ScheduleDrawer extends Component {
         dispatch({
             type:'schedule/clearFeomData',
         })
+        const data = {
+            records:[],
+        }
+        dispatch({
+            type:'schedule/saveSymptomTypesList',
+            payload:{
+                data
+            },
+        })
         //清空表单
         this.props.form.resetFields();
     }
@@ -91,7 +100,7 @@ class ScheduleDrawer extends Component {
     }
 
     render() {
-        const {form: {getFieldDecorator} ,schedule: { drawerVisible, scheduleRow, symptomTypesList}, dispatch } = this.props;
+        const {form: {getFieldDecorator} ,schedule: { drawerVisible, scheduleRow, symptomTypesList, customer}, dispatch } = this.props;
         const { data, ok} = scheduleRow;
         return (
             <Drawer
@@ -104,13 +113,13 @@ class ScheduleDrawer extends Component {
             >
                 <Form  labelCol={{ span: 6 }} wrapperCol={{ span: 17 }} onSubmit={this.handleSubmit} >
                     <Form.Item style={{display:"none"}} >
-                        {getFieldDecorator('customerId', { rules: [{ ...rules.required  }],initialValue:ok?data["customerId"]:''
+                        {getFieldDecorator('customerId', { rules: [{ ...rules.required  }],initialValue:ok?data["customerId"]:customer["id"]
                         })(
-                            <Input />
+                            <Input   />
                         )}
                     </Form.Item>
                     <Form.Item label='姓名' >
-                        {getFieldDecorator('name', { rules: [{ ...rules.required  }],initialValue:ok?data["name"]:''
+                        {getFieldDecorator('name', { rules: [{ ...rules.required  }],initialValue:ok?data["name"]:customer["name"]
                         })(
                             <Input   />
                         )}

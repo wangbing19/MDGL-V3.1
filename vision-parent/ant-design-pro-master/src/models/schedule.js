@@ -1,10 +1,10 @@
-import { getTraInfor, deleteTraInfor, addTraInfor, getTraInforById, getByCustomerId, updateTraInfor, 
-         } from '@/services/traInformationrecord';
+import { getSchedule, deleteSchedule, addSchedule, getScheduleById, getByCustomerId, updateSchedule } from '@/services/schedule';
+import { getSymptomTypeList } from '@/services/symptomType';
 import {formatData, FormdateFormat} from '@/utils/dataUtils';
 import cookie from 'react-cookies';
 
 export default {
-    namespace: 'traInformationrecord',
+    namespace: 'schedule',
 
     state: {
         //选择框点击后存储数据
@@ -27,7 +27,7 @@ export default {
         //选择框点击后存储id值
         selectedRowKeys:[],
         //查询行信息
-        traRow:{
+        scheduleRow:{
             status:201,
             ok: false,
             msg: "",
@@ -35,7 +35,8 @@ export default {
         },
         //抽屉页面展示状态
         drawerVisible:false,
-        schedule:{},
+        symptomTypesList:[],
+        customer:{},
     },
 
     effects: {
@@ -43,7 +44,7 @@ export default {
         *fetch( { payload }, { select, call, put }) {
             //从cookie获取limit的值，无值从utilsConfig获取
             if(!cookie.load('limit')){
-                cookie.save('limit',yield select(state => state.traInformationrecord.data.pagination.pageSize));
+                cookie.save('limit',yield select(state => state.schedule.data.pagination.pageSize));
             }
             payload ={
                 ...payload,
@@ -51,7 +52,7 @@ export default {
                 name: payload.name?payload.name:'',
             }
             const formData = formatData(payload);
-            const response = yield call(getTraInfor,formData);
+            const response = yield call(getSchedule,formData);
             yield put({
                 type: 'save',
                 payload: {
@@ -62,7 +63,7 @@ export default {
         },
         //删除
         *remove({payload,callback}, { select, call, put }) {
-            const response = yield call(deleteTraInfor,payload);
+            const response = yield call(deleteSchedule,payload);
             if(callback) callback(response);
             if(response.success){
                 yield put({
@@ -75,7 +76,7 @@ export default {
                 });
             }
             //刷新页面
-            let queryCriteria = yield select(state => state.traInformationrecord.queryCriteria);
+            let queryCriteria = yield select(state => state.schedule.queryCriteria);
             yield put({
                 type: 'fetch',
                 payload: {
@@ -87,10 +88,10 @@ export default {
         },
         //添加
         *add( {payload,callback}, { select, call, put }) {
-            const response = yield call(addTraInfor,payload);
+            const response = yield call(addSchedule,payload);
             if(callback) callback(response);
             //刷新页面
-            let queryCriteria = yield select(state => state.traInformationrecord.queryCriteria);
+            let queryCriteria = yield select(state => state.schedule.queryCriteria);
             yield put({
                 type: 'fetch',
                 payload: {
@@ -102,11 +103,11 @@ export default {
         },
         //修改
         *update( {payload,callback}, { select,call, put }) {
-            const response = yield call(updateTraInfor,payload);
+            const response = yield call(updateSchedule,payload);
             if(callback) callback(response);
             //刷新页面
-            let queryCriteria = yield select(state => state.traInformationrecord.queryCriteria);
-            const current = yield select(state => state.traInformationrecord.data.pagination.current);
+            let queryCriteria = yield select(state => state.schedule.queryCriteria);
+            const current = yield select(state => state.schedule.data.pagination.current);
             yield put({
                 type: 'fetch',
                 payload: {
@@ -117,12 +118,25 @@ export default {
             });
         },
         //修改时根据id查询数据
-        *getTraInforById( {payload}, { call, put }) {
+        *getScheduleById( {payload}, { call, put }) {
             const formData = formatData(payload);
-            const response = yield call(getTraInforById,formData);
+            const response = yield call(getScheduleById,formData);
             yield put({
-                type: 'saveTraRow',
+                type: 'saveScheduleRow',
                 payload: response,
+            });
+        },
+        //查询资源信息
+        *getSymptomTypesList( { payload, callback }, { select, call, put }) {
+            const formData = formatData(payload);
+            const response = yield call(getSymptomTypeList,formData);
+            if(callback) callback(response);
+            yield put({
+                type: 'saveSymptomTypesList',
+                payload: {
+                    ...response,
+                    ...payload,
+                },
             });
         },
     },
@@ -172,10 +186,10 @@ export default {
             };
         },
         //修改时根据id查询数据
-        saveTraRow(state,action){
+        saveScheduleRow(state,action){
             return {
                 ...state,
-                traRow:{
+                scheduleRow:{
                     ...action.payload,
                 }
             };
@@ -184,7 +198,7 @@ export default {
         clearFeomData(state){
             return {
                 ...state,
-                traRow:{
+                scheduleRow:{
                     status:201,
                     ok: false,
                     msg: "",
@@ -192,10 +206,17 @@ export default {
                 },
             };
         },
-        setSchedule(state,action){
-            return{
+        //
+        saveSymptomTypesList(state,action){
+            return {
                 ...state,
-                schedule:action.payload
+                symptomTypesList:action.payload.data.records,
+            };
+        },
+        setCustomer(state,action){
+            return {
+                ...state,
+                customer:action.payload,
             };
         },
     },

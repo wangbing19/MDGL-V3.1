@@ -150,7 +150,7 @@ class TraInformationrecord extends Component {
                 form: { getFieldDecorator,getFieldsValue }, loading, dispatch} = this.props;
         return (
                 
-            <div>
+            <div className={configStyles.rightSidePage}>
                 <div className={configStyles.content}>
                     <div className={configStyles.tableListForm}>
                         <Form onSubmit={this.handleSearch} layout="inline">
