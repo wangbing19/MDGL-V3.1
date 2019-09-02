@@ -24,7 +24,7 @@
 	<!-- 基于用户姓名及分页条件查询,无用户名输入基于分页条件查询 -->
 	<select id="findPageObjects" resultType="com.vision.pojo.tra.TraInformationrecord">
 		select * from tra_informationrecord
-		<include refid="queryWhereId" /> 
+		<include refid="queryWhereId" /> ORDER BY gmt_create desc
 		limit #{startIndex},#{pageSize}
 	</select>
 	

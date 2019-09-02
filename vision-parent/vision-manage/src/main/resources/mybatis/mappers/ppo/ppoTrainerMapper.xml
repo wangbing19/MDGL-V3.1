@@ -32,4 +32,15 @@
 			</if>
 		</where>
 	</sql>
+	
+	
+		<select id="findPpoTrainerOne" resultMap="trainerOrganization">
+		select ppo_trainer.*,
+		sys_organization.organization_name,sys_organization.organization_address
+		from ppo_trainer,sys_organization
+		where sys_organization.organization_id=ppo_trainer.organization_id
+		and ppo_trainer.id=#{id} 
+		
+	
+	</select>
 </mapper>

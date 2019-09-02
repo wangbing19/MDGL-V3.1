@@ -5,6 +5,7 @@ import java.util.List;
 import com.vision.pojo.sys.SysRole;
 import com.vision.pojo.sys.vo.SysRoleOrganizationResult;
 import com.vision.vo.CheckBox;
+import com.vision.vo.PageObject;
 
 public interface SysRoleService {
 
@@ -20,7 +21,7 @@ public interface SysRoleService {
 
 	List<SysRole> findObjectByIds(Integer[] ids);
 
-	List<SysRole> doFindRoleAll();
+	 PageObject<SysRole> doFindRoleAll(Integer pageCurrent,Integer pageSize);
 	
 	
 }

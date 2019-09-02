@@ -72,7 +72,8 @@
 		type="com.vision.pojo.sys.vo.SysUserOrganization">
 		<!-- 关联查询 -->
 		<association property="sysOrganization"
-			column="organization_id"
+			 column="organization_id" 
+			
 			select="com.vision.mapper.sys.SysOrganizationMapper.findById">
 		</association>
 	</resultMap>

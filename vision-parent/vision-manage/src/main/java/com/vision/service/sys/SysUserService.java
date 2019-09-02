@@ -7,23 +7,25 @@ import com.vision.pojo.sys.SysUser;
 import com.vision.pojo.sys.vo.SysUserOrganization;
 import com.vision.vo.PageObject;
 
-public interface SysUserService {
+public interface SysUserService{
 
-    int saveObject(SysUser entity, Integer[] roleIds);
+	int saveObject(SysUser entity, Integer[] roleIds);
 
-    int updateObject(SysUser entity, Integer[] roleIds);
+	int updateObject(SysUser entity, Integer[] roleIds);
 
-    int findObjectByColumn(String columnName, String columnValue);
+	int findObjectByColumn(String columnName, String columnValue);
 
-    PageObject<SysUserOrganization> findPageObjects(Long organizationId, String username, Integer pageCurrent, Integer pageSize);
+	PageObject<SysUserOrganization> findPageObjects(Long organizationId,String username, Integer pageCurrent,Integer pageSize);
 
-    int validById(Integer id, Integer valid, String string);
+	int validById(Integer id, Integer valid, String string);
 
-    Map<String, Object> findObjectById(Integer id);
+	Map<String, Object> findObjectById(Integer id);
 
-    SysUser findUserById(Integer userId);
+	SysUser findUserById(Integer userId);
 
-    SysUser findUserByName(String userName);
+	SysUser findUserByName(String userName);
+
+	SysUser findUserByIdWeb(Long userId);
 
     /**
      * @param column  列名

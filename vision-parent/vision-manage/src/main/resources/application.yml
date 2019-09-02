@@ -1,7 +1,7 @@
 server:
   port: 8080
   servlet:
-    context-path: /
+    context-path: /vision/
 spring:
   datasource:
     #引入druid数据源

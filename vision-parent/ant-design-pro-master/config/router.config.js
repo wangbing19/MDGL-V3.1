@@ -24,8 +24,8 @@ export default [
     Routes: ['src/pages/Authorized'],
     routes: [
       // dashboard
-      { path: '/', redirect: '/dashboard/analysis', authority: ['admin', 'user'] },
-      // forms
+      { path: '/', redirect: '/cus/consultation/consultation', authority: ['admin', 'user'] },
+      // cus
       {
         path: '/cus',
         icon: 'form',
@@ -35,165 +35,227 @@ export default [
             path: '/cus/consultation/consultation',
             name: 'consultation',
             component: './Cus/Consultation/Consultation',
-          }
-        ],
-      },
-      {
-        path: '/dashboard',
-        name: 'dashboard',
-        icon: 'dashboard',
-        routes: [
-          {
-            path: '/dashboard/analysis',
-            name: 'analysis',
-            component: './Dashboard/Analysis',
           },
           {
-            path: '/dashboard/monitor',
-            name: 'monitor',
-            component: './Dashboard/Monitor',
+            path: '/cus/customer/customer',
+            name: 'customer',
+            component: './Cus/Customer/Customer',
           },
           {
-            path: '/dashboard/workplace',
-            name: 'workplace',
-            component: './Dashboard/Workplace',
+            path: '/cus/diagnose/diagnose',
+            name: 'diagnose',
+            component: './Cus/Diagnose/Diagnose',
           },
         ],
       },
-      // forms
+      // train
       {
-        path: '/form',
+        path: '/train',
         icon: 'form',
-        name: 'form',
+        name: 'train',
         routes: [
           {
-            path: '/form/basic-form',
-            name: 'basicform',
-            component: './Forms/BasicForm',
+            path: '/train/traInformationrecord/traInformationrecord',
+            name: 'traInformationrecord',
+            component: './Train/TraInformationrecord/TraInformationrecord',
           },
+          //schedule
           {
-            path: '/form/step-form',
-            name: 'stepform',
-            component: './Forms/StepForm',
-            hideChildrenInMenu: true,
-            routes: [
-              {
-                path: '/form/step-form',
-                redirect: '/form/step-form/info',
-              },
-              {
-                path: '/form/step-form/info',
-                name: 'info',
-                component: './Forms/StepForm/Step1',
-              },
-              {
-                path: '/form/step-form/confirm',
-                name: 'confirm',
-                component: './Forms/StepForm/Step2',
-              },
-              {
-                path: '/form/step-form/result',
-                name: 'result',
-                component: './Forms/StepForm/Step3',
-              },
-            ],
-          },
-          {
-            path: '/form/advanced-form',
-            name: 'advancedform',
-            authority: ['admin'],
-            component: './Forms/AdvancedForm',
+            path: '/train/schedule/schedule',
+            name: 'schedule',
+            component: './Train/Schedule/Schedule',
           },
         ],
       },
-      // list
+      // Recharge
       {
-        path: '/list',
-        icon: 'table',
-        name: 'list',
+        path: '/recharge',
+        icon: 'form',
+        name: 'recharge',
         routes: [
+          //rechargeActivaty
           {
-            path: '/list/table-list',
-            name: 'searchtable',
-            component: './List/TableList',
+            path: '/recharge/rechargeActivaty/rechargeActivaty',
+            name: 'rechargeActivaty',
+            component: './Recharge/RechargeActivaty/RechargeActivaty',
           },
+          //rechargeRecord
           {
-            path: '/list/basic-list',
-            name: 'basiclist',
-            component: './List/BasicList',
-          },
-          {
-            path: '/list/card-list',
-            name: 'cardlist',
-            component: './List/CardList',
-          },
-          {
-            path: '/list/search',
-            name: 'searchlist',
-            component: './List/List',
-            routes: [
-              {
-                path: '/list/search',
-                redirect: '/list/search/articles',
-              },
-              {
-                path: '/list/search/articles',
-                name: 'articles',
-                component: './List/Articles',
-              },
-              {
-                path: '/list/search/projects',
-                name: 'projects',
-                component: './List/Projects',
-              },
-              {
-                path: '/list/search/applications',
-                name: 'applications',
-                component: './List/Applications',
-              },
-            ],
+            path: '/recharge/rechargeRecord/rechargeRecord',
+            name: 'rechargeRecord',
+            component: './Recharge/RechargeRecord/RechargeRecord',
           },
         ],
       },
+      // system
       {
-        path: '/profile',
-        name: 'profile',
-        icon: 'profile',
+        path: '/system',
+        icon: 'form',
+        name: 'system',
         routes: [
-          // profile
           {
-            path: '/profile/basic',
-            name: 'basic',
-            component: './Profile/BasicProfile',
-          },
-          {
-            path: '/profile/basic/:id',
-            name: 'basic',
-            hideInMenu: true,
-            component: './Profile/BasicProfile',
-          },
-          {
-            path: '/profile/advanced',
-            name: 'advanced',
-            authority: ['admin'],
-            component: './Profile/AdvancedProfile',
+            path: '/system/symptomType/symptomType',
+            name: 'symptomType',
+            component: './System/SymptomType/SymptomType',
           },
         ],
       },
-      {
-        name: 'result',
-        icon: 'check-circle-o',
-        path: '/result',
-        routes: [
-          // result
-          {
-            path: '/result/success',
-            name: 'success',
-            component: './Result/Success',
-          },
-          { path: '/result/fail', name: 'fail', component: './Result/Error' },
-        ],
-      },
+      // {
+      //   path: '/dashboard',
+      //   name: 'dashboard',
+      //   icon: 'dashboard',
+      //   routes: [
+      //     {
+      //       path: '/dashboard/analysis',
+      //       name: 'analysis',
+      //       component: './Dashboard/Analysis',
+      //     },
+      //     {
+      //       path: '/dashboard/monitor',
+      //       name: 'monitor',
+      //       component: './Dashboard/Monitor',
+      //     },
+      //     {
+      //       path: '/dashboard/workplace',
+      //       name: 'workplace',
+      //       component: './Dashboard/Workplace',
+      //     },
+      //   ],
+      // },
+      // // forms
+      // {
+      //   path: '/form',
+      //   icon: 'form',
+      //   name: 'form',
+      //   routes: [
+      //     {
+      //       path: '/form/basic-form',
+      //       name: 'basicform',
+      //       component: './Forms/BasicForm',
+      //     },
+      //     {
+      //       path: '/form/step-form',
+      //       name: 'stepform',
+      //       component: './Forms/StepForm',
+      //       hideChildrenInMenu: true,
+      //       routes: [
+      //         {
+      //           path: '/form/step-form',
+      //           redirect: '/form/step-form/info',
+      //         },
+      //         {
+      //           path: '/form/step-form/info',
+      //           name: 'info',
+      //           component: './Forms/StepForm/Step1',
+      //         },
+      //         {
+      //           path: '/form/step-form/confirm',
+      //           name: 'confirm',
+      //           component: './Forms/StepForm/Step2',
+      //         },
+      //         {
+      //           path: '/form/step-form/result',
+      //           name: 'result',
+      //           component: './Forms/StepForm/Step3',
+      //         },
+      //       ],
+      //     },
+      //     {
+      //       path: '/form/advanced-form',
+      //       name: 'advancedform',
+      //       authority: ['admin'],
+      //       component: './Forms/AdvancedForm',
+      //     },
+      //   ],
+      // },
+      // // list
+      // {
+      //   path: '/list',
+      //   icon: 'table',
+      //   name: 'list',
+      //   routes: [
+      //     {
+      //       path: '/list/table-list',
+      //       name: 'searchtable',
+      //       component: './List/TableList',
+      //     },
+      //     {
+      //       path: '/list/basic-list',
+      //       name: 'basiclist',
+      //       component: './List/BasicList',
+      //     },
+      //     {
+      //       path: '/list/card-list',
+      //       name: 'cardlist',
+      //       component: './List/CardList',
+      //     },
+      //     {
+      //       path: '/list/search',
+      //       name: 'searchlist',
+      //       component: './List/List',
+      //       routes: [
+      //         {
+      //           path: '/list/search',
+      //           redirect: '/list/search/articles',
+      //         },
+      //         {
+      //           path: '/list/search/articles',
+      //           name: 'articles',
+      //           component: './List/Articles',
+      //         },
+      //         {
+      //           path: '/list/search/projects',
+      //           name: 'projects',
+      //           component: './List/Projects',
+      //         },
+      //         {
+      //           path: '/list/search/applications',
+      //           name: 'applications',
+      //           component: './List/Applications',
+      //         },
+      //       ],
+      //     },
+      //   ],
+      // },
+      // {
+      //   path: '/profile',
+      //   name: 'profile',
+      //   icon: 'profile',
+      //   routes: [
+      //     // profile
+      //     {
+      //       path: '/profile/basic',
+      //       name: 'basic',
+      //       component: './Profile/BasicProfile',
+      //     },
+      //     {
+      //       path: '/profile/basic/:id',
+      //       name: 'basic',
+      //       hideInMenu: true,
+      //       component: './Profile/BasicProfile',
+      //     },
+      //     {
+      //       path: '/profile/advanced',
+      //       name: 'advanced',
+      //       authority: ['admin'],
+      //       component: './Profile/AdvancedProfile',
+      //     },
+      //   ],
+      // },
+      // {
+      //   name: 'result',
+      //   icon: 'check-circle-o',
+      //   path: '/result',
+      //   routes: [
+      //     // result
+      //     {
+      //       path: '/result/success',
+      //       name: 'success',
+      //       component: './Result/Success',
+      //     },
+      //     { path: '/result/fail', name: 'fail', component: './Result/Error' },
+      //   ],
+      // },
       {
         name: 'exception',
         icon: 'warning',
@@ -281,28 +343,28 @@ export default [
         ],
       },
       //  editor
-      {
-        name: 'editor',
-        icon: 'highlight',
-        path: '/editor',
-        routes: [
-          {
-            path: '/editor/flow',
-            name: 'flow',
-            component: './Editor/GGEditor/Flow',
-          },
-          {
-            path: '/editor/mind',
-            name: 'mind',
-            component: './Editor/GGEditor/Mind',
-          },
-          {
-            path: '/editor/koni',
-            name: 'koni',
-            component: './Editor/GGEditor/Koni',
-          },
-        ],
-      },
+      // {
+      //   name: 'editor',
+      //   icon: 'highlight',
+      //   path: '/editor',
+      //   routes: [
+      //     {
+      //       path: '/editor/flow',
+      //       name: 'flow',
+      //       component: './Editor/GGEditor/Flow',
+      //     },
+      //     {
+      //       path: '/editor/mind',
+      //       name: 'mind',
+      //       component: './Editor/GGEditor/Mind',
+      //     },
+      //     {
+      //       path: '/editor/koni',
+      //       name: 'koni',
+      //       component: './Editor/GGEditor/Koni',
+      //     },
+      //   ],
+      // },
       {
         component: '404',
       },

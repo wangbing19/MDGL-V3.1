@@ -5,15 +5,18 @@
 <mapper namespace="com.vision.mapper.rec.RecActivityMapper">
 
 	<delete id="deleteRecActivityById">	
-		delete from rec_activity_push where id=#{id}
+		delete from rec_activity_push where id in 
+		 	<foreach collection="ids" index="index" item="id" open="(" separator="," close=")">
+				#{id}
+			</foreach>
 	</delete>
 	
 	<insert id="insertRecActivity">
 		insert into rec_activity_push values(
 		null,
-		#{userId},
-		#{parentId},
+		#{orgId},
 		#{title},
+		#{describe},
 		#{payAmount},
 		#{presentedAmount},
 		#{activityStartTime},
@@ -29,6 +32,7 @@
 		pay_amount=#{payAmount},
 		presented_amount=#{presentedAmount},
 		title=#{title},
+		describe=#{describe},
 		activity_start_time=#{activityStartTime},
 		activity_end_time=#{activityEndTime},
 		modified_time=#{modifiedTime},
@@ -37,11 +41,31 @@
 	</update>
 	
 	<select id="findAllRecActivityObjects" resultType="com.vision.pojo.rec.RecActivityPush">	
-		select * from rec_activity_push where user_id=#{userId}
+		select * from rec_activity_push
+		<include refid="queryWhereId"/> ORDER BY create_time desc 
+		limit #{startIndex},#{pageSize}
 	</select>
 	
 	<select id="findRecActivityObject" resultType="com.vision.pojo.rec.RecActivityPush">
 		select * from rec_activity_push where id=#{id}
 	</select>
 	
+	<!-- 基于用户名查询该用户总数,无用户名输入查询所有用户总数 -->
+	<select id="getRowCount" resultType="int">
+		select count(*) from rec_activity_push
+		<include refid="queryWhereId"/>
+	</select>
+	
+	<!-- 基于用户名的查询条件sql引用语句 -->
+	<sql id="queryWhereId">
+       <where>
+       		<!-- org_id=#{orgId} -->
+		 	org_id=#{orgId}
+       		<!-- name条件 -->
+			<if test="title!=null and title!=''">
+				and title like concat("%",#{title},"%")
+			</if>
+			
+		</where>
+	</sql>
 </mapper>

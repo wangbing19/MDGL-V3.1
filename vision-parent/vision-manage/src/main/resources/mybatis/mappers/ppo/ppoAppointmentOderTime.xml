@@ -6,7 +6,7 @@
 	namespace="com.vision.mapper.ppo.PpoAppointmentTimeMapper">
 	<insert id="insertAppointmentTime">
 		insert into ppo_appointment_time
-		(tariner_id,appointment_time,appointment_time_state,create_time,modified_time,created_user,modified_user)
+		(id,appointment_time,appointment_time_state,create_time,modified_time,created_user,modified_user)
 		values
 		(#{tarinerId},#{appointmentTime},#{appointmentTimeState},#{createTime},#{modifiedTime},#{createdUser},#{modifiedUser})
 	</insert>

@@ -1,5 +1,6 @@
 package com.vision.service.res.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.vision.mapper.res.ResSymptomTypeMapper;
+import com.vision.pojo.cus.CusCustomer;
 import com.vision.pojo.cus.vo.CusVo;
 import com.vision.pojo.res.ResSymptomType;
 import com.vision.service.res.ResSymptomTypeSvervise;
@@ -33,23 +35,23 @@ public class ResSymptomTypeSverviseImpl implements ResSymptomTypeSvervise{
 		
 		//2.依据条件获取总记录数并进行验证
 		int rowCount = resSymptomTypeMapper.getRowCount(title, orgId);
+		List<ResSymptomType> records = new ArrayList<ResSymptomType>();
 		if(rowCount==0) {
 			pageObject.setRowCount(rowCount);
-			pageObject.setRecords(null);
+			pageObject.setRecords(records);
 			pageObject.setPageCurrent(pageCurrent);
 			pageObject.setPageSize(pageSize);
 			return pageObject;
 		}
 			
 		int startIndex = (pageCurrent-1)*pageSize;
-		List<ResSymptomType> records =
-				resSymptomTypeMapper.findPageObjects(title, startIndex, pageSize, orgId);
+		records = resSymptomTypeMapper.findPageObjects(title, startIndex, pageSize, orgId);
 		//4.对查询结果进行封装并返回
 		pageObject.setRowCount(rowCount);
 		pageObject.setRecords(records);
 		pageObject.setPageCurrent(pageCurrent);
 		pageObject.setPageSize(pageSize);
-
+		
 		return pageObject;
 	}
 
@@ -69,7 +71,7 @@ public class ResSymptomTypeSverviseImpl implements ResSymptomTypeSvervise{
 	/**修改资源配置信息*/
 	@Override
 	public Integer updateSymptomType(ResSymptomType resSymptomType) {
-		resSymptomType.setGmtCreate(new Date());
+		resSymptomType.setGmtModified(new Date());
 		int row = resSymptomTypeMapper.updateById(resSymptomType);
 		return row;
 	}
@@ -80,6 +82,8 @@ public class ResSymptomTypeSverviseImpl implements ResSymptomTypeSvervise{
 	@Override
 	public Integer addSymptomType(ResSymptomType resSymptomType) {
 		resSymptomType.setGmtCreate(new Date());
+		resSymptomType.setIsDelete(0);
+//		resSymptomType.setState(1);
 		resSymptomType.setGmtModified(resSymptomType.getGmtCreate());
 		int insert = resSymptomTypeMapper.insert(resSymptomType);
 		return insert;
@@ -114,6 +118,28 @@ public class ResSymptomTypeSverviseImpl implements ResSymptomTypeSvervise{
 		queryWrapper.eq("state", 1);
 		List<ResSymptomType> list = resSymptomTypeMapper.selectList(queryWrapper);
 		return list;
+	}
+
+	/**
+	 * 修改状态
+	 */
+	@Override
+	public Integer updateState(CusVo cusVo) {
+		ResSymptomType resSymptomType = new ResSymptomType();
+		
+		Integer id = cusVo.getId();
+		Integer orgId = cusVo.getOrgId();
+		Integer state = cusVo.getState();
+
+		resSymptomType.setId(id);
+		resSymptomType.setState(state);
+		resSymptomType.setOrgId(orgId);
+		/**获取登陆用户,还未写*/
+		resSymptomType.setModifiedUser(cusVo.getUser());
+		resSymptomType.setGmtModified(new Date());
+
+		int row = resSymptomTypeMapper.updateById(resSymptomType);
+		return row;
 	}
 
 }

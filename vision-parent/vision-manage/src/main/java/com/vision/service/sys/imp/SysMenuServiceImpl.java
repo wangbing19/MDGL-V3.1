@@ -103,6 +103,12 @@ public class SysMenuServiceImpl implements SysMenuService{
 
 		return list;
 	}
+
+	@Override
+	public SysMenu findMenuOne(Long id) {
+		SysMenu selectById = sysMenuMapper.selectById(id);
+		return selectById;
+	}
 	
 	
 }

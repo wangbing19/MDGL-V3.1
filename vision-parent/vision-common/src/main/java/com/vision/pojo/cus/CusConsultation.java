@@ -74,13 +74,13 @@ public class CusConsultation {
     /**教室环境光线*/
     private String classroomLightingEnvironment;
     /**裸眼远视力（5米）： 右眼*/
-    private Double rD;
+    private String rD;
     /**裸眼远视力（5米）： 左眼*/
-    private Double lD;
+    private String lD;
     /**矫正远视力（5米）: 右眼*/
-    private Double rCva;
+    private String rCva;
     /**矫正远视力（5米）: 左眼*/
-    private Double lCva;
+    private String lCva;
     /**训练导师*/
     private String tutor;
     /**建表时间*/

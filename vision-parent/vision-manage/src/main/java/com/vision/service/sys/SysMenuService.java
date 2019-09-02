@@ -19,5 +19,7 @@ public interface SysMenuService {
 	List<Node> findZtreeMenuNodes();
 	
 	List<SysMenu> findAllMenus();
+
+	SysMenu findMenuOne(Long id);
 	
 }

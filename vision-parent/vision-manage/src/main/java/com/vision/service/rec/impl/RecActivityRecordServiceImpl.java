@@ -64,12 +64,12 @@ public class RecActivityRecordServiceImpl implements RecActivityRecordService{
 		}
 		int startIndex=(pageCurrent-1)*pageSize;//计算当前页起始下标
 		//杜健华假设
-		Long orgId = 2L;
+		Long orgId = 1L;
 		
 		//根据门店id获取所有子门店的id
 		List<Long> orgIds = toolOrganizationIdList.findOrganizationIdList(orgId);
 		//查询分页查询的数据的总条数
-		int rowCount = 1;
+		int rowCount = 0;
 		rowCount = recActivityRecordMapper.getPageCount(orgIds);	
 		//分页查询所有记录
 		

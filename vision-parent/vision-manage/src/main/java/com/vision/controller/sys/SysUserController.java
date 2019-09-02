@@ -80,7 +80,7 @@ public class SysUserController {
 	@RequestMapping("doFindPageObjects")
 	@ResponseBody
 	public JsonResult doFindPageObjects(Long organizationId,String username,Integer pageCurrent,Integer pageSize){
-		
+		organizationId=0L;
 		PageObject<SysUserOrganization> pageObject=sysUserService.findPageObjects(organizationId,username,pageCurrent,pageSize);
 		return new JsonResult(pageObject);
 	}
@@ -145,6 +145,25 @@ public class SysUserController {
 		 try {
 			 Map<String,Object> map=sysUserService.findObjectById(userId);
 			 return JsonResult.oK(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+			
+			return JsonResult.build(201, "查询失败！");
+		}
+	 
+	 
+	 /**
+	  * 用于前端修改时的查询
+	  * @param userId
+	  * @return
+	  */
+	 @RequestMapping("doFindUserByIdWeb")
+	 @ResponseBody
+		public JsonResult findUserByIdWeb(SysUser SysUser){
+		 try {
+			 SysUser result=sysUserService.findUserByIdWeb(SysUser.getId());
+			 return JsonResult.oK(result);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

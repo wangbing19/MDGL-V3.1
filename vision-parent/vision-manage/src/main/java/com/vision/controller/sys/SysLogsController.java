@@ -41,6 +41,7 @@ public class SysLogsController {
 	@ResponseBody
 	public JsonResult findLogs(Long organizationId,Integer pageCurrent,Integer pageSize) {
 		try {
+			organizationId=0L;
 			PageObject<SysOrganizationLogs> result = sysLogsService.findLogs(organizationId,pageCurrent,pageSize);
 			return JsonResult.oK(result);
 		} catch (Exception e) {

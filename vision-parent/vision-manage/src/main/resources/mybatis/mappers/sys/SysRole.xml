@@ -61,4 +61,15 @@
        from sys_role
        where id=#{id}
     </select> 
+    
+    <!-- <select id="doFindRoleAll" resultType="com.vision.pojo.sys.SysRole">
+       select * from sys_role where limit #{startIndex},#{pageSize}
+    </select> --> 
+    
+    <select id="doFindRoleAll"
+		resultType="com.vision.pojo.sys.SysRole">
+		select * from sys_role
+		limit #{startIndex},#{pageSize}
+	</select>
+    
 </mapper>

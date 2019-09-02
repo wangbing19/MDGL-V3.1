@@ -22,6 +22,8 @@ public interface ResSymptomTypeSvervise {
 	Integer deleteSymptomType(Integer id, Integer orgId);
 	/**查询门店下所有资源配置*/
 	List<ResSymptomType> getSymptomTypeListByOrgId(Integer orgId);
+	/**修改状态*/
+	Integer updateState(CusVo cusVo);
 	
 
 }

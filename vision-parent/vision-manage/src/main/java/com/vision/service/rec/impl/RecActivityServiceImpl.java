@@ -1,6 +1,7 @@
 package com.vision.service.rec.impl;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -9,8 +10,11 @@ import org.springframework.stereotype.Service;
 
 import com.vision.exception.ServiceException;
 import com.vision.mapper.rec.RecActivityMapper;
+import com.vision.pojo.cus.CusCustomer;
+import com.vision.pojo.cus.vo.CusVo;
 import com.vision.pojo.rec.RecActivityPush;
 import com.vision.service.rec.RecActivityService;
+import com.vision.vo.PageObject;
 
 @Service
 public class RecActivityServiceImpl implements RecActivityService{
@@ -19,44 +23,31 @@ public class RecActivityServiceImpl implements RecActivityService{
 
 	@Override
 	/**根据充值活动的id删除该充值活动*/
-	public void deleteRecActivityById(Long id) {
-		try {
-			if(id==null) {
-				throw new ServiceException("请先选择需要删除的充值活动项目");
-			}
-			recActivityMapper.deleteRecActivityById(id);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}		
+	public void deleteRecActivityById(Long[] ids) {
+		recActivityMapper.deleteRecActivityById(ids);	
 	}
 
 	@Override
 	/**新增充值活动表对象*/
 	public void insertRecActivity(RecActivityPush recActivityPush) {
 		try {
-			//杜健华假设//暂时自定义门店id和父级门店id
-			long userId= 1;
-			long parentId = 2;
-			//设置活动的门店id（标志是哪一个门店做的活动）
-			recActivityPush.setUserId(userId); 
-			//设置活动的上级门店id（关联门店做的活动，做好记录查询）
-			recActivityPush.setParentId(parentId);
+			Date date = new Date();
 			//补齐活动创建时间
-			recActivityPush.setCreateTime(new Date());
+			recActivityPush.setCreateTime(date);
 			//补齐活动修改时间
-			recActivityPush.setModifiedTime(recActivityPush.getCreateTime());
+			recActivityPush.setModifiedTime(date);
 			//判断活动开始时间和当前活动创建时间对比，确定活动状态 1 活动开始  0活动结束或者未开始
 			Date activityStartTime = recActivityPush.getActivityStartTime();
 			Date activityEndTime = recActivityPush.getActivityEndTime();
-			if(activityStartTime.before(recActivityPush.getCreateTime())&&
-				recActivityPush.getCreateTime().before(activityEndTime)) {
+			if(activityStartTime.before(date) && date.before(activityEndTime)) {
 				recActivityPush.setActivityState(1);
-			}else {
+			}else if(activityStartTime.before(date) && activityEndTime.before(date)) {
+				//活动结束
 				recActivityPush.setActivityState(0);
+			} else if(activityStartTime.after(date) && activityEndTime.after(date)) {
+				//活动未开始
+				recActivityPush.setActivityState(2);
 			}
-			//设置活动标题
-			String title = "充"+recActivityPush.getPayAmount()+"元送"+recActivityPush.getPresentedAmount()+"元,可叠加";
-			recActivityPush.setTitle(title);
 			recActivityMapper.insertRecActivity(recActivityPush);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -64,54 +55,60 @@ public class RecActivityServiceImpl implements RecActivityService{
 	}
 	/**修改充值活动*/
 	@Override
-	public void updateRecActivityById(RecActivityPush recActivityPush) {
+	public Integer updateRecActivityById(RecActivityPush recActivityPush) {
 		try {
-			if(recActivityPush==null) {
-				throw new ServiceException("请选择需要修改的充值活动");
-			}
 			Date nowDate = new Date();
-			//获取充值金额和赠送金额
-			Double payAmount = recActivityPush.getPayAmount();
-			Double presentedAmount = recActivityPush.getPresentedAmount();
-			//更新中值活动标题
-			String title = "充"+payAmount+"元送"+presentedAmount+"元,可叠加";
-			recActivityPush.setTitle(title);
 			//更新活动修改时间
 			recActivityPush.setModifiedTime(nowDate);
-			//更新活动时间和活动状态
+			//判断活动开始时间和当前活动创建时间对比，确定活动状态 1 活动开始  0活动结束或者未开始
 			Date activityStartTime = recActivityPush.getActivityStartTime();
 			Date activityEndTime = recActivityPush.getActivityEndTime();
-			
-			boolean startResult = activityStartTime.before(nowDate);
-			boolean endResult = nowDate.before(activityEndTime);
-			if(startResult&&endResult) {
+			if(activityStartTime.before(nowDate) && nowDate.before(activityEndTime)) {
 				recActivityPush.setActivityState(1);
-			}else {
+			}else if(activityStartTime.before(nowDate) && activityEndTime.before(nowDate)) {
+				//活动结束
 				recActivityPush.setActivityState(0);
+			} else if(activityStartTime.after(nowDate) && activityEndTime.after(nowDate)) {
+				//活动未开始
+				recActivityPush.setActivityState(2);
 			}
-			//System.out.println(recActivityPush.getId());
 			recActivityMapper.updateRecActivityById(recActivityPush);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
-		}		
+		}
+		return 1;
 	}
 
 	@Override
 	/**查询充值活动*/
-	public List<RecActivityPush> findAllRecActivityObjects() {
-		try {
-			//杜健华假设
-			//先设定门店id为1
-			long user_id = 1;
-			List<RecActivityPush> recActivityPushs = recActivityMapper.findAllRecActivityObjects(user_id);
-			if(recActivityPushs==null||recActivityPushs.size()==0) {
-				return null;
-			}
-			return recActivityPushs;
-		} catch (Exception e) {
-			e.printStackTrace();
+	public PageObject<RecActivityPush> findAllRecActivityObjects(CusVo cusVo) {
+		PageObject<RecActivityPush> pageObject =  new PageObject<>();
+		List<RecActivityPush> recActivityPushs = new ArrayList<RecActivityPush>();
+		String title = cusVo.getName();
+		if("".equals(title)) {
+			title = null;
 		}
-		return null;
+		Integer pageCurrent = cusVo.getPageCurrent();
+		Integer orgId = cusVo.getOrgId();
+		Integer pageSize = cusVo.getPageSize();
+		int rowCount = recActivityMapper.getRowCount(title,orgId);
+		if(rowCount==0) {
+			pageObject.setRowCount(rowCount);
+			pageObject.setRecords(recActivityPushs);
+			pageObject.setPageCurrent(pageCurrent);
+			pageObject.setPageSize(pageSize);
+			return pageObject;
+		}
+		//3.基于条件查询当前页记录
+		int startIndex = (pageCurrent-1)*pageSize;
+		recActivityPushs = recActivityMapper.findAllRecActivityObjects(title, orgId, startIndex, pageSize);
+		pageObject.setRowCount(rowCount);
+		pageObject.setRecords(recActivityPushs);
+		pageObject.setPageCurrent(pageCurrent);
+		pageObject.setPageSize(pageSize);
+
+		return pageObject;
 	}
 
 	@Override

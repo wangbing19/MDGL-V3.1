@@ -31,6 +31,7 @@ export const dateFormat = {
     hour:'HH:mm:ss',
     day:'YYYY-MM-DD',
     day_hour:'YYYY-MM-DD HH:mm:ss',
+    year_mo:'YYYY-MM',
 }
 //返回值状态编码
 export const responseCode = {

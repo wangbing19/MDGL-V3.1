@@ -18,6 +18,7 @@ import com.vision.service.tool.ToolOrganizationIdList;
 import com.vision.service.tra.TraInformationrecordService;
 import com.vision.vo.PageObject;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -48,6 +49,7 @@ public class CusCustomerServiceImpl implements CusCustomerService {
 	@Override
 	public PageObject<CusCustomer> getCustomer(CusVo cusVo) {
 		PageObject<CusCustomer> pageObject =  new PageObject<>();
+		List<CusCustomer> records = new ArrayList<CusCustomer>();
 		String name = cusVo.getName();
 		if("".equals(name)) {
 			name = null;
@@ -64,7 +66,7 @@ public class CusCustomerServiceImpl implements CusCustomerService {
 		if(rowCount==0) {
 //			throw new ServiceException("记录不存在");
 			pageObject.setRowCount(rowCount);
-			pageObject.setRecords(null);
+			pageObject.setRecords(records);
 			pageObject.setPageCurrent(pageCurrent);
 			pageObject.setPageSize(pageSize);
 			return pageObject;
@@ -72,8 +74,7 @@ public class CusCustomerServiceImpl implements CusCustomerService {
 		
 		//3.基于条件查询当前页记录
 		int startIndex = (pageCurrent-1)*pageSize;
-		List<CusCustomer> records =
-				cusCustomerMapper.findPageObjects( name, tel, startIndex, pageSize,orgIds,consultationId);
+		records = cusCustomerMapper.findPageObjects( name, tel, startIndex, pageSize,orgIds,consultationId);
 		//4.对查询结果进行封装并返回
 		pageObject.setRowCount(rowCount);
 		pageObject.setRecords(records);
@@ -138,6 +139,7 @@ public class CusCustomerServiceImpl implements CusCustomerService {
 		entity.setTotalTrainingTime(0);
 		entity.setTimesOfTraining(0);
 		entity.setRechargeCount(0);
+		entity.setLastTrain(new Date());
 		//建立咨询表对象并赋值
 		CusConsultation consultation = new CusConsultation();
 		consultation.setId(entity.getConsultationId());
@@ -238,6 +240,7 @@ public class CusCustomerServiceImpl implements CusCustomerService {
 		cusCustomer.setBalance(balance);
 		cusCustomer.setId(entity.getCustomerId());
 		cusCustomer.setGmtModified(new Date());
+		cusCustomer.setLastTrain(new Date());
 		int rows = cusCustomerMapper.updateById(cusCustomer);
 		return rows;
 	}

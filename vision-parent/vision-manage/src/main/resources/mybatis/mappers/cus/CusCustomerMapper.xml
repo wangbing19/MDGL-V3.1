@@ -38,7 +38,7 @@
 	<select id="findPageObjects" resultMap="cusCustomerMap">
 		select *
 		from cus_customer
-        <include refid="queryWhereId"/>
+        <include refid="queryWhereId"/> ORDER BY gmt_create desc 
 		limit #{startIndex},#{pageSize}
 	</select>
 	

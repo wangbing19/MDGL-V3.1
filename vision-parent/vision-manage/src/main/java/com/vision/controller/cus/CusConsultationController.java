@@ -71,7 +71,7 @@ public class CusConsultationController {
     	
 			Integer row = cusConsultationService.addConsultation(cusConsultation);
 			if(row == null || row != 0) {
-				return JsonResult.oK();
+				return JsonResult.oK("添加成功");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -101,7 +101,7 @@ public class CusConsultationController {
 		
 			Integer row = cusConsultationService.deleteConsultation(id, orgId);
 			if(row == null || row != 0) {
-				return JsonResult.oK();
+				return JsonResult.oK("删除成功");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -162,7 +162,7 @@ public class CusConsultationController {
 		try {
 			Integer row = cusConsultationService.updateConsultation(cusConsultation);
 			if(row == null||row != 0) {
-				return JsonResult.oK();
+				return JsonResult.oK("修改成功");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

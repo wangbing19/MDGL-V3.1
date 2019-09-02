@@ -18,7 +18,7 @@ public class PpoTrainer extends BasePojo{
 	/**
 	 * 主键
 	 */
-	private Long tarinerId; 
+	private Long id; 
 	/**
 	 * 组织id
 	 */
@@ -50,7 +50,7 @@ public class PpoTrainer extends BasePojo{
 	/**
 	 * 预约人数限制
 	 */
-	private Integer numberPeople;
+	private  String numberPeople;
 	/**
 	 * 联系人
 	 */
@@ -58,7 +58,7 @@ public class PpoTrainer extends BasePojo{
 	/**
 	 * 联系人电话
 	 */
-	private Integer phone;
+	private String phone;
 	/**
 	 * 训练师状态（1生效 0失效）
 	 */

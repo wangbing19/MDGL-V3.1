@@ -34,6 +34,11 @@ public class JsonResult implements Serializable {
     public static JsonResult oK(Object data) {
         return new JsonResult(data);
     }
+    
+    public static JsonResult oK(String msg) {
+    	return new JsonResult(msg);
+    }
+
 
     public static JsonResult oK() {
         return new JsonResult(null);
@@ -63,8 +68,14 @@ public class JsonResult implements Serializable {
 
     public JsonResult(Object data) {
         this.status = 200;
-        this.msg = "OK";
+        this.msg = "操作成功";
         this.data = data;
+    }
+    
+    public JsonResult(String msg) {
+    	this.status = 200;
+        this.msg = msg;
+        this.data = null;
     }
 
 

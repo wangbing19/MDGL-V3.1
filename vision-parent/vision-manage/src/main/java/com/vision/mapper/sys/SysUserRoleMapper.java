@@ -8,12 +8,12 @@ import com.vision.pojo.sys.vo.SysUserOrganization;
 
 public interface SysUserRoleMapper extends BaseMapper<SysRoleUser>{
 
-	void insertObjects(Long userId, Integer[] roleIds);
+	void insertObjects(Long id, Integer[] roleIds);
 
-	void deleteObjectsByUserId(Long userId);
+	void deleteObjectsByUserId(Long id);
 
 	SysUserOrganization findObjectById(Integer userId);
 
-	List<Integer> findRoleIdsByUserId(Integer userId);
+	List<Integer> findRoleIdsByUserId(Integer id);
 
 }

@@ -9,7 +9,6 @@ import { message, TreeSelect } from 'antd';
  * @param {*} noPrefixKey 不需要添加前缀的数据在表单数据中的key
  */
 export function formatData(data,objName,id,...noPrefixKey){
-
     var formData = new FormData();
     if(noPrefixKey){
         noPrefixKey.map(va=>{
@@ -37,7 +36,7 @@ export function formatData(data,objName,id,...noPrefixKey){
     }
 
     if( id && id !== ''){
-        formData.append(objName+'.id',id);
+        formData.append('id',id);
     }
     
     return formData;
@@ -80,7 +79,7 @@ export function FormdateFormat(data,formart){
  * @param {*string} formart 时间格式
  */
 export function formDataSubmit(dispatch,objName,formData){
-    const idKey = objName+'.id';
+    const idKey = 'id';
     //rowId存在的话就是编辑，否则就是添加
     if(formData.get(idKey) && formData.get(idKey) != ''){
         dispatch({
@@ -110,7 +109,8 @@ export function formDataSubmit(dispatch,objName,formData){
   */
  export function deleteData(id,type,dispatch){
     var formData = new FormData();
-        formData.append("ids", id);
+    formData.append("id", id);
+    formData.append("orgId", 1);
     dispatch({
         type:type+'/remove',
         payload:formData,
