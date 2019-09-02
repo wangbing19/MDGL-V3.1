@@ -5,7 +5,6 @@ import com.vision.exception.ServiceException;
 import com.vision.pojo.exp.ExpExpertReply;
 import com.vision.service.exp.ExpertReplyService;
 import com.vision.vo.JsonResult;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

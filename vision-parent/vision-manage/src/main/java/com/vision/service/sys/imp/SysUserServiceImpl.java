@@ -26,7 +26,7 @@ public class SysUserServiceImpl implements SysUserService{
 	private SysUserRoleMapper sysUserRoleMapper;
 	@Override
 	public int saveObject(SysUser entity, Integer[] roleIds) {
-		
+
 		//1.对参数进行校验
 				if(entity==null)
 				throw new IllegalArgumentException("保存对象不能为空");
@@ -55,7 +55,7 @@ public class SysUserServiceImpl implements SysUserService{
 				//entity.setModifiedUser(user.getUsername());
 				int rows=sysUserMapper.insertObject(entity);
 				//3.保存用户与角色关系数据
-				sysUserRoleMapper.insertObjects(entity.getUserId(),roleIds);
+				sysUserRoleMapper.insertObjects(entity.getId(),roleIds);
 				return rows;
 	}
 	@Override
@@ -69,8 +69,8 @@ public class SysUserServiceImpl implements SysUserService{
 				//2.保存用户自身信息
 				int rows=sysUserMapper.updateById(entity);
 				//3.保存用户与角色关系数据
-				sysUserRoleMapper.deleteObjectsByUserId(entity.getUserId());
-				sysUserRoleMapper.insertObjects(entity.getUserId(),roleIds);
+				sysUserRoleMapper.deleteObjectsByUserId(entity.getId());
+				sysUserRoleMapper.insertObjects(entity.getId(),roleIds);
 				return rows;
 	}
 	@Override
@@ -83,11 +83,11 @@ public class SysUserServiceImpl implements SysUserService{
 			if(count>0)
 			throw new ServiceException(columnValue + "已存在");
 			return count;
-		
+
 	}
 	@Override
 	public PageObject<SysUserOrganization> findPageObjects(Long organizationId,String username, Integer pageCurrent,Integer pageSize) {
-		
+
 		//1.验证参数有效性
 				if(pageCurrent==null||pageCurrent<1)
 				throw new IllegalArgumentException("页码值不正确");
@@ -112,7 +112,7 @@ public class SysUserServiceImpl implements SysUserService{
 	}
 	@Override
 	public int validById(Integer id, Integer valid, String modifiedUser) {
-		
+
 		//1.合法性验证
 				if(id==null||id<=0)
 				throw new ServiceException("参数不合法,id="+id);
@@ -123,7 +123,7 @@ public class SysUserServiceImpl implements SysUserService{
 				//2.执行禁用或启用操作
 				int rows=0;
 				try{
-					
+
 			    rows=sysUserMapper.validById(id, valid, modifiedUser);
 				}catch(Throwable e){
 				e.printStackTrace();
@@ -147,14 +147,14 @@ public class SysUserServiceImpl implements SysUserService{
 				sysUserMapper.findObjectById(userId);
 		if(user==null)
 		throw new ServiceException("此用户已经不存在");
-		
+
 		  List<Integer> roleIds= sysUserRoleMapper.findRoleIdsByUserId(userId);
-		  //3.数据封装 
-		  Map<String,Object> map=new HashMap<>(); 
+		  //3.数据封装
+		  Map<String,Object> map=new HashMap<>();
 		  map.put("user", user);
 		  map.put("roleIds", roleIds);
 		  return map;
-		 
+
 
 
 }
@@ -166,8 +166,8 @@ public class SysUserServiceImpl implements SysUserService{
 		SysUser selectById = sysUserMapper.selectById(userId);
 		return selectById;
 	}
-	
-	
+
+
 	@Override
 	public SysUser findUserByName(String userName) {
 		if(userName==null||userName=="")
@@ -177,5 +177,12 @@ public class SysUserServiceImpl implements SysUserService{
 		queryWrapper.eq("user_name", userName);
 		SysUser selectOne = sysUserMapper.selectOne(queryWrapper);
 		return selectOne;
+	}
+
+	@Override
+	public SysUser findColumn(String column, String valueOf) {
+        QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq(column,valueOf);
+        return sysUserMapper.selectOne(queryWrapper);
 	}
 }

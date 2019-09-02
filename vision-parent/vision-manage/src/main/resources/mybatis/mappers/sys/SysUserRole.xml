@@ -29,7 +29,7 @@
            where user_id=#{userId}
       </select>
       
-      <delete id="deleteRoleById">
+      <delete id="findObjectById">
       delete from sys_user_role where role_id=#{id} 
       
       </delete>

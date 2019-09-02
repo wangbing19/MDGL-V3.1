@@ -25,6 +25,12 @@ public interface SysOrganizationService {
 	 */
 	SysOrganization getSysOrganizationById(Long id);
 
-	
-
+	/**
+	 * @Author lihd
+	 * @Description 根据id查询子级信息
+	 * @Date 2019/9/2 19:27
+	 * @param
+	 * @return
+	 */
+	List<SysOrganization> findSublevel(Long organizationId);
 }

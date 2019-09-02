@@ -118,5 +118,13 @@ public class SysOrganizationServiceImpl implements SysOrganizationService{
 		SysOrganization organization = sysOrganizationMapper.selectById(id);
 		return organization;
 	}
-	
+
+	@Override
+	public List<SysOrganization> findSublevel(Long organizationId) {
+		QueryWrapper<SysOrganization> queryWrapper = new QueryWrapper<>();
+		queryWrapper.eq("organization_parent_id",organizationId);
+		List<SysOrganization> sysOrganizations = sysOrganizationMapper.selectList(queryWrapper);
+		return sysOrganizations;
+	}
+
 }

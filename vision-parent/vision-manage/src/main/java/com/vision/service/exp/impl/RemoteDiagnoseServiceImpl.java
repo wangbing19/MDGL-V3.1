@@ -1,6 +1,7 @@
 package com.vision.service.exp.impl;
 
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.vision.dto.ExpRemoteDiagnoseValidDto;
@@ -11,11 +12,15 @@ import com.vision.mapper.exp.ExpRemoteDiagnoseMapper;
 import com.vision.pojo.exp.ExpExpert;
 import com.vision.pojo.exp.ExpRemoteDiagnose;
 import com.vision.pojo.exp.ExpSymptomsDescribed;
+import com.vision.pojo.sys.SysOrganization;
 import com.vision.pojo.sys.SysUser;
 import com.vision.rto.ExpRemoteDiagnoseRto;
+import com.vision.rto.SysOrganizationRto;
 import com.vision.service.exp.ExpertReplyService;
 import com.vision.service.exp.RemoteDiagnoseService;
 import com.vision.service.exp.SymptomsDescribedService;
+import com.vision.service.sys.SysOrganizationService;
+import com.vision.service.sys.SysUserService;
 import com.vision.util.BooleanUtil;
 import com.vision.util.CaseBeanUtils;
 import com.vision.util.ListUtils;
@@ -35,12 +40,14 @@ public class RemoteDiagnoseServiceImpl implements RemoteDiagnoseService {
 
     @Resource
     private ExpRemoteDiagnoseMapper remoteDiagnoseMapper;
-
-    @Autowired
+    @Resource
     private ExpertReplyService expertReplyService;
-
-    @Autowired
+    @Resource
     private SymptomsDescribedService symptomsDescribedService;
+    @Resource
+    private SysUserService sysUserService;
+    @Resource
+    private SysOrganizationService sysOrganizationService;
 
     /**
      * 分页
@@ -144,6 +151,37 @@ public class RemoteDiagnoseServiceImpl implements RemoteDiagnoseService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public List<SysOrganizationRto> find(Integer userId) {
+        userId = 24;
+        SysUser sysUser = sysUserService.findUserById(userId);
+        if (sysUser == null) {
+            throw new ServiceException("没有该账号");
+        }
+        List<SysOrganization> list = sysOrganizationService.findSublevel(sysUser.getOrganizationId());
+        if (ListUtils.isArrayEmpty(list)) {
+            throw new ServiceException("没有该组织");
+        }
+        SysOrganization organization = sysOrganizationService.getSysOrganizationById(sysUser.getOrganizationId());
+        list.add(organization);
+        List<SysOrganization> sysOrganizations = new ArrayList<>();
+        for (SysOrganization sysOrganization : list) {
+            SysUser user = sysUserService.findColumn("organization_id", String.valueOf(sysOrganization.getOrganizationId()));
+            if (user == null) {
+                continue;
+            }
+            QueryWrapper<ExpRemoteDiagnose> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq(ExpRemoteDiagnose.Meta.registerUser, user.getUserName())
+                    .eq(ExpRemoteDiagnose.Meta.delTag, 0).eq(ExpRemoteDiagnose.Meta.valid, 1);
+            Integer i = remoteDiagnoseMapper.selectCount(queryWrapper);
+            if (i < 1) {
+                continue;
+            }
+            sysOrganizations.add(sysOrganization);
+        }
+        return ListUtils.copyList(sysOrganizations, SysOrganizationRto.class);
     }
 
 }
