@@ -27,4 +27,13 @@ public interface SysUserService{
 
 	SysUser findUserByIdWeb(Long userId);
 
+    /**
+     * @param column  列名
+     * @param valueOf 列值
+     * @return
+     * @Author lihd
+     * @Description 根据列名和列值获取账号信息
+     * @Date 2019/9/2 19:56
+     */
+    SysUser findColumn(String column, String valueOf);
 }

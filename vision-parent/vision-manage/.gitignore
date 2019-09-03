@@ -6,3 +6,6 @@
 .temp
 node_modules
 .umi
+vision-manage.iml
+vision-parent.iml
+.gitignore

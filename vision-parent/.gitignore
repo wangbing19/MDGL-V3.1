@@ -4,4 +4,6 @@
 .project
 .factorypath
 .gitignore
-
+.idea
+vision-common.iml
+vision-manage.iml

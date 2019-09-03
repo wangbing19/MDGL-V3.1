@@ -4,7 +4,10 @@ import com.vision.dto.ExpRemoteDiagnoseValidDto;
 import com.vision.dto.PageDto;
 import com.vision.dto.RemoteDiagnoseDto;
 import com.vision.rto.ExpRemoteDiagnoseRto;
+import com.vision.rto.SysOrganizationRto;
 import com.vision.vo.PageObject;
+
+import java.util.List;
 
 public interface RemoteDiagnoseService {
 
@@ -63,4 +66,6 @@ public interface RemoteDiagnoseService {
      * @Date 2019/8/10 14:51
      */
     Boolean selectId(Integer remoteDiagnoseId);
+
+    List<SysOrganizationRto> find(Integer userId);
 }

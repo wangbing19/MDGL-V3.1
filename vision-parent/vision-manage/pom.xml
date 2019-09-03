@@ -14,7 +14,12 @@
 			<artifactId>vision-common</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-crypto</artifactId>
+            <version>5.0.7.RELEASE</version>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>

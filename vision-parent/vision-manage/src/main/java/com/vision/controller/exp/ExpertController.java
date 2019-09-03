@@ -36,7 +36,7 @@ public class ExpertController {
      * 远程诊断分页
      */
     @RequestMapping("/find/page")
-    public JsonResult doLimitExp(String expertName, @Valid @RequestBody PageDto pageDto) {
+    public JsonResult doLimitExp(@RequestParam(value = "expertName",required = false) String expertName, @Valid @RequestBody PageDto pageDto) {
         PageObject<ExpExpert> pageObject = expertService.limitExp(expertName, pageDto);
         return JsonResult.oK(pageObject);
     }
@@ -49,6 +49,7 @@ public class ExpertController {
     public JsonResult doSelectExp(@PathVariable("id") Integer id) {
         ExpExpert entity = expertService.doSelectExp(id);
         return JsonResult.oK(entity);
+
     }
 
     /**

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import javax.xml.crypto.Data;
 import java.io.Serializable;
 import java.util.List;
 
@@ -41,6 +42,14 @@ public class JsonResult implements Serializable {
 
     public static JsonResult oK() {
         return new JsonResult(null);
+    }
+
+    public static JsonResult error(){
+        return JsonResult.build(201,"error","服务器异常");
+    }
+
+    public static JsonResult error(Object data){
+        return JsonResult.build(201,"error","服务器异常");
     }
 
     public JsonResult() {

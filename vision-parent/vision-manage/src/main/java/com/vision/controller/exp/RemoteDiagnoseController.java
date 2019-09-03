@@ -1,16 +1,21 @@
 package com.vision.controller.exp;
 
+import com.aliyun.openservices.shade.com.alibaba.fastjson.JSON;
+import com.aliyun.openservices.shade.com.alibaba.fastjson.JSONArray;
 import com.vision.dto.ExpRemoteDiagnoseValidDto;
 import com.vision.dto.PageDto;
 import com.vision.dto.RemoteDiagnoseDto;
 import com.vision.rto.ExpRemoteDiagnoseRto;
+import com.vision.rto.SysOrganizationRto;
 import com.vision.service.exp.RemoteDiagnoseService;
+import com.vision.util.ListToTreeUtil;
 import com.vision.vo.JsonResult;
 import com.vision.vo.PageObject;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @ClassName RemoteDiagnoseController
@@ -80,4 +85,14 @@ public class RemoteDiagnoseController {
         Boolean aBoolean = remoteDiagnoseService.doUpdate(remoteDiagnoseDto);
         return JsonResult.oK(aBoolean);
     }
+
+    @GetMapping("/find/{userId}")
+    public JsonResult find(@PathVariable("userId") Integer userId){
+        List<SysOrganizationRto> result = remoteDiagnoseService.find(userId);
+        JSONArray objects = ListToTreeUtil.listToTree
+                (JSONArray.parseArray(JSON.toJSONString(result)), "organizationId", "organizationParentId", "child");
+        return JsonResult.oK(objects);
+    }
+
+
 }

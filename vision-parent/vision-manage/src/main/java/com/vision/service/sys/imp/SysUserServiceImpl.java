@@ -191,4 +191,11 @@ public class SysUserServiceImpl implements SysUserService{
 		selectById.setOrganizationAddress(selectById2.getOrganizationAddress());
 		return selectById;
 	}
+
+	@Override
+	public SysUser findColumn(String column, String valueOf) {
+        QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq(column,valueOf);
+        return sysUserMapper.selectOne(queryWrapper);
+	}
 }

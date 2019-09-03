@@ -44,7 +44,7 @@ public class SysUser {
 	private String modifiedUser;
 	/**组织信息*/
 	@TableField(exist=false)
-	private String organizationName; 
+	private String organizationName;
 	@TableField(exist=false)
 	private String organizationAddress;;
 }
