@@ -48,6 +48,8 @@ export default [
           },
         ],
       },
+         
+
       // train
       {
         path: '/train',
@@ -85,6 +87,23 @@ export default [
             name: 'rechargeRecord',
             component: './Recharge/RechargeRecord/RechargeRecord',
           },
+        ],
+      },
+
+
+
+       // pre
+       {
+        path: '/pre',
+        icon: 'form',
+        name: 'pre',
+        routes: [
+          {
+            path: '/pre/preSymptomType/preSymptomType',
+            name: 'preSymptomType',
+            component: './Pre/PreSymptomType/PreSymptomType',
+          },
+       
         ],
       },
       // system

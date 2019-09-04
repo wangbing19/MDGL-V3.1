@@ -8,6 +8,8 @@ export default {
   'menu.cus.consultation': '咨询表',
   'menu.cus.customer': '用户表',
   'menu.cus.diagnose': '诊断表',
+  'menu.pre': '处方下载',
+  'menu.pre.preSymptomType': '症状',
   'menu.train': '训练',
   'menu.train.traInformationrecord': '训练记录表',
   'menu.train.schedule': '课程表',
