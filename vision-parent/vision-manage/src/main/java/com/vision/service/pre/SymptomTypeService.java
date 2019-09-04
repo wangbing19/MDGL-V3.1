@@ -13,7 +13,7 @@ public interface SymptomTypeService {
 	 * @return */
 	int deleteSymptomObjectById(Long id);
 	/**新增症状类型对象*/
-	void insertSymptomObject(String symptomName, Long parentId,String desc);
+	void insertSymptomObject(SymptomType symptomType,String desc);
 	/**修改症状类型对象*/
 	void updateSymptomObject(SymptomType symptomType,String symptomDesc);
 	/**根据症状id查询症状类型信息*/

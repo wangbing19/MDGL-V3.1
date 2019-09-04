@@ -69,20 +69,22 @@ public class SymptomTypeServiceImpl implements SymptomTypeService{
 
 	@Override
 	/**新增症状类型对象*/
-	public void insertSymptomObject(String symptomName,Long parentId,String desc) {
+	public void insertSymptomObject(SymptomType symptomType ,String desc) {
 		try {
 			//1将新的症状对象新增到数据库中
 			Date nowDate = new Date();
-			SymptomType symptomType = new SymptomType();
+		//	SymptomType symptomType = new SymptomType();
 			symptomType.setCreateTime(nowDate);
 			symptomType.setModifiedTime(symptomType.getCreateTime());
 			symptomType.setDisStatus(1);//新增的症状类型是最下级目录，没有子症状，所有默认需要显示症状描述
-			symptomType.setParentId(parentId);
-			symptomType.setSymptomName(symptomName);
+			//symptomType.setParentId(parentId);
+			//symptomType.setSymptomName(symptomName);
 			symptomTypeMapper.insertSymptomObject(symptomType);
+			symptomTypeMapper.insert(symptomType);
+			
 			//2、更新parent_id对应的症状显示症状描述状态为0
 			int disStatus=0;
-			symptomTypeMapper.updateDisStatusById(parentId,disStatus);
+			symptomTypeMapper.updateDisStatusById(symptomType.getParentId(),disStatus);
 			//3、新增症状描述表对象
 			SymptomDesc symptomDesc = new SymptomDesc();
 			symptomDesc.setCreateTime(nowDate);

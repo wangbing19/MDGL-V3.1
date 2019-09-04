@@ -85,9 +85,9 @@ public class SymptomTypeController {
 	/**新增症状类型对象*/
 	@RequestMapping("/insertSymptomObject")
 	@ResponseBody
-	public JsonResult insertSymptomObject(String symptomName,Long parentId,String desc) {
+	public JsonResult insertSymptomObject(SymptomType symptomType,String desc) {
 		try {
-			symptomTypeService.insertSymptomObject(symptomName,parentId,desc);
+			symptomTypeService.insertSymptomObject(symptomType,desc);
 			return JsonResult.oK("新增成功");
 		} catch (Exception e) {
 			e.printStackTrace();
