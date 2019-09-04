@@ -3,6 +3,7 @@ package com.vision.service.pre;
 import java.util.List;
 
 import com.vision.pojo.pre.SymptomType;
+import com.vision.vo.PageObject;
 import com.vision.vo.pre.SymptomAllMsg;
 
 public interface SymptomTypeService {
@@ -17,5 +18,6 @@ public interface SymptomTypeService {
 	void updateSymptomObject(SymptomType symptomType,String symptomDesc);
 	/**根据症状id查询症状类型信息*/
 	SymptomType findSymptomObjectById(Long id);
+	PageObject<SymptomType> findAllObjectsList(Integer pageCurrent,Integer pageSize);
 
 }

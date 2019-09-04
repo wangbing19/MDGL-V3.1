@@ -11,7 +11,9 @@ import com.vision.mapper.pre.SymptomDescMapper;
 import com.vision.mapper.pre.SymptomTypeMapper;
 import com.vision.pojo.pre.SymptomDesc;
 import com.vision.pojo.pre.SymptomType;
+import com.vision.pojo.sys.vo.SysOrganizationLogs;
 import com.vision.service.pre.SymptomTypeService;
+import com.vision.vo.PageObject;
 import com.vision.vo.pre.SymptomAllMsg;
 @Service
 public class SymptomTypeServiceImpl implements SymptomTypeService{
@@ -120,5 +122,20 @@ public class SymptomTypeServiceImpl implements SymptomTypeService{
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	@Override
+	public PageObject<SymptomType> findAllObjectsList(Integer pageCurrent,Integer pageSize) {
+	
+		int startIndex=(pageCurrent-1)*pageSize;
+		Integer rowCount = symptomTypeMapper.selectCount(null);
+		//List<SymptomType> selectList = symptomTypeMapper.selectList(null);
+		List<SymptomType> selectList=symptomTypeMapper.findAllObjectsList( startIndex, pageSize);
+		PageObject<SymptomType> pageObject=new PageObject<>();
+		pageObject.setRowCount(rowCount);
+		pageObject.setRecords(selectList);
+		pageObject.setPageCurrent(pageCurrent);
+		pageObject.setPageSize(pageSize);
+		return pageObject;
 	}
 }

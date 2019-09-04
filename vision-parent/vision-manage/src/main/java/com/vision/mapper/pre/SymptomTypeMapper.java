@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.vision.pojo.ppo.PpoAppointmentOrder;
 import com.vision.pojo.pre.SymptomType;
 import com.vision.vo.pre.SymptomAllMsg;
 
-public interface SymptomTypeMapper {
+public interface SymptomTypeMapper extends BaseMapper<SymptomType>{
 	/**内嵌套查询症状类型数据**/
 	List<SymptomAllMsg> findAllObjects();
 	/**根据症状id删除症状*/
@@ -22,6 +24,7 @@ public interface SymptomTypeMapper {
 	SymptomType findSymptomObjectById(@Param("id")Long id);
 	/**根据症状id修改症状名称*/
 	void updateSymptomObject(@Param("id")Long id,@Param("symptomName") String symptomName);
+	List<SymptomType> findAllObjectsList(@Param("startIndex")int startIndex, @Param("pageSize")Integer pageSize);
 	
 
 }

@@ -15,6 +15,7 @@ import com.vision.service.pre.SymptomTypeService;
 import com.vision.util.GetMenusTreeData;
 import com.vision.util.GetTreeData;
 import com.vision.vo.JsonResult;
+import com.vision.vo.PageObject;
 import com.vision.vo.TreeMenus;
 import com.vision.vo.TreeStructure;
 import com.vision.vo.pre.SymptomAllMsg;
@@ -118,5 +119,24 @@ public class SymptomTypeController {
 			e.printStackTrace();
 		}
 		return JsonResult.build(201,"查询症状信息失败");
+	}
+	
+	/**分页查询*/
+	@RequestMapping("/findAllObjectsList")
+	@ResponseBody
+	public JsonResult findAllObjectsList(Integer pageCurrent,Integer pageSize) {
+		try {
+			PageObject<SymptomType> symptomlist  = symptomTypeService.findAllObjectsList(pageCurrent,pageSize);
+			if(symptomlist.getRecords()==null||symptomlist.getRecords().size()==0) {
+				return JsonResult.oK("没有症状类型数据信息");
+			}
+			
+			else {
+				return JsonResult.oK(symptomlist);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return JsonResult.build(201,"查询症状类型数据信息出错，检查网络连接");
 	}
 }

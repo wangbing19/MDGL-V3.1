@@ -19,6 +19,9 @@ public class SymptomType extends BasePojo{
 	private Long parentId;
 	/**症状描述显示状态1 显示 0不显示*/
 	private Integer disStatus;
+	/**是否有处方状态1 有 0无*/
+	private Integer descStart;
+	
 	/**症状名称*/
 	private String symptomName;
 }
