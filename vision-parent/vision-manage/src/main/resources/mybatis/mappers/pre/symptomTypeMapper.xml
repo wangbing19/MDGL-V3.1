@@ -33,7 +33,7 @@
 	</select>
 	
 	<update id="updateSymptomObject">
-		update symptom_type set symptom_name = #{descStart},#{symptomName},modified_time=now() where id=#{id}
+		update symptom_type set symptom_name = #{symptomName},desc_start=#{descStart},modified_time=now() where id=#{id}
 	</update>
 	
 	

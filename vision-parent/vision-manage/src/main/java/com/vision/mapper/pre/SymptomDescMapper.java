@@ -2,9 +2,11 @@ package com.vision.mapper.pre;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.vision.pojo.pre.SymptomDesc;
 
-public interface SymptomDescMapper {
+
+public interface SymptomDescMapper extends BaseMapper<SymptomDesc>{
     /**
      * 根据症状id删除对应的症状描述
      */

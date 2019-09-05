@@ -11,7 +11,7 @@ public interface SymptomTypeService {
 	List<SymptomAllMsg> findAllObjects();
 	/**根据症状id删除症状
 	 * @return */
-	int deleteSymptomObjectById(Long id);
+	int deleteSymptomObjectById(Long[] id);
 	/**新增症状类型对象*/
 	void insertSymptomObject(SymptomType symptomType,String desc);
 	/**修改症状类型对象*/

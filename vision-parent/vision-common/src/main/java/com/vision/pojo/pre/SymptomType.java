@@ -1,6 +1,7 @@
 package com.vision.pojo.pre;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.vision.pojo.BasePojo;
@@ -24,4 +25,8 @@ public class SymptomType extends BasePojo{
 	
 	/**症状名称*/
 	private String symptomName;
+	
+	/**处方描述*/
+	@TableField(exist=false)	//mybatis入库操作时,忽略该字段
+	private String desc;
 }

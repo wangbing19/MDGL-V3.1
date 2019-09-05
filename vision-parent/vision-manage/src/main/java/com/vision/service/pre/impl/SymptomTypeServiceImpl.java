@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.vision.exception.ServiceException;
 import com.vision.mapper.pre.SymptomDescMapper;
 import com.vision.mapper.pre.SymptomTypeMapper;
@@ -39,28 +40,32 @@ public class SymptomTypeServiceImpl implements SymptomTypeService{
 
 	@Override
 	/**根据症状id删除症状*/
-	public int deleteSymptomObjectById(Long id) {
+	public int deleteSymptomObjectById(Long[] ids) {
 		try {
-			if(id==null) throw new ServiceException("请先选择要删除的对象");
-			//1、根据症状id查询该症状信息
-			SymptomType symptomType = symptomTypeMapper.findSymptomObjectById(id);
-			if(symptomType==null) throw new ServiceException("您要删除的信息不存在");
-			//2、获取需要删除的症状的父级id
-			Long parentId = symptomType.getParentId();
-			//3、判断该症状有没有子症状
-			int row = symptomTypeMapper.getRowDataById(id);
-			//3.1)如果有，则不能删除
-			if(row!=0) return 0;
-			//3.2)如果没有，则直接删除
-			symptomTypeMapper.deleteSymptomObjectById(id);
-			//4、根据parent_id查询是否还存在子症状
-			int rowParent = symptomTypeMapper.getRowDataById(parentId);
-			if(rowParent==0) {
-				//如果没有子症状，则更新症状描述显示
-				symptomTypeMapper.updateDisStatusById(parentId, 1);
-			}						
-			//5、删除症状后，判断症状描述表中有无该症状描述，有则删除
-			symptomDescMapper.deleteDescObjectBySymptomId(id);
+			if(ids==null) throw new ServiceException("请先选择要删除的对象");
+			for (int i = 0; i < ids.length; i++) {
+				
+				//1、根据症状id查询该症状信息
+				SymptomType symptomType = symptomTypeMapper.findSymptomObjectById(ids[i]);
+				if(symptomType==null) throw new ServiceException("您要删除的信息不存在");
+				//2、获取需要删除的症状的父级id
+				Long parentId = symptomType.getParentId();
+				//3、判断该症状有没有子症状
+				int row = symptomTypeMapper.getRowDataById(ids[i]);
+				//3.1)如果有，则不能删除
+				if(row!=0) return 0;
+				//3.2)如果没有，则直接删除
+				symptomTypeMapper.deleteSymptomObjectById(ids[i]);
+				//4、根据parent_id查询是否还存在子症状
+				int rowParent = symptomTypeMapper.getRowDataById(parentId);
+				if(rowParent==0) {
+					//如果没有子症状，则更新症状描述显示
+					symptomTypeMapper.updateDisStatusById(parentId, 1);
+				}						
+				//5、删除症状后，判断症状描述表中有无该症状描述，有则删除
+				symptomDescMapper.deleteDescObjectBySymptomId(ids[i]);
+			}
+		
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -104,9 +109,12 @@ public class SymptomTypeServiceImpl implements SymptomTypeService{
 		Long id = symptomType.getId();
 		//获取修改后的症状名称
 		String symptomName = symptomType.getSymptomName();
+		
 		try {
+			
+			symptomTypeMapper.updateById(symptomType);
 			//修改症状类型表中症状名称
-			symptomTypeMapper.updateSymptomObject(id,symptomName);
+			//symptomTypeMapper.updateSymptomObject(id,symptomName);
 			//修改症状描述表中该症状的描述信息
 			symptomDescMapper.updateSymptomDescObject(id,desc);
 		} catch (Exception e) {
@@ -119,6 +127,10 @@ public class SymptomTypeServiceImpl implements SymptomTypeService{
 	public SymptomType findSymptomObjectById(Long id) {
 		try {
 			SymptomType symptomType = symptomTypeMapper.findSymptomObjectById(id);
+			QueryWrapper<SymptomDesc> queryWrapper = new QueryWrapper<SymptomDesc>();
+			queryWrapper.eq("symptom_id", id);
+			SymptomDesc selectOne = symptomDescMapper.selectOne(queryWrapper);
+			symptomType.setDesc(selectOne.getSymptomDesc());
 			return symptomType;
 		} catch (Exception e) {
 			e.printStackTrace();

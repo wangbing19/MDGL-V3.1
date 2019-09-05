@@ -69,7 +69,7 @@ public class SymptomTypeController {
 	/**根据症状id删除症状*/
 	@RequestMapping("/deleteSymptomObjectById")
 	@ResponseBody
-	public JsonResult deleteSymptomObjectById(Long id) {
+	public JsonResult deleteSymptomObjectById(Long ...id) {
 		try {
 			int s = symptomTypeService.deleteSymptomObjectById(id);
 			if(s>0) JsonResult.oK("删除成功");
