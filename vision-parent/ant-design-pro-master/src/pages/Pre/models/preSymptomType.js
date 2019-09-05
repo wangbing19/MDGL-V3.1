@@ -1,4 +1,5 @@
-import {getPreSymptomTypeAll,findSymptomDesc,findAllObjectsList } from '@/services/PreSymptomTypeMenus';
+import {getPreSymptomTypeAll,findSymptomDesc,findAllObjectsList,findSymptomfindSymptomById,
+        updateSymptom ,addPreSymptomType,deletePreSymptomType} from '@/services/PreSymptomTypeMenus';
 import {formatData, FormdateFormat} from '@/utils/dataUtils';
 import cookie from 'react-cookies';
 export default {
@@ -32,6 +33,14 @@ export default {
         },
          //保存症状处方查询行信息
          DescRow:{
+            status:201,
+            ok: false,
+            msg: "",
+            data:[],
+        },
+
+           //保存症状处方查询行信息
+           DescRowById:{
             status:201,
             ok: false,
             msg: "",
@@ -76,6 +85,39 @@ export default {
             });
         },
 
+         //修改
+         *update( {payload,callback}, { select,call, put }) {
+            const response = yield call(updateSymptom,payload);
+            if(callback) callback(response);
+            //刷新页面
+            let queryCriteria = yield select(state => state.preSymptomType.queryCriteria);
+            const current = yield select(state => state.preSymptomType.data.pagination.current);
+            yield put({
+                type: 'fetch',
+                payload: {
+                    ...queryCriteria,
+                    pageCurrent: current,
+                  
+                },
+            });
+        },
+
+            //添加
+            *add( {payload,callback}, { select, call, put }) {
+                const response = yield call(addPreSymptomType,payload);
+                if(callback) callback(response);
+                //刷新页面
+                let queryCriteria = yield select(state => state.preSymptomType.queryCriteria);
+                yield put({
+                    type: 'fetch',
+                    payload: {
+                        ...queryCriteria,
+                        pageCurrent: 1,
+                       
+                    },
+                });
+            },
+
            //查询所有症状数据用于导航菜单使用
            *getPreSymptomTypeAll( {payload}, { call, put }) {
           
@@ -84,6 +126,31 @@ export default {
             yield put({
                 type: 'savePreRow',
                 payload: response,
+            });
+        },
+         //删除
+         *remove({payload,callback}, { select, call, put }) {
+            const response = yield call(deletePreSymptomType,payload);
+            if(callback) callback(response);
+            if(response.success){
+                yield put({
+                    type: 'selectRows',
+                    payload: {
+                    deleteDisabled:true,
+                    selectedRows:[],
+                    selectedRowKeys:[],
+                    },
+                });
+            }
+            //刷新页面
+            let queryCriteria = yield select(state => state.preSymptomType.queryCriteria);
+            yield put({
+                type: 'fetch',
+                payload: {
+                    ...queryCriteria,
+                    pageCurrent: 1,
+                  
+                },
             });
         },
 
@@ -96,13 +163,23 @@ export default {
                 type: 'saveDescRow',
                 payload: response,
             });
-        }
+        },
+        //更据id查询症状信息用于修改
+        *findSymptomfindSymptomById( {payload}, { call, put }) {
+           
+            const formData = formatData(payload);
+            const response = yield call(findSymptomfindSymptomById,formData);
+            yield put({
+                type: 'DescRowById',
+                payload: response,
+            });
+        },
         
 
     },
     reducers: {
          
-           //修改时根据id查询数据
+           //获取菜单名
            savePreRow(state,action){
             return {
                 ...state,
@@ -112,7 +189,7 @@ export default {
             };
         },
 
-         //修改时根据id查询数据
+         //保存处方信息
          saveDescRow(state,action){
             return {
                 ...state,
@@ -122,6 +199,15 @@ export default {
             };
         },
 
+        //修改症状时，根据id查询数据
+        DescRowById(state,action){
+            return {
+                ...state,
+                DescRowById:{
+                    ...action.payload
+                }
+            };
+        },
         save(state, action) {
             return {
                 ...state,
@@ -164,6 +250,19 @@ export default {
             return {
                 ...state,
                 drawerVisible:action.payload,
+            };
+        },
+
+           //设置按id查询数据清空
+           clearFeomData(state){
+            return {
+                ...state,
+                DescRowById:{
+                    status:201,
+                    ok: false,
+                    msg: "",
+                    data:{},
+                },
             };
         },
         

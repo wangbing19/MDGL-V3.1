@@ -27,3 +27,41 @@ export async function findAllObjectsList(params) {
     });
 }
 
+//修改症状
+export async function findSymptomfindSymptomById(params) {
+
+    return request("/vision/symptomType/findSymptomObjectById",{
+        method: "POST",
+        body: params,
+    });
+}
+//症状修改
+export async function updateSymptom(params) {
+
+    return request("/vision/symptomType/updateSymptomObject",{
+        method: "POST",
+        body: params,
+    });
+}
+
+//症状添加
+export async function addPreSymptomType(params) {
+
+    return request("/vision/symptomType/insertSymptomObject",{
+        method: "POST",
+        body: params,
+    });
+}
+
+
+//症状删除
+export async function deletePreSymptomType(params) {
+
+    return request("/vision/symptomType/deleteSymptomObjectById",{
+        method: "POST",
+        body: params,
+    });
+}
+
+
+

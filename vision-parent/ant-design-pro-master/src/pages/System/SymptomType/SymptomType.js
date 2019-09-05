@@ -138,6 +138,7 @@ class SymptomType extends Component {
     //添加修改跳转页面
     showDrawer=(row)=>{
         const {  symptomType:{ drawerVisible },dispatch } =this.props;
+        
         dispatch({
             type:"symptomType/setDrawerVisible",
             payload:!drawerVisible,

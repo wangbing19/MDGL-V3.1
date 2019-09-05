@@ -42,17 +42,21 @@ class PreSymptomTypeDrawer extends Component {
         e.preventDefault();
         this.props.form.validateFields((err, fieldsValue) => {
             if (!err) {
-                const {preSymptomType: {  DescRow, selectedRows }, dispatch } = this.props;
-                const { data, ok} = DescRow;
+                const {preSymptomType: {  DescRowById, selectedRows }, dispatch } = this.props;
+                const { data, ok} = DescRowById;
+               
                 const formData = formatData(fieldsValue,"",data["id"]);
                 //封装表单数据对象
                 // const formData = formatData(fieldsValue);
+                if(!ok){
+                    formData.append("parentId", this.state.symptomTypePid);
+                }
                 //发起请求
                 formDataSubmit(dispatch,'preSymptomType',formData);
                 //关闭抽屉
                 this.setState(
                     this.state.symptomTypePid='',
-                )
+                );
                 this.showDrawer();
             }
         });
@@ -67,8 +71,8 @@ class PreSymptomTypeDrawer extends Component {
     
     }
     render() {
-        const {form: {getFieldDecorator} ,preSymptomType: { drawerVisible, savRow,treeList}, dispatch } = this.props;
-        const { data, ok} = savRow;
+        const {form: {getFieldDecorator} ,preSymptomType: { drawerVisible, savRow,treeList,DescRowById}, dispatch } = this.props;
+        const { data, ok} = DescRowById;
         const treeNodeLists = [treeList]
         return(
             <Drawer
@@ -113,10 +117,8 @@ class PreSymptomTypeDrawer extends Component {
                             treeList={treeNodeLists}
                             defaultExpandedKeys={[treeNodeLists[0].id]}
                      />
-                    </Form>
 
-            
-                <div className={styles.buttons} >
+                    <div className={styles.buttons} >
                         <Button onClick={this.showDrawer} className={styles.cancel} >
                             返回
                         </Button>
@@ -124,6 +126,10 @@ class PreSymptomTypeDrawer extends Component {
                             提交
                         </Button>
                     </div>
+                    </Form>
+
+            
+                  
             </Drawer>
         );
     }

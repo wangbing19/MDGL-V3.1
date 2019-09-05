@@ -103,16 +103,21 @@ class PreSymptomType extends Component {
             type:"preSymptomType/setDrawerVisible",
             payload:!drawerVisible,
         })
-        // if(row.id){
-        //     dispatch({
-        //         type:'symptomType/getSymptomTypeById',
-        //         payload:{
-        //             id:row.id,
-        //             orgId:row.orgId,
-        //         },
-        //     })
-        // }
-    }
+         if(row.id){
+             dispatch({
+                 type:'preSymptomType/findSymptomfindSymptomById',
+                 payload:{
+                     id:row.id,
+                    
+                 },
+             })
+         }
+    };
+     //删除
+     delete=()=>{
+        const { dispatch ,preSymptomType:{selectedRowKeys} } = this.props;
+        deleteData(selectedRowKeys,'preSymptomType',dispatch);//通过id删除数据
+    };
       columns=[
         {
             title: '序号',
@@ -186,7 +191,7 @@ class PreSymptomType extends Component {
 
             <Layout>
                 {/* 右边菜单 */}
-                 <Sider width={300}  style={{ background: '#fff' }}>
+                 <Sider width={300} style={{ background: '#e3f9fd' }}>
                      
                  <div>
 
@@ -252,8 +257,8 @@ class PreSymptomType extends Component {
                         </Form>       
                     </div>
                     <div className={configStyles.rightButton} >
-                        <Button type="primary" icon={'plus'} title="添加" />&nbsp;
-                        <Button type="primary" icon={'delete'}  title="删除" />
+                        <Button type="primary" icon={'plus'} onClick={this.showDrawer} title="添加" />&nbsp;
+                        <Button type="primary" icon={'delete'}  onClick={this.delete} disabled={deleteDisabled} title="删除" />
                     </div>
                 </div>
                          <div>
