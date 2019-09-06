@@ -17,6 +17,8 @@ export default [
       },
     ],
   },
+
+
   // app
   {
     path: '/',
@@ -25,6 +27,37 @@ export default [
     routes: [
       // dashboard
       { path: '/', redirect: '/cus/consultation/consultation', authority: ['admin', 'user'] },
+      {
+        path: '/sys',
+        icon: 'form',
+        name: 'sys',
+        routes: [
+          {
+            path: '/sys/sysMenus/sysMenus',
+            name: 'sysMenus',
+            component: './Sys/SysMenus/SysMenu',
+          },
+         
+          {
+            path: '/sys/sysRole/sysRole',
+            name: 'sysRole',
+            component: './Sys/SysRole/SysRole',
+          },
+          {
+            path: '/sys/sysUser/sysUser',
+            name: 'sysUser',
+            component: './Sys/SysUser/SysUser',
+          },
+          {
+            path: '/sys/sysLog/sysLog',
+            name: 'sysLog',
+            component: './Sys/SysLog/SysLog',
+          }
+         
+        ],
+      },
+     
+     
       // cus
       {
         path: '/cus',

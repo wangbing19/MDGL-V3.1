@@ -35,9 +35,10 @@ class DiagnoseDrawer extends Component {
         dispatch({
             type:'diagnose/clearFeomData',
         })
+        
         //清空表单
         this.props.form.resetFields();
-        debugger
+     
         if(e==1&&customer["id"]){
             this.props.dispatch(routerRedux.push({ 
                 pathname: '/cus/diagnose/diagnose',
