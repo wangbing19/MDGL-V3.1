@@ -57,6 +57,8 @@ public class SysMenuServiceImpl implements SysMenuService{
 					throw new IllegalArgumentException("菜单名不能为空");
 				if(StringUtils.isEmpty(sysMenu.getId()))
 					throw new IllegalArgumentException("菜单id不能为空");
+				if(StringUtils.isEmpty(sysMenu.getParentId()))
+					throw new IllegalArgumentException("菜单父级id不能为空");
 				//.....
 				//3.保存菜单信息到数据
 				//entity.setModifiedUser(ShiroUtils.getUser().getUsername());

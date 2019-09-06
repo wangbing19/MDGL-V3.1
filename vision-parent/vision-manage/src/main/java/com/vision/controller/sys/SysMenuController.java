@@ -96,7 +96,7 @@ public class SysMenuController {
 
 	@RequestMapping("doUpdateMenu")
 	@ResponseBody
-	public JsonResult updateMenu(SysMenu sysMenu) {
+	public JsonResult updateMenu(SysMenu sysMenu ) {
 		try {
 			int result = sysMenuService.updateMenu(sysMenu);
 			
@@ -134,7 +134,7 @@ public class SysMenuController {
 	}
 	
 	/**
-	 * 删除菜单信息
+	 * 菜单信息
 	 * @param id
 	 * @return
 	 */
