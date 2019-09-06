@@ -13,8 +13,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.vision.exception.ServiceException;
 import com.vision.mapper.sys.SysMenuMapper;
 import com.vision.pojo.sys.SysMenu;
+import com.vision.pojo.sys.vo.SysOrganizationLogs;
 import com.vision.service.sys.SysMenuService;
 import com.vision.vo.Node;
+import com.vision.vo.PageObject;
 
 @Service
 public class SysMenuServiceImpl implements SysMenuService{
@@ -108,6 +110,19 @@ public class SysMenuServiceImpl implements SysMenuService{
 	public SysMenu findMenuOne(Long id) {
 		SysMenu selectById = sysMenuMapper.selectById(id);
 		return selectById;
+	}
+
+	@Override
+	public PageObject<SysMenu> findMenuList(Integer pageCurrent, Integer pageSize) {
+		PageObject<SysMenu> pageObject=new PageObject<>();
+		int startIndex=(pageCurrent-1)*pageSize;
+		Integer rowCount = sysMenuMapper.selectCount(null);
+		List<SysMenu> selectList=sysMenuMapper.findMenuList(startIndex,pageSize);
+		pageObject.setRowCount(rowCount);
+		pageObject.setRecords(selectList);
+		pageObject.setPageCurrent(pageCurrent);
+		pageObject.setPageSize(pageSize);
+		return pageObject;
 	}
 	
 	

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.vision.pojo.sys.SysMenu;
 import com.vision.vo.Node;
+import com.vision.vo.PageObject;
 
 public interface SysMenuService {
 
@@ -21,5 +22,7 @@ public interface SysMenuService {
 	List<SysMenu> findAllMenus();
 
 	SysMenu findMenuOne(Long id);
+
+	PageObject<SysMenu> findMenuList(Integer pageCurrent, Integer pageSize);
 	
 }

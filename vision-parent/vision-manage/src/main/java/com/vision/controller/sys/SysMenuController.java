@@ -9,11 +9,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.vision.pojo.sys.SysMenu;
+import com.vision.pojo.sys.vo.SysOrganizationLogs;
 import com.vision.service.sys.SysMenuService;
 import com.vision.util.GetMenusTreeData;
 import com.vision.util.GetTreeData;
 import com.vision.vo.JsonResult;
 import com.vision.vo.Node;
+import com.vision.vo.PageObject;
 import com.vision.vo.TreeMenus;
 import com.vision.vo.TreeStructure;
 
@@ -177,5 +179,25 @@ public class SysMenuController {
 			e.printStackTrace();
 		}
 		 return JsonResult.build(201, "节点查询错误！");
+	}
+	
+	/**
+	 * 菜单信息
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("doFindMenuList")
+	@ResponseBody
+	public JsonResult findMenuList(Integer pageCurrent,Integer pageSize) {
+		try {
+			PageObject<SysMenu> result = sysMenuService.findMenuList(pageCurrent,pageSize);
+			
+			return JsonResult.oK(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return JsonResult.build(201, "菜单查询失败!");
+		
 	}
 }

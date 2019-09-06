@@ -29,4 +29,14 @@
     <select id="findAllMenus" resultType="com.vision.pojo.sys.SysMenu">
     select * from sys_menus
     </select>
+    
+     <select id="findMenuList"
+            resultType="com.vision.pojo.sys.SysMenu">
+          select *
+          from sys_menus
+         
+          order by created_time desc
+          limit #{startIndex},#{pageSize}
+          <!--limit 子句为分页查询子句 ，第一个参数代码起始位置-->
+    </select>
 </mapper>
