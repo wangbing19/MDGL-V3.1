@@ -22,6 +22,10 @@ public class ExpRemoteDiagnose {
      */
     private String registerUser;
     /**
+     * 门店登录账号id
+     */
+    private Long registerUserId;
+    /**
      * 门店账号对应的父级账号id
      */
     private Integer registerParentid;
@@ -52,11 +56,11 @@ public class ExpRemoteDiagnose {
     /**
      * 专家回复状态0表示未解决
      */
-    private Integer valid;
+    private Integer valid =0;
     /**
      * 第几次远程诊断
      */
-    private Integer timeNumber;
+    private Integer timeNumber =0;
     /**
      * 发送人姓名
      */

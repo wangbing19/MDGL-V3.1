@@ -1,13 +1,13 @@
 package com.vision.service.exp;
 
+import java.util.List;
+
 import com.vision.dto.ExpRemoteDiagnoseValidDto;
 import com.vision.dto.PageDto;
 import com.vision.dto.RemoteDiagnoseDto;
+import com.vision.pojo.exp.ExpRemoteDiagnose;
 import com.vision.rto.ExpRemoteDiagnoseRto;
-import com.vision.rto.SysOrganizationRto;
 import com.vision.vo.PageObject;
-
-import java.util.List;
 
 public interface RemoteDiagnoseService {
 
@@ -67,5 +67,7 @@ public interface RemoteDiagnoseService {
      */
     Boolean selectId(Integer remoteDiagnoseId);
 
-    List<SysOrganizationRto> find(Integer userId);
+    List<ExpRemoteDiagnose> doRemoteDiagnoseMenus(ExpRemoteDiagnoseRto expRemoteDiagnoseRto);
+
+    PageObject<ExpRemoteDiagnoseRto> doSelectUserName(ExpRemoteDiagnoseRto expRemoteDiagnoseRto,Integer pageCurrent,Integer pageSize);
 }

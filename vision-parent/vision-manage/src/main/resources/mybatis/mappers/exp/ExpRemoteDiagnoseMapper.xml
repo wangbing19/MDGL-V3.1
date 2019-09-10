@@ -68,4 +68,14 @@
         limit #{startIndex},#{pageSize}
         <!-- limit 子句为分页查询子句,第一个参数代表下标位置 -->
     </select>
+    
+    
+    
+       <select id="doSelectUserName" resultMap="expDiagnoseMap">
+        select * from exp_remote_diagnose where register_user=#{registerUser}
+        order by gmt_create desc
+        limit #{startIndex},#{pageSize}
+        <!-- limit 子句为分页查询子句,第一个参数代表下标位置 -->
+    </select>
+    
 </mapper>

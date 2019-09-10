@@ -1,6 +1,8 @@
 package com.vision.service.exp;
 
 
+import java.util.List;
+
 import com.vision.dto.ExpertReplyDto;
 import com.vision.exception.ServiceException;
 import com.vision.pojo.exp.ExpExpertReply;
@@ -14,7 +16,7 @@ public interface ExpertReplyService {
      * @Description 根据remoteDiagnoseId查询专家回复表数据
      * @Date 2019/8/7 20:27
      */
-    ExpExpertReply selectRep(Integer remoteDiagnoseId);
+	List<ExpExpertReply> selectRep(ExpertReplyDto expertReplyDto);
 
     /**
      * @param entity

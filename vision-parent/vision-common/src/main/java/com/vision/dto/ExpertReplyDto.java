@@ -23,6 +23,12 @@ public class ExpertReplyDto {
      */
     @NotNull(message = "远程诊断表序号不能为空")
     private Integer remoteDiagnoseId;
+    
+   
+    /**
+     * 登录账号id
+     */
+    private Long registerUserId;
     /**
      * 症状描述
      */
@@ -36,4 +42,6 @@ public class ExpertReplyDto {
      * 删除标识，默认为0
      */
     private int delTag;
+    
+  
 }

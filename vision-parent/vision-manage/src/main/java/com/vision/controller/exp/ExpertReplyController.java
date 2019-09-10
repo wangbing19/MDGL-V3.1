@@ -5,7 +5,10 @@ import com.vision.exception.ServiceException;
 import com.vision.pojo.exp.ExpExpertReply;
 import com.vision.service.exp.ExpertReplyService;
 import com.vision.vo.JsonResult;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -26,9 +29,10 @@ public class ExpertReplyController {
     /**
      * 通过remoteDiagnoseId查询专家回复的数据
      */
-    @GetMapping("/inquire/{remoteDiagnoseId}")
-    public JsonResult selectRep(@PathVariable("remoteDiagnoseId") Integer remoteDiagnoseId) {
-        ExpExpertReply expExpertReply = expertReplyService.selectRep(remoteDiagnoseId);
+    @RequestMapping("/inquire")
+    public JsonResult selectRep(ExpertReplyDto expertReplyDto) {
+    	
+    	List<ExpExpertReply> expExpertReply = expertReplyService.selectRep(expertReplyDto);
         return JsonResult.oK(expExpertReply);
     }
 
@@ -36,11 +40,12 @@ public class ExpertReplyController {
     /**
      * 专家回复新增
      */
-    @GetMapping("/add")
-    public JsonResult doInsertRep(@Valid @RequestBody ExpertReplyDto expertReplyDto) {
+    @RequestMapping("/add")
+    public JsonResult doInsertRep( ExpertReplyDto expertReplyDto) {
         Boolean aBoolean;
         try {
             aBoolean = expertReplyService.doInsertRep(expertReplyDto);
+            
             return JsonResult.oK(aBoolean);
         } catch (ServiceException e) {
             e.printStackTrace();

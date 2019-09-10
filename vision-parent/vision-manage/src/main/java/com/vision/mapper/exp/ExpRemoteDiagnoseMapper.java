@@ -33,4 +33,5 @@ public interface ExpRemoteDiagnoseMapper extends BaseMapper<ExpRemoteDiagnose> {
             @Param("startIndex")Integer startIndex,
             @Param("pageSize")Integer pageSize,
             @Param("registerParentid")Integer registerParentid);
+	List<ExpRemoteDiagnoseRto> doSelectUserName( @Param("registerUser")String registerUser,@Param("startIndex") Integer startIndex,@Param("pageSize") Integer pageSize);
 }

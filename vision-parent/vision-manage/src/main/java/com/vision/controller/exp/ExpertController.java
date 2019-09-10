@@ -36,7 +36,7 @@ public class ExpertController {
      * 远程诊断分页
      */
     @RequestMapping("/find/page")
-    public JsonResult doLimitExp(@RequestParam(value = "expertName",required = false) String expertName, @Valid @RequestBody PageDto pageDto) {
+    public JsonResult doLimitExp(String expertName,  PageDto pageDto) {
         PageObject<ExpExpert> pageObject = expertService.limitExp(expertName, pageDto);
         return JsonResult.oK(pageObject);
     }
@@ -45,19 +45,18 @@ public class ExpertController {
     /**
      * 通过id查询专家表数据
      */
-    @GetMapping("/inquire/{id}")
-    public JsonResult doSelectExp(@PathVariable("id") Integer id) {
+    @RequestMapping("/inquire")
+    public JsonResult doSelectExp( Integer id) {
         ExpExpert entity = expertService.doSelectExp(id);
         return JsonResult.oK(entity);
-
     }
 
     /**
      * 删除
      */
-    @DeleteMapping("/del")
-    public JsonResult doDelete(@RequestBody Integer... ids) {
-        Boolean aBoolean = expertService.doDeleteExp(ids);
+    @RequestMapping("/del")
+    public JsonResult doDelete( Integer ...id) {
+        Boolean aBoolean = expertService.doDeleteExp(id);
         return JsonResult.oK(aBoolean);
     }
 
@@ -65,15 +64,15 @@ public class ExpertController {
     /**
      * 添加
      */
-    @GetMapping("/add")
-    public JsonResult doInsertExp(@Valid @RequestBody ExpExpertDto expExpertDto) {
+    @RequestMapping("/add")
+    public JsonResult doInsertExp( ExpExpertDto expExpertDto) {
         Boolean aBoolean = expertService.doSaveObject(expExpertDto);
         return JsonResult.oK(aBoolean);
     }
 
 
-    @PutMapping("/modifier")
-    public JsonResult doUpdateMessage(@Valid @RequestBody ExpExpertDto expExpertDto) {
+    @RequestMapping("/modifier")
+    public JsonResult doUpdateMessage( ExpExpertDto expExpertDto) {
         Boolean aBoolean = expertService.doUpdateMessage(expExpertDto);
         return JsonResult.oK(aBoolean);
     }

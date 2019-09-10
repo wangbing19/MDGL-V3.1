@@ -21,6 +21,10 @@ public class ExpRemoteDiagnoseRto {
      */
     private Integer id;
     /**
+     * 登录账号id
+     */
+    private Long registerUserId;
+    /**
      * 门店地址
      */
     private String deptSite;

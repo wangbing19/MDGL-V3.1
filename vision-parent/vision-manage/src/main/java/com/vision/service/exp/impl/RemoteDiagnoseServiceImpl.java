@@ -1,7 +1,6 @@
 package com.vision.service.exp.impl;
 
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.vision.dto.ExpRemoteDiagnoseValidDto;
@@ -9,18 +8,16 @@ import com.vision.dto.PageDto;
 import com.vision.dto.RemoteDiagnoseDto;
 import com.vision.exception.ServiceException;
 import com.vision.mapper.exp.ExpRemoteDiagnoseMapper;
+import com.vision.mapper.exp.ExpSymptomsDescribedMapper;
 import com.vision.pojo.exp.ExpExpert;
 import com.vision.pojo.exp.ExpRemoteDiagnose;
 import com.vision.pojo.exp.ExpSymptomsDescribed;
-import com.vision.pojo.sys.SysOrganization;
+import com.vision.pojo.ppo.PpoTrainer;
 import com.vision.pojo.sys.SysUser;
 import com.vision.rto.ExpRemoteDiagnoseRto;
-import com.vision.rto.SysOrganizationRto;
 import com.vision.service.exp.ExpertReplyService;
 import com.vision.service.exp.RemoteDiagnoseService;
 import com.vision.service.exp.SymptomsDescribedService;
-import com.vision.service.sys.SysOrganizationService;
-import com.vision.service.sys.SysUserService;
 import com.vision.util.BooleanUtil;
 import com.vision.util.CaseBeanUtils;
 import com.vision.util.ListUtils;
@@ -40,14 +37,15 @@ public class RemoteDiagnoseServiceImpl implements RemoteDiagnoseService {
 
     @Resource
     private ExpRemoteDiagnoseMapper remoteDiagnoseMapper;
-    @Resource
+
+    @Autowired
     private ExpertReplyService expertReplyService;
-    @Resource
+
+    @Autowired
     private SymptomsDescribedService symptomsDescribedService;
-    @Resource
-    private SysUserService sysUserService;
-    @Resource
-    private SysOrganizationService sysOrganizationService;
+    @Autowired
+    private ExpSymptomsDescribedMapper expSymptomsDescribedMapper;
+    
 
     /**
      * 分页
@@ -128,6 +126,11 @@ public class RemoteDiagnoseServiceImpl implements RemoteDiagnoseService {
         expRemoteDiagnose.setGmtCreate(new Date());
         expRemoteDiagnose.setGmtModified(expRemoteDiagnose.getGmtCreate());
         int i = remoteDiagnoseMapper.insert(expRemoteDiagnose);
+       
+        ExpSymptomsDescribed expSymptomsDescribed = new ExpSymptomsDescribed();
+        expSymptomsDescribed.setRegisterUserId(remoteDiagnoseDto.getRegisterUserId());
+        expSymptomsDescribed.setRemoteDiagnoseId(expRemoteDiagnose.getId());
+        expSymptomsDescribedMapper.insert(expSymptomsDescribed);
         return BooleanUtil.bool(i);
     }
 
@@ -153,35 +156,31 @@ public class RemoteDiagnoseServiceImpl implements RemoteDiagnoseService {
         return false;
     }
 
-    @Override
-    public List<SysOrganizationRto> find(Integer userId) {
-        userId = 24;
-        SysUser sysUser = sysUserService.findUserById(userId);
-        if (sysUser == null) {
-            throw new ServiceException("没有该账号");
-        }
-        List<SysOrganization> list = sysOrganizationService.findSublevel(sysUser.getOrganizationId());
-        if (ListUtils.isArrayEmpty(list)) {
-            throw new ServiceException("没有该组织");
-        }
-        SysOrganization organization = sysOrganizationService.getSysOrganizationById(sysUser.getOrganizationId());
-        list.add(organization);
-        List<SysOrganization> sysOrganizations = new ArrayList<>();
-        for (SysOrganization sysOrganization : list) {
-            SysUser user = sysUserService.findColumn("organization_id", String.valueOf(sysOrganization.getOrganizationId()));
-            if (user == null) {
-                continue;
-            }
-            QueryWrapper<ExpRemoteDiagnose> queryWrapper = new QueryWrapper<>();
-            queryWrapper.eq(ExpRemoteDiagnose.Meta.registerUser, user.getUserName())
-                    .eq(ExpRemoteDiagnose.Meta.delTag, 0).eq(ExpRemoteDiagnose.Meta.valid, 1);
-            Integer i = remoteDiagnoseMapper.selectCount(queryWrapper);
-            if (i < 1) {
-                continue;
-            }
-            sysOrganizations.add(sysOrganization);
-        }
-        return ListUtils.copyList(sysOrganizations, SysOrganizationRto.class);
-    }
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<ExpRemoteDiagnose> doRemoteDiagnoseMenus(ExpRemoteDiagnoseRto expRemoteDiagnoseRto) {
+		QueryWrapper queryWrapper= new QueryWrapper<ExpRemoteDiagnose>();
+		queryWrapper.orderByAsc("gmt_modified");
+		List<ExpRemoteDiagnose> selectList = remoteDiagnoseMapper.selectList(queryWrapper);
+		
+		
+		return selectList;
+	}
+
+	@Override
+	public PageObject<ExpRemoteDiagnoseRto> doSelectUserName(ExpRemoteDiagnoseRto expRemoteDiagnoseRto,Integer pageCurrent,Integer pageSize) {
+		int startIndex=(pageCurrent-1)*pageSize;
+		QueryWrapper<ExpRemoteDiagnose> queryWrapper= new QueryWrapper<ExpRemoteDiagnose>();
+		queryWrapper.eq("register_user", expRemoteDiagnoseRto.getRegisterUser());
+		Integer pageCount = remoteDiagnoseMapper.selectCount(queryWrapper);
+		List<ExpRemoteDiagnoseRto> selectList1 = remoteDiagnoseMapper.doSelectUserName(expRemoteDiagnoseRto.getRegisterUser(),startIndex,pageSize);
+		
+		PageObject<ExpRemoteDiagnoseRto> pageObject = new PageObject<ExpRemoteDiagnoseRto>();
+		pageObject.setPageCurrent(pageCurrent);
+		pageObject.setPageSize(pageSize);
+		pageObject.setPageCount(pageCount);
+		pageObject.setRecords(selectList1);
+		return pageObject;
+	}
 
 }

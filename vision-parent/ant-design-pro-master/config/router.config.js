@@ -124,7 +124,18 @@ export default [
       },
 
 
-
+      {
+        path: '/ppo',
+        icon: 'form',
+        name: 'ppo',
+        routes: [
+          {
+            path: '/ppo/trainer/trainer',
+            name: 'trainer',
+            component: './Ppo/Trainer/Trainer',
+          }
+        ],
+      },
        // pre
        {
         path: '/pre',
@@ -139,6 +150,30 @@ export default [
        
         ],
       },
+        // Expert
+        {
+          path: '/exp',
+          icon: 'form',
+          name: 'exp',
+          routes: [
+            {
+              path: '/exp/expert/expert',
+              name: 'expert',
+              component: './Exp/Expert/Expert',
+            },
+  
+            {
+              path: '/exp/remoteDiagnose/remoteDiagnose',
+              name: 'remoteDiagnose',
+              component: './Exp/RemoteDiagnose/RemoteDiagnose',
+            },
+            {
+              path: '/exp/remoteDiagnose/remoteDiagnoseUser',
+              name: 'remoteDiagnoseUser',
+              component: './Exp/RemoteDiagnose/RemoteDiagnoseUser',
+            }
+          ],
+        },
       // system
       {
         path: '/system',

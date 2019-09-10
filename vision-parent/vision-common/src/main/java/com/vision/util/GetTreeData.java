@@ -86,7 +86,7 @@ public class GetTreeData<T> {
 			for(int n=0;pIds2[n]!=null;n++) {
 				if(id==pIds2[n]) {
 					List<TreeStructure<T>> mapList = map.get(id);
-					list1.get(m).setList(mapList);
+					list1.get(m).setChildren(mapList);
 					break;
 				}
 			}

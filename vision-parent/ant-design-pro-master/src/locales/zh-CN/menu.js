@@ -15,6 +15,8 @@ export default {
   'menu.cus.diagnose': '诊断表',
   'menu.pre': '处方下载',
   'menu.pre.preSymptomType': '症状',
+  'menu.ppo': '预约中心',
+  'menu.ppo.trainer': '训练师设置',
   'menu.train': '训练',
   'menu.train.traInformationrecord': '训练记录表',
   'menu.train.schedule': '课程表',

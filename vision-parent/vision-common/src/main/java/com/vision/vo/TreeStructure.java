@@ -6,13 +6,15 @@ public class TreeStructure<T> {
 	private Long id;
 	private Long parentId;
 	private T data;
-	private List<TreeStructure<T>> list;
+	private List<TreeStructure<T>> children;
 	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {
 		this.id = id;
 	}
+	
+	
 	public Long getParentId() {
 		return parentId;
 	}
@@ -25,11 +27,12 @@ public class TreeStructure<T> {
 	public void setData(T data) {
 		this.data = data;
 	}
-	public List<TreeStructure<T>> getList() {
-		return list;
+	public List<TreeStructure<T>> getChildren() {
+		return children;
 	}
-	public void setList(List<TreeStructure<T>> list) {
-		this.list = list;
+	public void setChildren(List<TreeStructure<T>> children) {
+		this.children = children;
 	}
+	
 	
 }

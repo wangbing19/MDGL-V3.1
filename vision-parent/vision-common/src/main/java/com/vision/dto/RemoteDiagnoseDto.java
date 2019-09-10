@@ -27,6 +27,9 @@ public class RemoteDiagnoseDto {
      * 门店账号对应的父级账号id
      */
     private Integer registerParentid;
+    /** 门店登录账号id
+    */
+   private Long registerUserId;
     /**
      * 修改时用户的账号
      */
@@ -58,7 +61,7 @@ public class RemoteDiagnoseDto {
     /**
      * 专家回复状态0表示未解决
      */
-    private Integer valid;
+    private Integer valid ;
     /**
      * 第几次远程诊断
      */
