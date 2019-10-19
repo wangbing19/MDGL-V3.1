@@ -22,19 +22,11 @@ export default {
             msg:"",
             ok:false,
         },
-        //删除按钮不可用
-        deleteDisabled: true,
         //选择框点击后存储id值
         selectedRowKeys:[],
-        //查询行信息
-        traRow:{
-            status:201,
-            ok: false,
-            msg: "",
-            data:{},
-        },
         //抽屉页面展示状态
         drawerVisible:false,
+        customer:{},
     },
 
     effects: {
@@ -47,7 +39,7 @@ export default {
             payload ={
                 ...payload,
                 pageSize: +cookie.load('limit'),
-                title: payload.title?payload.title:'',
+                name: payload.name?payload.name:'',
             }
             const formData = formatData(payload);
             const response = yield call(getList,formData);
@@ -56,31 +48,6 @@ export default {
                 payload: {
                     ...response,
                     ...payload,
-                },
-            });
-        },
-        //删除
-        *remove({payload,callback}, { select, call, put }) {
-            const response = yield call(deleted,payload);
-            if(callback) callback(response);
-            if(response.success){
-                yield put({
-                    type: 'selectRows',
-                    payload: {
-                    deleteDisabled:true,
-                    selectedRows:[],
-                    selectedRowKeys:[]
-                    },
-                });
-            }
-            //刷新页面
-            let queryCriteria = yield select(state => state.rechargeRecord.queryCriteria);
-            yield put({
-                type: 'fetch',
-                payload: {
-                    ...queryCriteria,
-                    pageCurrent: 1,
-                    orgId: 1,
                 },
             });
         },
@@ -99,31 +66,6 @@ export default {
                 },
             });
         },
-        //修改
-        // *update( {payload,callback}, { select,call, put }) {
-        //     const response = yield call(update,payload);
-        //     if(callback) callback(response);
-        //     //刷新页面
-        //     let queryCriteria = yield select(state => state.rechargeRecord.queryCriteria);
-        //     const current = yield select(state => state.rechargeRecord.data.pagination.current);
-        //     yield put({
-        //         type: 'fetch',
-        //         payload: {
-        //             ...queryCriteria,
-        //             pageCurrent: current,
-        //             orgId: 1,
-        //         },
-        //     });
-        // },
-        //修改时根据id查询数据
-        // *getById( {payload}, { call, put }) {
-        //     const formData = formatData(payload);
-        //     const response = yield call(getById,formData);
-        //     yield put({
-        //         type: 'saveActivatyRow',
-        //         payload: response,
-        //     });
-        // },
     },
 
     reducers: {
@@ -131,7 +73,7 @@ export default {
             return {
                 ...state,
                 queryCriteria:{
-                    title: action.payload.title,
+                    name: action.payload.name,
                 },
                 data:{
                     ...state.data,
@@ -165,30 +107,16 @@ export default {
         },
         //设置抽屉页面展示状态
         setDrawerVisible(state,action){
+            debugger;
             return {
                 ...state,
                 drawerVisible:action.payload,
             };
         },
-        //修改时根据id查询数据
-        saveActivatyRow(state,action){
+        setCustomer(state,action){
             return {
                 ...state,
-                traRow:{
-                    ...action.payload,
-                }
-            };
-        },
-        //设置按id查询数据清空
-        clearFeomData(state){
-            return {
-                ...state,
-                traRow:{
-                    status:201,
-                    ok: false,
-                    msg: "",
-                    data:{},
-                },
+                customer:action.payload,
             };
         },
     },

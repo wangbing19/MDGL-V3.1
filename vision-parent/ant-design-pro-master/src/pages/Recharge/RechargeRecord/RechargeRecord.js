@@ -50,16 +50,13 @@ class RechargeRecord extends Component {
             dispatch({
                 type:'rechargeRecord/clearQueryCriteria'
             })
+            debugger;
             //调用查询方法
             this.getConsultation(fieldsValue);
         });
     };
 
-    //删除
-    delete=()=>{
-        const { dispatch ,rechargeRecord:{selectedRowKeys} } = this.props;
-        deleteData(selectedRowKeys,'rechargeRecord',dispatch);//通过id删除数据
-    }
+
 
     columns=[
         {
@@ -69,28 +66,32 @@ class RechargeRecord extends Component {
             width: "5%",
         },
         {
-            title: '充值活动名称',
-            dataIndex: 'title',
-            width: "15%",
-        },
-        {
-            title: '充值活动描述',
-            dataIndex: 'describe',
-            width: "30%",
-        },
-        {
-            title: '状态',
-            dataIndex: 'activityState',
+            title: '客户姓名',
+            dataIndex: 'name',
             width: "10%",
-            render: (text,row) => (
-                <div style={{color:text==1?"green":"red"}}>
-                   {text==1?"活动开始":(text==0?"活动结束":"活动未开始")}
-                </div>
-            ),
         },
         {
-            title: '活动开始时间',
-            dataIndex: 'activityStartTime',
+            title: '客户账户金额',
+            dataIndex: 'money',
+            width: "10%",
+        },
+        {
+            title: '选择的充值类型',
+            dataIndex: 'rechargeType',
+        },
+        {
+            title: '充值金额',
+            dataIndex: 'rechargeAmount',
+            width: "10%",
+        },
+        {
+            title: '赠送金额',
+            dataIndex: 'presentedAmount',
+            width: "10%",
+        },
+        {
+            title: '上次充值时间',
+            dataIndex: 'lastPayTime',
             width: "12%",
             render:(text,row) =>(
                 <div>
@@ -99,20 +100,12 @@ class RechargeRecord extends Component {
             ),
         },
         {
-            title: '活动结束时间',
-            dataIndex: 'activityEndTime',
+            title: '创建时间',
+            dataIndex: 'createTime',
             width: "12%",
             render:(text,row) =>(
                 <div>
-                    {moment(text).format('YYYY-MM-DD HH:mm:ss')}
-                </div>
-            ),
-        },
-        {
-            title: '操作',
-            render: (text,row) => (
-                <div>
-                   <Button  type="primary" icon={'edit'} onClick={this.showDrawer.bind(this,row)}/>
+                    {moment(text).format('YYYY-MM-DD')}
                 </div>
             ),
         },
@@ -120,21 +113,12 @@ class RechargeRecord extends Component {
     
 
     //添加修改跳转页面
-    showDrawer=(row)=>{
+    showDrawer=()=>{
         const {  rechargeRecord:{ drawerVisible },dispatch } =this.props;
         dispatch({
             type:"rechargeRecord/setDrawerVisible",
             payload:!drawerVisible,
         })
-        if(row.id){
-            dispatch({
-                type:'rechargeRecord/getById',
-                payload:{
-                    id:row.id,
-                    orgId:row.orgId,
-                },
-            })
-        }
     }
 
     render() {
@@ -148,7 +132,7 @@ class RechargeRecord extends Component {
                             <Row >
                                 <Col md={8} sm={24}>
                                     <FormItem label="名称">
-                                        {getFieldDecorator('title')(<Input placeholder="请输入"/>)}
+                                        {getFieldDecorator('name')(<Input placeholder="请输入"/>)}
                                     </FormItem>
                                 </Col>
                                 <Col md={8} sm={24} >
@@ -158,8 +142,7 @@ class RechargeRecord extends Component {
                         </Form>       
                     </div>
                     <div className={configStyles.rightButton} >
-                        <Button type="primary" icon={'plus'} onClick={this.showDrawer} title="添加" />&nbsp;
-                        <Button type="primary" icon={'delete'} onClick={this.delete} disabled={deleteDisabled} title="删除" />
+                        <Button type="primary" icon={'plus'} onClick={this.showDrawer} title="添加" />
                     </div>
                 </div>
                 <div >

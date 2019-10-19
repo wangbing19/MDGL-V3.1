@@ -3,7 +3,6 @@ package com.vision.pojo.rec;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.vision.pojo.BasePojo;
@@ -16,8 +15,6 @@ import lombok.experimental.Accessors;
 public class RecPayUser extends BasePojo{
 	@TableId(type=IdType.AUTO)
 	private Long id;
-	/**门店id*/
-	private Long userId;
 	/**组织id*/
 	private Long orgId;
 	/**客户姓名*/
@@ -25,7 +22,9 @@ public class RecPayUser extends BasePojo{
 	/**客户id*/
 	private Integer customerId;
 	/**活动类型表id*/
-	private Long rechargeType;
+	private Long recActivityPushId;
+	/**活动类型表*/
+	private String rechargeType;
 	/**客户账户金额*/
 	private Double money;
 	/**客户充值金额*/

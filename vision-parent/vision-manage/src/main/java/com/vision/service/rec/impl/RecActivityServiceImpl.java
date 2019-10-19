@@ -56,7 +56,6 @@ public class RecActivityServiceImpl implements RecActivityService{
 	/**修改充值活动*/
 	@Override
 	public Integer updateRecActivityById(RecActivityPush recActivityPush) {
-		try {
 			Date nowDate = new Date();
 			//更新活动修改时间
 			recActivityPush.setModifiedTime(nowDate);
@@ -72,12 +71,8 @@ public class RecActivityServiceImpl implements RecActivityService{
 				//活动未开始
 				recActivityPush.setActivityState(2);
 			}
-			recActivityMapper.updateRecActivityById(recActivityPush);
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return 1;
+			Integer row = recActivityMapper.updateById(recActivityPush);
+			return row;
 	}
 
 	@Override

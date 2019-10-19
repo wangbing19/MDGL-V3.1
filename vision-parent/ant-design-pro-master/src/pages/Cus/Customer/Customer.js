@@ -10,15 +10,17 @@ import { routerRedux } from 'dva/router';
 import ConsultationDrawer from '@/pages/Cus/Consultation/ConsultationDrawer';
 import DiagnoseDrawer from '@/pages/Cus/Diagnose/DiagnoseDrawer';
 import ScheduleDrawer from '@/pages/Train/Schedule/ScheduleDrawer';
+import RechargeRecordDrawer from '@/pages/Recharge/RechargeRecord/RechargeRecordDrawer';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 
-@connect(({customer, consultation, diagnose, schedule, loading }) => ({
+@connect(({customer, consultation, diagnose, schedule, rechargeRecord, loading }) => ({
     customer,
     consultation,
     diagnose,
     schedule,
+    rechargeRecord,
     loading: loading.models.customer,
 }))
 
@@ -149,7 +151,7 @@ class Customer extends Component {
         {
             title: '上次训练时间',
             dataIndex: 'lastTrain',
-            width: "15%",
+            width: "10%",
             render:(text,row) =>(
                 <div>
                     {text?moment(text).format('YYYY-MM-DD HH:mm:ss'):''}
@@ -161,7 +163,8 @@ class Customer extends Component {
             render: (text,row) => (
                 <div>
                    <Button  type="primary" icon={'edit'} onClick={this.showDrawer.bind(this,row)} title={"修改用户"}/>&nbsp;
-                   <Button  type="primary" icon={'plus'} onClick={this.addSchedule.bind(this,row)} title={"添加课程表"}/>
+                   <Button  type="primary" icon={'plus'} onClick={this.addSchedule.bind(this,row)} title={"添加课程表"}/>&nbsp;
+                   <Button  type="primary" icon={'plus'} onClick={this.addRechargeRecord.bind(this,row)} title={"添加课程表"}/>
                 </div>
             ),
         },
@@ -273,6 +276,19 @@ class Customer extends Component {
         
     }
 
+    //跳转充值
+    addRechargeRecord=(row)=>{
+        const {  rechargeRecord:{ drawerVisible },dispatch } =this.props;
+        dispatch({
+            type:"rechargeRecord/setDrawerVisible",
+            payload:!drawerVisible,
+        })
+        dispatch({
+            type:"rechargeRecord/setCustomer",
+            payload:row,
+        })
+    }
+
     //跳转到添加课程表页面
     addSchedule=(row)=>{
         const {  schedule:{ drawerVisible },dispatch } =this.props;
@@ -355,6 +371,7 @@ class Customer extends Component {
                     <ConsultationDrawer/>
                     <DiagnoseDrawer/>
                     <ScheduleDrawer/>
+                    <RechargeRecordDrawer/>
                 </div>
             </div>
         );

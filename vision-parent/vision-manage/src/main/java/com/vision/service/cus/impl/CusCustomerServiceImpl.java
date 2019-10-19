@@ -172,7 +172,7 @@ public class CusCustomerServiceImpl implements CusCustomerService {
 		//删除训练表
 		traInformationrecordService.deleteTraInforByCustomerId(id, orgId);
 		//删除充值记录
-//		recActivityRecordService.deleteRecPayUserByCustomerId(id);
+		recActivityRecordService.deleteRecPayUserByCustomerId(id, orgId);
 		
 		return row;
 	}

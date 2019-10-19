@@ -6,6 +6,7 @@ import {rules,dateFormat} from '../../../../config/utilsConfig';
 import {formDataSubmit,formatData} from '@/utils/dataUtils';
 import cookie from 'react-cookies';
 import moment from 'moment';
+import { routerRedux } from 'dva/router';
 
 const { TextArea } = Input;
 const Option = Select.Option;
@@ -31,11 +32,15 @@ class RechargeRecordDrawer extends Component {
             type:'rechargeRecord/setDrawerVisible',
             payload:!drawerVisible,
         })
-        dispatch({
-            type:'rechargeRecord/clearFeomData',
-        })
         //清空表单
         this.props.form.resetFields();
+
+        // this.props.dispatch(routerRedux.push({ 
+        //     pathname: '/recharge/rechargeRecord/rechargeRecord',
+        //     params: {
+        //         customerId:row.id
+        //     }
+        // }))
     }
 
 
@@ -44,12 +49,12 @@ class RechargeRecordDrawer extends Component {
         e.preventDefault();
         this.props.form.validateFields((err, fieldsValue) => {
             if (!err) {
-                const {rechargeRecord: {  traRow, selectedRows }, dispatch } = this.props;
-                const { data, ok} = traRow;
-                const formData = formatData(fieldsValue,"",data["id"]);
+                const {rechargeRecord: {  customer, selectedRows }, dispatch } = this.props;
+                // const { data, ok} = traRow;4
+                const formData = formatData(fieldsValue);
                 //封装表单数据对象
                 // const formData = formatData(fieldsValue);
-                formData.append("orgId",1);
+                formData.append("orgId",customer["orgId"]);
                 //发起请求
                 formDataSubmit(dispatch,'rechargeRecord',formData);
                 //关闭抽屉
@@ -60,11 +65,10 @@ class RechargeRecordDrawer extends Component {
 
 
     render() {
-        const {form: {getFieldDecorator} ,rechargeRecord: { drawerVisible, traRow}, dispatch } = this.props;
-        const { data, ok} = traRow;
+        const {form: {getFieldDecorator} ,rechargeRecord: { drawerVisible, customer}, dispatch } = this.props;
         return (
             <Drawer
-            title={ok?"修改":"添加"}
+            title={"充值"}
             placement="right"
             closable={false}
             onClose={this.showDrawer}
@@ -72,40 +76,58 @@ class RechargeRecordDrawer extends Component {
             width={'40%'}
             >
                 <Form  labelCol={{ span: 6 }} wrapperCol={{ span: 17 }} onSubmit={this.handleSubmit} >
-                    <Form.Item label='活动名称' >
-                        {getFieldDecorator('title', { rules: [{ ...rules.required  }],initialValue:ok?data["title"]:''
+                    <Form.Item style={{display:"none"}} >
+                        {getFieldDecorator('customerId', { rules: [{ ...rules.required  }],initialValue:customer["id"]
                         })(
                             <Input   />
                         )}
                     </Form.Item>
-                    <Form.Item label='活动描述' >
-                        {getFieldDecorator('describe', { rules: [{ ...rules.required  }],initialValue:ok?data["describe"]:''
-                        })(
-                            <Input.TextArea rows={4}   />
-                        )}
-                    </Form.Item>
-                    <Form.Item label='充值金额' >
-                        {getFieldDecorator('payAmount', { rules: [{ ...rules.required  }],initialValue:ok?data["payAmount"]:''
+                    <Form.Item style={{display:"none"}} >
+                        {getFieldDecorator('orgId', { rules: [{ ...rules.required  }],initialValue:customer["orgId"]
                         })(
                             <Input   />
+                        )}
+                    </Form.Item>
+                    <Form.Item style={{display:"none"}} >
+                        {getFieldDecorator('recActivityPushId', { rules: [{ ...rules.required  }]//,initialValue:customer["orgId"]
+                        })(
+                            <Input   />
+                        )}
+                    </Form.Item>
+                    <Form.Item label='姓名' >
+                        {getFieldDecorator('name', { rules: [{ ...rules.required  }],initialValue:customer["name"]
+                        })(
+                            <Input   />
+                        )}
+                    </Form.Item>
+                    <Form.Item label='充值活动名称' >
+                        {getFieldDecorator('rechargeType', { rules: [{ ...rules.required  }]
+                        })(
+                            <Input   />
+                        )}
+                    </Form.Item>
+                    <Form.Item label='账户金额' >
+                        {getFieldDecorator('money', { rules: [{ ...rules.required  }]
+                        })(
+                            <InputNumber maxLength={10} style={{width:'100%'}}/>
+                        )}
+                    </Form.Item>
+                    <Form.Item label='客户充值金额' >
+                        {getFieldDecorator('rechargeAmount', { rules: [{ ...rules.required  }]
+                        })(
+                            <InputNumber maxLength={10} style={{width:'100%'}}/>
                         )}
                     </Form.Item>
                     <Form.Item label='赠送金额' >
-                        {getFieldDecorator('presentedAmount', { rules: [{ ...rules.required  }],initialValue:ok?data["presentedAmount"]:''
+                        {getFieldDecorator('presentedAmount', { rules: [{ ...rules.required  }]
                         })(
-                            <Input   />
+                            <InputNumber maxLength={10} style={{width:'100%'}}/>
                         )}
                     </Form.Item>
-                    <Form.Item label='活动开始时间' >
-                        {getFieldDecorator('activityStartTime', { rules: [{ ...rules.required  }],initialValue:moment(ok?moment(data["activityStartTime"]).format(dateFormat.day_hour):moment().format(dateFormat.day_hour), dateFormat.day_hour)
+                    <Form.Item label='充值的次数' >
+                        {getFieldDecorator('practiceTimes', { rules: [{ ...rules.required  }]
                         })(
-                            <DatePicker format={dateFormat.day_hour} style={{width:'100%'}}/>
-                        )}
-                    </Form.Item>
-                    <Form.Item label='活动结束时间' >
-                        {getFieldDecorator('activityEndTime', { rules: [{ ...rules.required  }],initialValue:moment(ok?moment(data["activityEndTime"]).format(dateFormat.day_hour):moment().format(dateFormat.day_hour), dateFormat.day_hour)
-                        })(
-                            <DatePicker format={dateFormat.day_hour} style={{width:'100%'}}/>
+                            <InputNumber maxLength={10} style={{width:'100%'}}/>
                         )}
                     </Form.Item>
                     <div className={styles.buttons} >

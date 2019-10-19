@@ -4,6 +4,22 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.vision.mapper.rec.RecActivityRecordMapper">
 
+
+	<!-- 基于用户名/电话的查询条件sql引用语句 -->
+	<sql id="queryWhereId">
+		<where>
+		 	<!-- org_id=#{orgId} -->
+		 	org_id in 
+		 	<foreach collection="orgIds" index="index" item="item" open="(" separator="," close=")">
+		    	#{item}
+			</foreach>
+			<!-- name条件 -->
+			<if test="name!=null and name!=''">
+				and name like concat("%",#{name},"%")
+			</if>
+		</where>
+	</sql>
+
 	<delete id="deleteActivityRecordByid">	
 		delete from rec_pay_user where id=#{id}
 	</delete>
@@ -15,17 +31,11 @@
 	
 	
 	<select id="getPageCount" resultType="int" parameterType="java.util.List" >
-		select count(*) from rec_pay_user where org_id in
-		<foreach collection="orgId" index="index" item="item" open="(" separator="," close=")">
-		    #{item}
-		</foreach>
+		select count(*) from rec_pay_user <include refid="queryWhereId" />
 	</select>
 	
 	<select id="findLimitRecActivityRecords" resultType="com.vision.pojo.rec.RecPayUser" parameterType="java.util.List">
-		select * from rec_pay_user where org_id in
-		<foreach collection="orgIds" index="index" item="item" open="(" separator="," close=")">
-		    #{item}
-		</foreach>
+		select * from rec_pay_user <include refid="queryWhereId" />
 		limit #{startIndex},#{pageSize}
 	</select>
 	
