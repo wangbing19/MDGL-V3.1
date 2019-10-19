@@ -62,7 +62,20 @@ class SysUser extends Component {
                     payload:{
                         id:row.id,
                     },
-                })
+                });
+                dispatch({
+                    type:'sysUser/getRoleAll',
+                    
+                    
+                });
+                dispatch({
+                    type:'sysUser/getRole',
+                    payload:{
+                        id:row.id,
+                    },
+                    
+                });
+                
             }
         }
     

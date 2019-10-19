@@ -151,6 +151,13 @@ class SysMenus extends React.Component {
        
     },
     {
+      title: '上级菜单菜单名',
+      dataIndex: 'parventName',
+      width: "10%",
+    
+     
+  },
+    {
         title: '资源路径',
         dataIndex: 'url',
         width: "25%",
@@ -182,7 +189,7 @@ class SysMenus extends React.Component {
     
     {
         title: '操作',
-        width: "15%",
+        width: "5%",
         render: (text,row) => (
             <div>
              

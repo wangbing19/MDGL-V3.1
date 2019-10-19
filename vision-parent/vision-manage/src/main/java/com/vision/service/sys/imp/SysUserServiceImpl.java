@@ -1,5 +1,6 @@
 package com.vision.service.sys.imp;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,12 +14,16 @@ import org.springframework.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.vision.exception.ServiceException;
 import com.vision.mapper.sys.SysOrganizationMapper;
+import com.vision.mapper.sys.SysRoleMapper;
 import com.vision.mapper.sys.SysUserMapper;
 import com.vision.mapper.sys.SysUserRoleMapper;
 import com.vision.pojo.sys.SysOrganization;
+import com.vision.pojo.sys.SysRole;
+import com.vision.pojo.sys.SysRoleUser;
 import com.vision.pojo.sys.SysUser;
 import com.vision.pojo.sys.vo.SysUserOrganization;
 import com.vision.service.sys.SysUserService;
+import com.vision.vo.AntCheckbox;
 import com.vision.vo.PageObject;
 @Service
 public class SysUserServiceImpl implements SysUserService{
@@ -28,6 +33,8 @@ public class SysUserServiceImpl implements SysUserService{
 	private SysUserRoleMapper sysUserRoleMapper;
 	@Autowired
 	SysOrganizationMapper sysOrganizationMapper;
+	@Autowired
+	SysRoleMapper sysRoleMapper;
 	@Override
 	public int saveObject(SysUser entity, Integer[] roleIds) {
 		
@@ -197,5 +204,33 @@ public class SysUserServiceImpl implements SysUserService{
         QueryWrapper<SysUser> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq(column,valueOf);
         return sysUserMapper.selectOne(queryWrapper);
+	}
+	@Override
+	public List<AntCheckbox> findRoleCheckboxAll() {
+		
+		AntCheckbox antCheckbox = new AntCheckbox();
+	//	List<AntCheckbox> result1 = new ArrayList<AntCheckbox>();
+		//List<SysRole> selectList = sysRoleMapper.selectList(null);
+		List<AntCheckbox> result =sysRoleMapper.selectAntCheckbox();
+		
+		return result;
+	}
+	@Override
+	public String[] findRoleCheckbox(Long id) {
+		QueryWrapper<SysRoleUser> queryWrapper = new QueryWrapper<SysRoleUser>(); 
+		queryWrapper.eq("user_id", id);
+	
+		List<SysRoleUser> selectList = sysUserRoleMapper.selectList(queryWrapper);
+	
+		List<Integer> ids1 = new ArrayList<Integer>();
+		for(int i = 0; i < selectList.size(); i ++) {
+			ids1.add(selectList.get(i).getRoleId());
+		}
+		List<SysRole> selectList1 = sysRoleMapper.findRoleCheckbox(ids1);
+		String[] names=new String[selectList1.size()];
+		for(int i = 0; i < selectList1.size(); i ++) {
+			names[i] = selectList1.get(i).getName();
+		}
+		return names;
 	}
 }

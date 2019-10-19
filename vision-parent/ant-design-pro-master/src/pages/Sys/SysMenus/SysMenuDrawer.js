@@ -100,7 +100,13 @@ class SysMenuDrawer extends Component {
                         {getFieldDecorator('name', { rules: [{ ...rules.required  }],initialValue:ok?data["name"]:''
                         })(
                             <Input   />
-                        )}
+                        )},
+                    </Form.Item>
+                    <Form.Item label='上级菜单名' >
+                        {getFieldDecorator('parventName', { rules: [{ ...rules.required  }],initialValue:ok?data["parventName"]:''
+                        })(
+                            <Input   />
+                        )},
                     </Form.Item>
                     <Form.Item label='资源路径' >
                         {getFieldDecorator('url', { rules: [{ ...rules.required  }],initialValue:ok?data["url"]:''

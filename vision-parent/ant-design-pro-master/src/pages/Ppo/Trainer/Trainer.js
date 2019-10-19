@@ -72,13 +72,13 @@ class Trainer extends Component {
         {
             title: '训练师姓名',
             dataIndex: 'trainerName',
-            width: "10%",
+            width: "5%",
             
         },
         {
             title: '性别',
             dataIndex: 'trainerGender',
-            width: "10%",
+            width: "5%",
            
         },
         {
@@ -89,7 +89,7 @@ class Trainer extends Component {
         {
             title: '简历',
             dataIndex: 'description',
-            width: "10%",
+            width: "15%",
         },
         {
             title: ' 人数限制',
@@ -113,7 +113,7 @@ class Trainer extends Component {
         },
         {
             title: '操作',
-            width: "10%",
+            width: "15%",
             render: (text,row) => (
                 <div>
                  

@@ -21,6 +21,7 @@ public interface SysMenuMapper extends BaseMapper<SysMenu>{
 	List<SysMenu> findAllMenus();
 
 	List<SysMenu> findMenuList(@Param("startIndex")int startIndex,@Param("pageSize") Integer pageSize);
+	List<SysMenu> findMenuParventList(@Param("startIndex")int startIndex,@Param("pageSize") Integer pageSize);
 	
 	
 }

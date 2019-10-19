@@ -13,6 +13,7 @@ import com.vision.pojo.sys.vo.SysOrganizationLogs;
 import com.vision.service.sys.SysMenuService;
 import com.vision.util.GetMenusTreeData;
 import com.vision.util.GetTreeData;
+import com.vision.vo.AntCheckbox;
 import com.vision.vo.JsonResult;
 import com.vision.vo.Node;
 import com.vision.vo.PageObject;
@@ -200,4 +201,46 @@ public class SysMenuController {
 		return JsonResult.build(201, "菜单查询失败!");
 		
 	}
+	
+	/**
+	 * 用于角色多选框，全数据查询
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("doFindMenuCheckboxAll")
+	@ResponseBody
+	public JsonResult findMenuCheckboxAll() {
+		try {
+			List<AntCheckbox> result = sysMenuService.findMenuCheckboxAll();
+			
+			return JsonResult.oK(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return JsonResult.build(201, "菜单查询失败!");
+		
+	}
+	
+	/**
+	 * 用于角色多选框，选中数据查询
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("doFindMenuCheckbox")
+	@ResponseBody
+	public JsonResult findMenuCheckbox(Long id) {
+		try {
+			
+			String[] result = sysMenuService.findMenuCheckbox(id);
+			
+			return JsonResult.oK(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return JsonResult.build(201, "菜单查询失败!");
+		
+	}
+	
 }

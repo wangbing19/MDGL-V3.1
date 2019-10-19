@@ -133,6 +133,11 @@ export default [
             path: '/ppo/trainer/trainer',
             name: 'trainer',
             component: './Ppo/Trainer/Trainer',
+          },
+          {
+            path: '/ppo/ppoServiceItems/ppoServiceItems',
+            name: 'ppoServiceItems',
+            component: './Ppo/PpoServiceItems/PpoServiceItems',
           }
         ],
       },

@@ -1,4 +1,4 @@
-import { getUser,getSysUserById ,updateUser,addSysUser,getRoleName} from '@/services/sysUser';
+import { getUser,getSysUserById ,updateUser,addSysUser,getRoleName,getRoleNameAll} from '@/services/sysUser';
 import {formatData, FormdateFormat} from '@/utils/dataUtils';
 import cookie from 'react-cookies';
 export default {
@@ -33,12 +33,10 @@ export default {
            data:{},
        },
        //角色查询行信息
-       RoleRow:{
-        status:201,
-        ok: false,
-        msg: "",
-        data:[],
-    },
+       defaultCheckedList:[],
+    
+     //角色查询行信息
+     plainOptions:[],
        //抽屉页面展示状态
        drawerVisible:false,
 
@@ -89,13 +87,26 @@ export default {
          //修改时根据id查询数据
          *getRole( {payload}, { call, put }) {
             
-            
-            const response = yield call(getRoleName);
+        
+            const formData = formatData(payload);
+            const response = yield call(getRoleName,formData);
             yield put({
                 type: 'saveRoleRow',
                 payload: response,
             });
         },
+        //修改时根据id查询数据
+        *getRoleAll( {payload}, { call, put }) {
+            
+            
+            const response = yield call(getRoleNameAll);
+            yield put({
+                type: 'RoleRowAll',
+                payload: response,
+            });
+        },
+
+        
                //添加
      *add( {payload,callback}, { select, call, put }) {
        
@@ -207,14 +218,31 @@ export default {
         
         return {
             ...state,
-            RoleRow:{
-                ...action.payload,
+            defaultCheckedList:{
+                ...action.payload.data,
             },
 
             
 
         };
     },
+    
+     //给用户添加角色
+     RoleRowAll(state,action){
+        
+        
+        return {
+            ...state,
+            plainOptions:{
+                ...action.payload.data,
+            },
+
+            
+
+        };
+    },
+
+    
      //设置抽屉页面展示状态
      setDrawerVisible(state,action){
         

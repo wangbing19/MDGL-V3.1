@@ -14,6 +14,7 @@ import com.vision.pojo.sys.SysUser;
 import com.vision.pojo.sys.vo.SysUserOrganization;
 import com.vision.service.sys.SysRoleService;
 import com.vision.service.sys.SysUserService;
+import com.vision.vo.AntCheckbox;
 import com.vision.vo.CheckBox;
 import com.vision.vo.JsonResult;
 import com.vision.vo.PageObject;
@@ -205,4 +206,38 @@ public class SysUserController {
 		}
 			return JsonResult.build(201, "查询失败！");
 		}
+	 /**
+	  * 用于用户查询所有角色
+	  * @param userId
+	  * @return
+	  */
+	 @RequestMapping("doFindRoleCheckboxAll")
+	 @ResponseBody
+		public JsonResult findRoleCheckboxAll(){
+		 try {
+			 List<AntCheckbox> result=sysUserService.findRoleCheckboxAll();
+			 return JsonResult.oK(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+			return JsonResult.build(201, "查询失败！");
+		}
+	 
+	 /**
+	  * 根据用户id查询用户所有的角色
+	  * @param userId
+	  * @return
+	  */
+	 @RequestMapping("doFindRoleCheckbox")
+	 @ResponseBody
+		public JsonResult findRoleCheckbox(Long id){
+		 try {
+			 String[] result=sysUserService.findRoleCheckbox( id);
+			 return JsonResult.oK(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+			return JsonResult.build(201, "查询失败！");
+		}
+	 
 }

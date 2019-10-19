@@ -15,8 +15,8 @@ public class SysRoleUser {
 	@TableId(type=IdType.AUTO)
 	private Integer id;
 	//用户名
-	private Long roleId;
-	private String userId;
+	private Integer roleId;
+	private Integer userId;
 	
 
 }

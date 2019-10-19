@@ -12,6 +12,15 @@ const { TextArea } = Input;
 const Option = Select.Option;
 const { MonthPicker, RangePicker } = DatePicker;
 
+//const plainOptions = ['Apple', 'Pear', 'Orange','小王'];
+//    const plainOptions = [   {  value: 1,label: 'Apple' },
+//    { label: 'Pear', value: 2 },
+//     { label: 'Orange', value: 3 },];
+
+// const defaultCheckedList = [ { label: 'Apple', value: 'Apple' },
+// { label: 'Pear', value: 'Pear' },];
+// const defaultCheckedList = [1, 3];
+
 @Form.create()
 @connect(({sysUser, loading }) => ({
     sysUser,
@@ -20,8 +29,16 @@ const { MonthPicker, RangePicker } = DatePicker;
 class SysUserDrawer extends Component {
     constructor(props) {
         super(props);
-        this.state = { roleIs:[] ,result: [], };
-    }
+        this.state = {
+          
+            roleIs:[] ,
+            result: [],
+            checkedList:[],
+            indeterminate: true,
+             checkAll: false,
+        };
+        
+    };
 
 
     handleSearch = value => {
@@ -66,7 +83,7 @@ class SysUserDrawer extends Component {
                 this.showDrawer();
             }
         });
-    }
+    };
 
     //到后台查询角色信息
     getcquireRole =(startValue )=>{
@@ -84,19 +101,50 @@ class SysUserDrawer extends Component {
             })
         }
 
-    }
+    };
     //存储角色id
     setcquireRole =value=>{
         this.setState(
            this.state.roleIs=value
         )
       
+    };
+    //多选框点击事件
+    onChange = checkedList => {
+     
+        this.setState({
+          checkedList,
+          indeterminate: !!checkedList.length && checkedList.length < plainOptions.length,
+          checkAll: checkedList.length === plainOptions.length,
+        });
+      };
+    //    //多选框点击事件
+    //   onCheckAllChange = e => {
+    //     console.log(e);
+    //       debugger
+       
+    //     this.setState({
+    //       checkedList: e.target.checked ? plainOptions : [],
+    //       indeterminate: false,
+    //       checkAll: e.target.checked,
+    //     });
+    //   };
+
+    ChangeNumberOfCourse=(value)=>{
+        this.props.form.setFieldsValue({
+            numberOfCourse: value.length,
+        })
     }
+    
     render() {
-        const {form: {getFieldDecorator} ,sysUser: { drawerVisible, cusRow,cquireRole,RoleRow}, dispatch } = this.props;
+        const {form: {getFieldDecorator} ,sysUser: { drawerVisible, cusRow,cquireRole,defaultCheckedList,plainOptions}, dispatch } = this.props;
         const { data, ok} = cusRow;
         const { result } = this.state;
         const children = result.map(email => <Option key={email}>{email}</Option>);
+        const plainOptionsData = [plainOptions];
+       // this.setData(defaultCheckedList);
+      //  console.log(this.checkedList);
+
         return (
           
                  <Drawer 
@@ -176,25 +224,55 @@ class SysUserDrawer extends Component {
 
                 <Form.Item label='' >
                     {getFieldDecorator('correctionMethod', { rules: [{ ...rules.required  }],initialValue:ok?data["correctionMethod"]:''
-                    })(
-                        <Checkbox.Group onChange={cquireRole?this.getcquireRole(cquireRole):this.setcquireRole}>
-                           
-                         
-                           
-                               {
+                    })
+                    
+                    // (
+                    //     <Checkbox.Group onChange={cquireRole?this.getcquireRole(cquireRole):this.setcquireRole}>                        
+                    //            {
+                    //                 cquireRole?'':RoleRow.data.map(function (value) {
+                    //                     return <Checkbox value={value.id}>{value.name}</Checkbox>
+                    //                 })
+                    //             }                                                        
+                    //         {/* <Checkbox value={cquireRole?'':RoleRow.data[0].id}>{cquireRole?'':RoleRow.data[0].name}</Checkbox>
+                    //         <Checkbox value="1">店长</Checkbox>
+                    //         <Checkbox value="2">店员</Checkbox> */}
+                    //     </Checkbox.Group>
+                    // )
+                    
+                    (
 
-                                    cquireRole?'':RoleRow.data.map(function (value) {
-                                        return <Checkbox value={value.id}>{value.name}</Checkbox>
-                                    })
-                                }
-                               
-                            
-                           
-                            {/* <Checkbox value={cquireRole?'':RoleRow.data[0].id}>{cquireRole?'':RoleRow.data[0].name}</Checkbox>
-                            <Checkbox value="1">店长</Checkbox>
-                            <Checkbox value="2">店员</Checkbox> */}
-                        </Checkbox.Group>
-                    )}
+                  
+                            //     <div>
+                            // {/* <div style={{ borderBottom: '1px solid #E9E9E9' }}>
+                            //    <Checkbox
+                            //      indeterminate={this.state.indeterminate}
+                            //      onChange={this.onCheckAllChange}
+                            //      checked={this.state.checkAll}
+                            //    >
+                            //      Check all
+                            //    </Checkbox>
+                            //  </div>
+                            //  <br /> */}
+                            //  <CheckboxGroup
+                            //    options={plainOptions}
+                            //    value={defaultCheckedList}
+                            //    onChange={this.onChange}
+                            //  />
+                            //    </div>
+                        
+                            <Checkbox.Group >
+                            {
+                                plainOptionsData.map((result,key)=>{
+                                  
+                                    return (
+                                        <Checkbox value={result.id}>{result.title}</Checkbox>
+                                    );
+                                })
+                            }
+                            </Checkbox.Group>
+
+                    )
+                    }
                 </Form.Item>
 
                 <Form.Item label='是否生效' >

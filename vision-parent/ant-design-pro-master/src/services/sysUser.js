@@ -35,9 +35,18 @@ export async function addSysUser(params) {
 }
 //查询角色名称
 export async function getRoleName(params) {
-    return request("/vision/sysUser/doFindObjects",{
+    return request("/vision/sysUser/doFindRoleCheckbox",{
         method: "POST",
         body: params,
     });
 }
+
+//查询所有角色名称
+export async function getRoleNameAll(params) {
+    return request("/vision/sysUser/doFindRoleCheckboxAll",{
+        method: "POST",
+        body: params,
+    });
+}
+
 
