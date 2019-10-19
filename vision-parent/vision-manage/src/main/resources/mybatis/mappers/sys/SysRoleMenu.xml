@@ -28,7 +28,7 @@
      <!-- 基于角色id获取对应的菜单id -->
       <select id="findMenuIdsByRoleId"
               resultType="int">
-              select id
+              select menus_id
               from sys_role_menus
               where role_id=#{id}        
       </select>
@@ -41,4 +41,18 @@
 			#{item}
 		</foreach>
       </select>
+      
+     <select id="findMenuCheckbox"
+              resultMap="menuCheckbox">
+              select m.id,m.name
+              from sys_role_menus c,sys_menus m
+              where c.role_id=#{id} or c.menus_id=m.id        
+    </select>
+     
+     <resultMap
+		type="com.vision.pojo.sys.SysMenu"
+		id="menuCheckbox">
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+	</resultMap>
 </mapper>

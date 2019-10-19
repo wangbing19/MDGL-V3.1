@@ -10,11 +10,11 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class PpoItemsOrganization  extends BasePojo{
-	private Long itemId;
+	private Long id;
 	private String serviceName; 
 	private String serviceContent;
 	private String serviceState;
-	private Integer serviceRemark;
+	private String serviceRemark;
 	private String createdUser;
 	private String modifiedUser;
 	private String organizationName;

@@ -1,5 +1,6 @@
 package com.vision.service.sys.imp;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -12,15 +13,20 @@ import org.springframework.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.vision.exception.ServiceException;
 import com.vision.mapper.sys.SysMenuMapper;
+import com.vision.mapper.sys.SysRoleMenusMapper;
 import com.vision.pojo.sys.SysMenu;
+import com.vision.pojo.sys.vo.SysOrganizationLogs;
+import com.vision.pojo.sys.vo.SysRoleMenus;
 import com.vision.service.sys.SysMenuService;
+import com.vision.vo.AntCheckbox;
 import com.vision.vo.Node;
+import com.vision.vo.PageObject;
 
 @Service
 public class SysMenuServiceImpl implements SysMenuService{
 	@Autowired
 	private SysMenuMapper sysMenuMapper;
-
+	private SysRoleMenusMapper sysRoleMenusMapper;
 	@Override
 	public int insertMenu(SysMenu sysMenu) {
 		//1.验证参数合法性
@@ -55,6 +61,8 @@ public class SysMenuServiceImpl implements SysMenuService{
 					throw new IllegalArgumentException("菜单名不能为空");
 				if(StringUtils.isEmpty(sysMenu.getId()))
 					throw new IllegalArgumentException("菜单id不能为空");
+				if(StringUtils.isEmpty(sysMenu.getParentId()))
+					throw new IllegalArgumentException("菜单父级id不能为空");
 				//.....
 				//3.保存菜单信息到数据
 				//entity.setModifiedUser(ShiroUtils.getUser().getUsername());
@@ -107,8 +115,56 @@ public class SysMenuServiceImpl implements SysMenuService{
 	@Override
 	public SysMenu findMenuOne(Long id) {
 		SysMenu selectById = sysMenuMapper.selectById(id);
+		QueryWrapper<SysMenu> queryWrapper= new QueryWrapper<SysMenu>();
+		queryWrapper.eq("id", selectById.getParentId());
+		SysMenu selectOne = sysMenuMapper.selectOne(queryWrapper);
+		selectById.setParventName(selectOne.getName());
 		return selectById;
 	}
+
+	@Override
+	public PageObject<SysMenu> findMenuList(Integer pageCurrent, Integer pageSize) {
+		PageObject<SysMenu> pageObject=new PageObject<>();
+		int startIndex=(pageCurrent-1)*pageSize;
+		Integer rowCount = sysMenuMapper.selectCount(null);
+		//List<SysMenu> selectList=sysMenuMapper.findMenuList(startIndex,pageSize);
+		List<SysMenu> selectList=sysMenuMapper.findMenuParventList(startIndex,pageSize);
+		
+		pageObject.setRowCount(rowCount);
+		pageObject.setRecords(selectList);
+		pageObject.setPageCurrent(pageCurrent);
+		pageObject.setPageSize(pageSize);
+		return pageObject;
+	}
+
+	@Override
+	public List<AntCheckbox> findMenuCheckboxAll() {
+	
+		List<SysMenu> selectList = sysMenuMapper.selectList(null);
+		String[] result = new String[selectList.size()];
+		AntCheckbox antCheckbox = new AntCheckbox();
+		List<AntCheckbox> result1 = new ArrayList<AntCheckbox>();
+		for(int i =0; i < selectList.size(); i++) {
+			result[i] = selectList.get(i).getName();
+			antCheckbox.setId(selectList.get(i).getId());
+			antCheckbox.setTitle(selectList.get(i).getName());
+			result1.add(antCheckbox);
+		}
+		return result1;
+	}
+
+	@Override
+	public String[] findMenuCheckbox(Long id) {
+	//	List<Long> findMenuIdsByRoleId = sysRoleMenusMapper.findMenuIdsByRoleId(id);
+		QueryWrapper<SysRoleMenus> queryWrapper= new QueryWrapper<SysRoleMenus>();
+		queryWrapper.eq("role_id", id);
+		List<SysRoleMenus> selectList2 = sysRoleMenusMapper.selectList(queryWrapper);
+//		List<SysMenu> selectList = sysRoleMenusMapper.findMenuCheckbox(id);
+//		System.out.println(selectList.toString());
+		return null;
+	}
+
+	
 	
 	
 }

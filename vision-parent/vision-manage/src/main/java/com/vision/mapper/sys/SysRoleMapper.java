@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Param;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.vision.pojo.sys.SysRole;
 import com.vision.pojo.sys.vo.SysRoleOrganizationResult;
+import com.vision.vo.AntCheckbox;
 import com.vision.vo.CheckBox;
 public interface SysRoleMapper extends BaseMapper<SysRole>{
 
@@ -23,6 +24,12 @@ public interface SysRoleMapper extends BaseMapper<SysRole>{
 	SysRoleOrganizationResult findObjectById(Integer id);
 
 	List<SysRole> doFindRoleAll(@Param("startIndex")Integer startIndex,@Param("pageSize") Integer pageSize);
+
+	List<SysRole> findRoleCheckbox(List<Integer> list);
+
+	List<AntCheckbox> selectAntCheckbox();
+
+	
 
 	
 

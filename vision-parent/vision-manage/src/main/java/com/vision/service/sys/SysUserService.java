@@ -1,10 +1,12 @@
 package com.vision.service.sys;
 
+import java.util.List;
 import java.util.Map;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.vision.pojo.sys.SysUser;
 import com.vision.pojo.sys.vo.SysUserOrganization;
+import com.vision.vo.AntCheckbox;
 import com.vision.vo.PageObject;
 
 public interface SysUserService{
@@ -36,4 +38,8 @@ public interface SysUserService{
      * @Date 2019/9/2 19:56
      */
     SysUser findColumn(String column, String valueOf);
+
+    List<AntCheckbox> findRoleCheckboxAll();
+
+	String[] findRoleCheckbox(Long id);
 }

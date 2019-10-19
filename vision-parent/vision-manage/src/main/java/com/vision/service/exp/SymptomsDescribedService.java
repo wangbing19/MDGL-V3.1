@@ -1,6 +1,8 @@
 package com.vision.service.exp;
 
 
+import java.util.List;
+
 import com.vision.dto.SymptomsDescribedDto;
 import com.vision.pojo.exp.ExpSymptomsDescribed;
 
@@ -41,5 +43,7 @@ public interface SymptomsDescribedService {
      * @return
      */
     Boolean doDeleteSym(Integer[] remoteDiagnoseId);
+
+	List<ExpSymptomsDescribed> selectSymAll(ExpSymptomsDescribed expSymptomsDescribed);
 
 }

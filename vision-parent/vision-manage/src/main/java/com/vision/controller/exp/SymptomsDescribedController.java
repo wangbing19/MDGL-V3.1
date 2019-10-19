@@ -7,6 +7,8 @@ import com.vision.vo.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 /**
@@ -37,7 +39,7 @@ public class SymptomsDescribedController {
      * 症状描述表添加数据
      */
     @RequestMapping("/add")
-    public JsonResult doInsertSym(@RequestBody SymptomsDescribedDto symptomsDescribedDto) {
+    public JsonResult doInsertSym(SymptomsDescribedDto symptomsDescribedDto) {
         Boolean aBoolean = symptomsDescribedService.doInsertSym(symptomsDescribedDto);
         return JsonResult.oK(aBoolean);
     }
@@ -50,5 +52,12 @@ public class SymptomsDescribedController {
     public JsonResult doUpdateSym(@RequestBody SymptomsDescribedDto symptomsDescribedDto) {
         Boolean aBoolean = symptomsDescribedService.doUpdateSym(symptomsDescribedDto);
         return JsonResult.oK(aBoolean);
+    }
+    //根据门店id查询消息
+    @RequestMapping("/find")
+    public JsonResult selectSymAll( ExpSymptomsDescribed expSymptomsDescribed) {
+    	
+        List<ExpSymptomsDescribed> expSymptomsDescribedList = symptomsDescribedService.selectSymAll(expSymptomsDescribed);
+        return JsonResult.oK(expSymptomsDescribedList);
     }
 }

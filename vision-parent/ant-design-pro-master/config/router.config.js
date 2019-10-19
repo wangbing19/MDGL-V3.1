@@ -17,6 +17,8 @@ export default [
       },
     ],
   },
+
+
   // app
   {
     path: '/',
@@ -25,6 +27,37 @@ export default [
     routes: [
       // dashboard
       { path: '/', redirect: '/cus/consultation/consultation', authority: ['admin', 'user'] },
+      {
+        path: '/sys',
+        icon: 'form',
+        name: 'sys',
+        routes: [
+          {
+            path: '/sys/sysMenus/sysMenus',
+            name: 'sysMenus',
+            component: './Sys/SysMenus/SysMenu',
+          },
+         
+          {
+            path: '/sys/sysRole/sysRole',
+            name: 'sysRole',
+            component: './Sys/SysRole/SysRole',
+          },
+          {
+            path: '/sys/sysUser/sysUser',
+            name: 'sysUser',
+            component: './Sys/SysUser/SysUser',
+          },
+          {
+            path: '/sys/sysLog/sysLog',
+            name: 'sysLog',
+            component: './Sys/SysLog/SysLog',
+          }
+         
+        ],
+      },
+     
+     
       // cus
       {
         path: '/cus',
@@ -48,6 +81,8 @@ export default [
           },
         ],
       },
+         
+
       // train
       {
         path: '/train',
@@ -87,6 +122,63 @@ export default [
           },
         ],
       },
+
+
+      {
+        path: '/ppo',
+        icon: 'form',
+        name: 'ppo',
+        routes: [
+          {
+            path: '/ppo/trainer/trainer',
+            name: 'trainer',
+            component: './Ppo/Trainer/Trainer',
+          },
+          {
+            path: '/ppo/ppoServiceItems/ppoServiceItems',
+            name: 'ppoServiceItems',
+            component: './Ppo/PpoServiceItems/PpoServiceItems',
+          }
+        ],
+      },
+       // pre
+       {
+        path: '/pre',
+        icon: 'form',
+        name: 'pre',
+        routes: [
+          {
+            path: '/pre/preSymptomType/preSymptomType',
+            name: 'preSymptomType',
+            component: './Pre/PreSymptomType/PreSymptomType',
+          },
+       
+        ],
+      },
+        // Expert
+        {
+          path: '/exp',
+          icon: 'form',
+          name: 'exp',
+          routes: [
+            {
+              path: '/exp/expert/expert',
+              name: 'expert',
+              component: './Exp/Expert/Expert',
+            },
+  
+            {
+              path: '/exp/remoteDiagnose/remoteDiagnose',
+              name: 'remoteDiagnose',
+              component: './Exp/RemoteDiagnose/RemoteDiagnose',
+            },
+            {
+              path: '/exp/remoteDiagnose/remoteDiagnoseUser',
+              name: 'remoteDiagnoseUser',
+              component: './Exp/RemoteDiagnose/RemoteDiagnoseUser',
+            }
+          ],
+        },
       // system
       {
         path: '/system',

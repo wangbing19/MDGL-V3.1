@@ -9,11 +9,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.vision.pojo.sys.SysMenu;
+import com.vision.pojo.sys.vo.SysOrganizationLogs;
 import com.vision.service.sys.SysMenuService;
 import com.vision.util.GetMenusTreeData;
 import com.vision.util.GetTreeData;
+import com.vision.vo.AntCheckbox;
 import com.vision.vo.JsonResult;
 import com.vision.vo.Node;
+import com.vision.vo.PageObject;
 import com.vision.vo.TreeMenus;
 import com.vision.vo.TreeStructure;
 
@@ -94,7 +97,7 @@ public class SysMenuController {
 
 	@RequestMapping("doUpdateMenu")
 	@ResponseBody
-	public JsonResult updateMenu(SysMenu sysMenu) {
+	public JsonResult updateMenu(SysMenu sysMenu ) {
 		try {
 			int result = sysMenuService.updateMenu(sysMenu);
 			
@@ -132,7 +135,7 @@ public class SysMenuController {
 	}
 	
 	/**
-	 * 删除菜单信息
+	 * 菜单信息
 	 * @param id
 	 * @return
 	 */
@@ -178,4 +181,66 @@ public class SysMenuController {
 		}
 		 return JsonResult.build(201, "节点查询错误！");
 	}
+	
+	/**
+	 * 菜单信息
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("doFindMenuList")
+	@ResponseBody
+	public JsonResult findMenuList(Integer pageCurrent,Integer pageSize) {
+		try {
+			PageObject<SysMenu> result = sysMenuService.findMenuList(pageCurrent,pageSize);
+			
+			return JsonResult.oK(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return JsonResult.build(201, "菜单查询失败!");
+		
+	}
+	
+	/**
+	 * 用于角色多选框，全数据查询
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("doFindMenuCheckboxAll")
+	@ResponseBody
+	public JsonResult findMenuCheckboxAll() {
+		try {
+			List<AntCheckbox> result = sysMenuService.findMenuCheckboxAll();
+			
+			return JsonResult.oK(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return JsonResult.build(201, "菜单查询失败!");
+		
+	}
+	
+	/**
+	 * 用于角色多选框，选中数据查询
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("doFindMenuCheckbox")
+	@ResponseBody
+	public JsonResult findMenuCheckbox(Long id) {
+		try {
+			
+			String[] result = sysMenuService.findMenuCheckbox(id);
+			
+			return JsonResult.oK(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return JsonResult.build(201, "菜单查询失败!");
+		
+	}
+	
 }

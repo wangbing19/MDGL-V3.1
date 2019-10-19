@@ -21,7 +21,7 @@
 	</delete>
 	
 	<insert id="insertSymptomObject" useGeneratedKeys="true" keyProperty="id">
-		insert into symptom_type values(null,#{parentId},#{disStatus},#{symptomName},#{createTime},#{modifiedTime})
+		insert into symptom_type values(null,#{parentId},#{disStatus},#{descStart},#{symptomName},#{createTime},#{modifiedTime})
 	</insert>
 	
 	<update id="updateDisStatusById">
@@ -33,6 +33,14 @@
 	</select>
 	
 	<update id="updateSymptomObject">
-		update symptom_type set symptom_name = #{symptomName},modified_time=now() where id=#{id}
+		update symptom_type set symptom_name = #{symptomName},desc_start=#{descStart},modified_time=now() where id=#{id}
 	</update>
+	
+	
+		<select id="findAllObjectsList"
+		resultType="com.vision.pojo.pre.SymptomType">
+		select * from symptom_type
+		ORDER BY modified_time desc
+		limit #{startIndex},#{pageSize} 
+	</select>
 </mapper>

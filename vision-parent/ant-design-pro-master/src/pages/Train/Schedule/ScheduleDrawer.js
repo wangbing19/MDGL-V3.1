@@ -102,6 +102,7 @@ class ScheduleDrawer extends Component {
     render() {
         const {form: {getFieldDecorator} ,schedule: { drawerVisible, scheduleRow, symptomTypesList, customer}, dispatch } = this.props;
         const { data, ok} = scheduleRow;
+     
         return (
             <Drawer
             title={ok?"修改":"添加"}

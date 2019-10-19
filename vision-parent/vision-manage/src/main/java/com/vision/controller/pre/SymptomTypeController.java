@@ -10,10 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.vision.pojo.pre.SymptomType;
+import com.vision.pojo.sys.SysMenu;
 import com.vision.service.pre.SymptomTypeService;
+import com.vision.util.GetMenusTreeData;
 import com.vision.util.GetTreeData;
 import com.vision.vo.JsonResult;
-
+import com.vision.vo.PageObject;
+import com.vision.vo.TreeMenus;
 import com.vision.vo.TreeStructure;
 import com.vision.vo.pre.SymptomAllMsg;
 
@@ -32,17 +35,31 @@ public class SymptomTypeController {
 				return JsonResult.oK("没有症状类型数据信息");
 			}
 			
-			List<TreeStructure<SymptomAllMsg>> treeStructures = new ArrayList<>();
-			for(int i=0;i<symptomlist.size();i++) {
-				TreeStructure<SymptomAllMsg> treeStructure = new TreeStructure<>();
-				treeStructure.setId(symptomlist.get(i).getId());
-				treeStructure.setParentId(symptomlist.get(i).getParentId());
-				treeStructure.setData(symptomlist.get(i));
-				treeStructures.add(treeStructure);			
+//			List<TreeStructure<SymptomAllMsg>> treeStructures = new ArrayList<>();
+//			for(int i=0;i<symptomlist.size();i++) {
+//				TreeStructure<SymptomAllMsg> treeStructure = new TreeStructure<>();
+//				treeStructure.setId(symptomlist.get(i).getId());
+//				treeStructure.setParentId(symptomlist.get(i).getParentId());
+//				treeStructure.setData(symptomlist.get(i));
+//				treeStructures.add(treeStructure);			
+//			}
+//			GetTreeData<SymptomAllMsg>	tree = new GetTreeData<>();
+//			TreeStructure<SymptomAllMsg>  treeData = tree.getTree(treeStructures);
+			
+			List<TreeMenus<SymptomAllMsg>> result1 = new ArrayList<>();
+			for(int i = 0; i < symptomlist.size() ; i++) {
+				TreeMenus<SymptomAllMsg> treeStructure = new TreeMenus<>();
+				treeStructure.setKey((Long)symptomlist.get(i).getId());
+				treeStructure.setTitle(symptomlist.get(i).getSymptomName());
+				treeStructure.setValue((Long)symptomlist.get(i).getId());
+				treeStructure.setpId((Long)symptomlist.get(i).getParentId());
+				 result1.add(treeStructure);
 			}
-			GetTreeData<SymptomAllMsg>	tree = new GetTreeData<>();
-			TreeStructure<SymptomAllMsg>  treeData = tree.getTree(treeStructures);
-			return JsonResult.oK(treeData);
+			
+			GetMenusTreeData<SymptomAllMsg> tree1 = new GetMenusTreeData<SymptomAllMsg>();
+			TreeMenus<SymptomAllMsg> tree2 = tree1.getTree(result1);
+			
+			return JsonResult.oK(tree2);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -52,7 +69,7 @@ public class SymptomTypeController {
 	/**根据症状id删除症状*/
 	@RequestMapping("/deleteSymptomObjectById")
 	@ResponseBody
-	public JsonResult deleteSymptomObjectById(Long id) {
+	public JsonResult deleteSymptomObjectById(Long ...id) {
 		try {
 			int s = symptomTypeService.deleteSymptomObjectById(id);
 			if(s>0) JsonResult.oK("删除成功");
@@ -68,9 +85,9 @@ public class SymptomTypeController {
 	/**新增症状类型对象*/
 	@RequestMapping("/insertSymptomObject")
 	@ResponseBody
-	public JsonResult insertSymptomObject(String symptomName,Long parentId,String desc) {
+	public JsonResult insertSymptomObject(SymptomType symptomType,String desc) {
 		try {
-			symptomTypeService.insertSymptomObject(symptomName,parentId,desc);
+			symptomTypeService.insertSymptomObject(symptomType,desc);
 			return JsonResult.oK("新增成功");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -102,5 +119,24 @@ public class SymptomTypeController {
 			e.printStackTrace();
 		}
 		return JsonResult.build(201,"查询症状信息失败");
+	}
+	
+	/**分页查询*/
+	@RequestMapping("/findAllObjectsList")
+	@ResponseBody
+	public JsonResult findAllObjectsList(Integer pageCurrent,Integer pageSize) {
+		try {
+			PageObject<SymptomType> symptomlist  = symptomTypeService.findAllObjectsList(pageCurrent,pageSize);
+			if(symptomlist.getRecords()==null||symptomlist.getRecords().size()==0) {
+				return JsonResult.oK("没有症状类型数据信息");
+			}
+			
+			else {
+				return JsonResult.oK(symptomlist);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return JsonResult.build(201,"查询症状类型数据信息出错，检查网络连接");
 	}
 }

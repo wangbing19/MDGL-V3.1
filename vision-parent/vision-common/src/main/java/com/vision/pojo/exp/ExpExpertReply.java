@@ -21,6 +21,8 @@ public class ExpExpertReply {
      * 远程诊断表序号
      */
     private Integer remoteDiagnoseId;
+    
+    private Long registerUserId;
     /**
      * 症状描述
      */

@@ -78,4 +78,12 @@ public class SymptomsDescribedServiceIpml implements SymptomsDescribedService {
         }
         return true;
     }
+
+	@Override
+	public List<ExpSymptomsDescribed> selectSymAll(ExpSymptomsDescribed expSymptomsDescribed) {
+		QueryWrapper<ExpSymptomsDescribed> queryWrapper = new QueryWrapper<ExpSymptomsDescribed>();
+		queryWrapper.eq("register_user_id", expSymptomsDescribed.getRegisterUserId()).eq("remote_diagnose_id", expSymptomsDescribed.getRemoteDiagnoseId());
+		List<ExpSymptomsDescribed> selectList = expSymptomsDescribedMapper.selectList(queryWrapper);
+		return selectList;
+	}
 }

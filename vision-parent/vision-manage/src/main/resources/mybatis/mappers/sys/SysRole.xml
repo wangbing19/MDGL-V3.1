@@ -72,4 +72,17 @@
 		limit #{startIndex},#{pageSize}
 	</select>
     
+    	<select id="findRoleCheckbox" resultType="com.vision.pojo.sys.SysRole">
+	
+		select  * from sys_role where id in
+		<foreach collection="list" index="index" item="item" open="(" separator="," close=")" >
+			#{item}
+		</foreach> 
+	</select>
+	
+	 <select id="selectAntCheckbox"
+		resultType="com.vision.vo.AntCheckbox">
+		select id id,name title from sys_role
+	</select>
+	
 </mapper>

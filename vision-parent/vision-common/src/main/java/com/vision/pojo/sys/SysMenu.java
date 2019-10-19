@@ -3,6 +3,7 @@ package com.vision.pojo.sys;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
@@ -43,6 +44,12 @@ public class SysMenu {
      * 菜单对应的权限标识(sys:log:delete)
      */
     private String permission;
+    /**
+     * 上级菜单名
+     */
+    @TableField(exist=false)
+    private String parventName;
+    
     /**
      * 创建用户
      */

@@ -5,7 +5,7 @@
 <mapper namespace="com.vision.mapper.ppo.PpoServiceItemsMapper">
 
 	<resultMap type="PpoItemsOrganization" id="itemsMap">
-		<id column="item_id" property="itemId"/>
+		<id column="id" property="id"/>
 		<result column="service_name" property="serviceName"/>
 		<result column="service_content" property="serviceContent"/>
 		<result column="service_state" property="serviceState"/>
@@ -28,4 +28,16 @@
 	</foreach>  
 	and sys_organization.organization_id=ppo_service_items.organization_id
 	</select>
+	<!-- 查询门店的服务统计 -->
+	<select id="selectCountNum" resultType="int">
+	select count(id)
+	from ppo_service_items,sys_organization
+	where ppo_service_items.organization_id in
+
+	<foreach collection="list" index="index" item="item" open="(" separator="," close=")" >
+		#{item}
+	</foreach>  
+	and sys_organization.organization_id=ppo_service_items.organization_id
+	</select>
+	
 </mapper>

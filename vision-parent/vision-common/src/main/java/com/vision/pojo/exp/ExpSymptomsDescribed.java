@@ -21,6 +21,11 @@ public class ExpSymptomsDescribed {
      * 远程诊断表序号
      */
     private Integer remoteDiagnoseId;
+    
+    /**
+     * 登录账号id
+     */
+    private Long registerUserId;
     /**
      * 症状描述
      */

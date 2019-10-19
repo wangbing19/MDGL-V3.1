@@ -9,4 +9,6 @@ public interface PpoServiceItemsMapper extends BaseMapper<PpoServiceItems>{
 
 	List<PpoServiceItems> selectByIds(List<Long> organizationIdList);
 
+	int selectCountNum(List<Long> findOrganizationIdList);
+
 }

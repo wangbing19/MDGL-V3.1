@@ -75,19 +75,19 @@ class BaseDicTree extends React.Component {
       }
   };
   
-    //渲染tree
-    renderTreeNodes = data => data.map((item) => {
-        if (item.children) {//如果字节点存在的话就递归创建子节点
-            //是否有下一个节点，有的话就是文件夹图标没有就是文件图标
-            return (
-                <TreeNode title={item.text} key={item.id} dataRef={item} value={item.id} isLeaf={item.leaf}>
-                    {this.renderTreeNodes(item.children)}
-                </TreeNode>
-            );
-        }else{
-            return <TreeNode title={item.text}  value={item.id} key={item.id} isLeaf={item.leaf}  dataRef={item} />;
-        }
-    })
+  //渲染tree
+  renderTreeNodes = data => data.map((item) => {
+      if (item.children) {//如果字节点存在的话就递归创建子节点
+          //是否有下一个节点，有的话就是文件夹图标没有就是文件图标
+          return (
+              <TreeNode title={item.text} key={item.id} dataRef={item} value={item.id} isLeaf={item.leaf}>
+                  {this.renderTreeNodes(item.children)}
+              </TreeNode>
+          );
+      }else{
+          return <TreeNode title={item.text}  value={item.id} key={item.id} isLeaf={item.leaf}  dataRef={item} />;
+      }
+  })
 
   render() {
     //treeList传回树结构，type（modal的namespace）

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.vision.pojo.ppo.PpoServiceItems;
 import com.vision.service.ppo.PpoServiceItemsService;
 import com.vision.vo.JsonResult;
+import com.vision.vo.PageObject;
 
 @Controller
 @RequestMapping("/PpoServiceItems")
@@ -41,9 +42,9 @@ public class PpoServiceItemsController {
 	 */
 	@RequestMapping("/doFindServiceItems")
 	@ResponseBody	
-	public JsonResult findServiceItems(Long organizationId) {
+	public JsonResult findServiceItems(Long organizationId,Integer pageCurrent,Integer pageSize) {
 		try {
-			List<PpoServiceItems> result = ppoServiceItemsService.findServiceItems(organizationId);
+			PageObject<PpoServiceItems> result = ppoServiceItemsService.findServiceItems(organizationId,pageCurrent,pageSize);
 			return JsonResult.oK(result);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -66,11 +67,37 @@ public class PpoServiceItemsController {
 		}
 		return JsonResult.build(201, "查询失败！");
 	}
+	
+	/**
+	 * 修改
+	 * @param ppoServiceItems
+	 * @return
+	 */
 	@RequestMapping("/doupdeteServiceItems")
 	@ResponseBody
 	public JsonResult updeteServiceItems(PpoServiceItems ppoServiceItems) {
 		try {
 			int  result = ppoServiceItemsService.updeteServiceItems(ppoServiceItems);
+			return JsonResult.oK(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return JsonResult.build(201, "查询失败！");
+	}
+	
+	/**
+	 * 根据id查询
+	 * @param ppoServiceItems
+	 * @return
+	 */
+	@RequestMapping("/doFindServiceItemOne")
+	@ResponseBody
+	public JsonResult findServiceItemOne(Long organizationId,Long id) {
+		try {
+			PpoServiceItems ppoServiceItems =new PpoServiceItems();
+			ppoServiceItems.setOrganizationId(0L);
+			ppoServiceItems.setId(id);
+			PpoServiceItems  result = ppoServiceItemsService.findServiceItemOne(ppoServiceItems);
 			return JsonResult.oK(result);
 		} catch (Exception e) {
 			e.printStackTrace();

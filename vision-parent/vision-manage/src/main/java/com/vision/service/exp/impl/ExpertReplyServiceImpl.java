@@ -26,11 +26,15 @@ public class ExpertReplyServiceImpl implements ExpertReplyService {
     private RemoteDiagnoseService remoteDiagnoseService;
 
     @Override
-    public ExpExpertReply selectRep(Integer id) {
+    public List<ExpExpertReply> selectRep(ExpertReplyDto expertReplyDto) {
+    	
+    	
         QueryWrapper<ExpExpertReply> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq(ExpExpertReply.Meta.remoteDiagnoseId, id).eq(ExpExpertReply.Meta.delTag,0);
-        ExpExpertReply entity = expertReplyMapper.selectOne(queryWrapper);
-        return entity;
+        queryWrapper.eq("remote_diagnose_id", expertReplyDto.getRemoteDiagnoseId()).eq("register_user_id", expertReplyDto.getRegisterUserId());
+        List<ExpExpertReply> selectList = expertReplyMapper.selectList(queryWrapper);
+        
+        
+        return selectList;
     }
 
     @Override
