@@ -183,7 +183,7 @@ class ConsultationDrawer extends Component {
                         <Form.Item label='姓名' >
                             {getFieldDecorator('name', { rules: [{ ...rules.required  }],initialValue:ok?data["name"]:''
                             })(
-                                <Input   />
+                                <Input maxLength={20}   />
                             )}
                         </Form.Item>
                     </Col>
@@ -191,7 +191,7 @@ class ConsultationDrawer extends Component {
                         <Form.Item label='年龄' >
                             {getFieldDecorator('age', { rules: [{ ...rules.required  }],initialValue:ok?data["age"]:''
                             })(
-                                <InputNumber style={{width:"100%"}}   />
+                                <InputNumber style={{width:"100%"}}  maxLength={3} />
                             )}
                         </Form.Item>
                     </Col>
@@ -207,7 +207,7 @@ class ConsultationDrawer extends Component {
                         <Form.Item label='联系方式' >
                             {getFieldDecorator('tel', { rules: [{ ...rules.required  }],initialValue:ok?data["tel"]:''
                             })(
-                                <InputNumber style={{width:"100%"}}   />
+                                <InputNumber style={{width:"100%"}}  maxLength={11}  />
                             )}
                         </Form.Item>
                     </Col>
@@ -221,7 +221,7 @@ class ConsultationDrawer extends Component {
                         <Form.Item label='左右眼' >
                             {getFieldDecorator('eye', { rules: [{ ...rules.required  }],initialValue:ok?data["eye"]:''
                             })(
-                                <Input   />
+                                <Input   maxLength={2} />
                                 // <Select defaultValue="左眼" style={{ width: 120 }} >
                                 //     <Option value="左眼">左眼</Option>
                                 //     <Option value="右眼">右眼</Option>
@@ -234,7 +234,7 @@ class ConsultationDrawer extends Component {
                         <Form.Item label='年份' >
                             {getFieldDecorator('declineTimeYear', { rules: [{ ...rules.required  }],initialValue:ok?data["declineTimeYear"]:''
                             })(
-                                <InputNumber style={{width:"100%"}}   />
+                                <InputNumber style={{width:"100%"}}  maxLength={4}  />
                             )}
                         </Form.Item>
                     </Col>
@@ -242,7 +242,7 @@ class ConsultationDrawer extends Component {
                         <Form.Item label='月份' >
                             {getFieldDecorator('declineTimeMonth', { rules: [{ ...rules.required  }],initialValue:ok?data["declineTimeMonth"]:''
                             })(
-                                <InputNumber style={{width:"100%"}}   />
+                                <InputNumber style={{width:"100%"}}   maxLength={2} />
                             )}
                         </Form.Item>
                     </Col>

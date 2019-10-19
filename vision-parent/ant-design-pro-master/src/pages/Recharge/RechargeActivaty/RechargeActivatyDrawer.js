@@ -84,7 +84,7 @@ class RechargeActivatyDrawer extends Component {
                         )}
                     </Form.Item>
                     <Form.Item label='活动描述' >
-                        {getFieldDecorator('describe', { rules: [{ ...rules.required  }],initialValue:ok?data["describe"]:''
+                        {getFieldDecorator('describes', { rules: [{ ...rules.required  }],initialValue:ok?data["describes"]:''
                         })(
                             <Input.TextArea rows={4}   />
                         )}
@@ -92,13 +92,13 @@ class RechargeActivatyDrawer extends Component {
                     <Form.Item label='充值金额' >
                         {getFieldDecorator('payAmount', { rules: [{ ...rules.required  }],initialValue:ok?data["payAmount"]:''
                         })(
-                            <Input   />
+                            <InputNumber  maxLength={10}  />
                         )}
                     </Form.Item>
                     <Form.Item label='赠送金额' >
                         {getFieldDecorator('presentedAmount', { rules: [{ ...rules.required  }],initialValue:ok?data["presentedAmount"]:''
                         })(
-                            <Input   />
+                            <InputNumber  maxLength={10} />
                         )}
                     </Form.Item>
                     <Form.Item label='活动开始时间' >

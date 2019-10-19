@@ -75,7 +75,7 @@ class RechargeActivaty extends Component {
         },
         {
             title: '充值活动描述',
-            dataIndex: 'describe',
+            dataIndex: 'describes',
             width: "30%",
         },
         {

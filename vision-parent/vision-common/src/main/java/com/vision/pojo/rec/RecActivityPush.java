@@ -21,7 +21,7 @@ public class RecActivityPush extends BasePojo{
 	/**充值活动标题*/
 	private String title;
 	/**描述*/
-	private String describe;
+	private String describes;
 	/**充值金额*/
 	private Double payAmount;
 	/**赠送金额*/
